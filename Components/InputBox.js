@@ -88,7 +88,7 @@ class InputBox extends Component {
                                     keyboardType='numeric'
                                     type={this.props.mask}
                                     options={{
-                                        precision: 0,
+                                        precision: this.props.precision,
                                         unit: '$',
                                         delimiter: ',',
                                         separator: '.'

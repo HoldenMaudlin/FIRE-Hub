@@ -121,7 +121,7 @@ class Tool1ScreenGraph extends Component {
         } else {
             return (
                 <View style={{flex:1}}>
-                    <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation}/>
+                    <MainBackHeader  title = 'FIRE Basic' backButtonName = 'Inputs' navigation={this.props.navigation}/>
                     <StackedAreaChart
                         style={{ height: 400, paddingVertical: 16 }}
                         data={ data }

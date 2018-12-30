@@ -79,7 +79,7 @@ class Tool2ScreenGraph extends React.PureComponent {
 
         return (
             <View style = {{flex:1, backgroundColor: mainFillColor}} >
-                <MainBackHeader navigation = {this.props.navigation} title = 'Break Even Graph' backButtonName = 'Inputs' />
+                <MainBackHeader navigation = {this.props.navigation} title = 'Break Even' backButtonName = 'Inputs' />
                 <View style={{ height: 400 }}>
                     <LineChart
                         style={ { flex: 1 } }

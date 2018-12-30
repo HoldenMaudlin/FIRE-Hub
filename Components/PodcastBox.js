@@ -5,9 +5,12 @@ import {
     Image,
     Text,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
 } from 'react-native'
-import { mainAccentColor } from '../Styles/ColorConstants';
+import { mainAccentColor, mainFillColor } from '../Styles/ColorConstants';
+
+var {height, width} = Dimensions.get('window')
 
 class PodcastBox extends Component {
     constructor(props) {
@@ -22,24 +25,38 @@ class PodcastBox extends Component {
     }
 
     _trimString(string){
-        return string.split(/[:-@]/)[0]
+        return string.split(/[:-@--]/)[0]
     }
 
     render(){
         var podcastName = this._trimString(this.props.podcastName)
         var podcastAuthor = this._trimString(this.props.podcastAuthor)
         return(
-            <TouchableOpacity onPress={() => this._onPressPodcast(this.props.podcastURL)} style={{alignItems: 'stretch'}}>        
-                <View style ={styles.boxContainer}>
-                    <View style = {styles.imageContainer}>
-                        <Image resizeMode='contain' style={styles.imageStyle} source={{uri: this.props.podcastImage}}/>
+            <View style ={styles.boxContainer}>
+                <TouchableOpacity style={{flex:1}} onPress={() => this._onPressPodcast(this.props.podcastURL)}>        
+                    <View style={styles.tileContainer}>
+                        <View style={styles.imageContainer}> 
+                            <Image style={{width: 200, height: 200, borderRadius: 10,}} source={{uri: this.props.podcastImage}}/>
+                        </View>
+                        <View style={styles.titleContainer}> 
+                            <Text style={styles.podcastNameText} >
+                                {podcastName}
+                            </Text>
+                            <Text style={styles.podcastAuthorText}>
+                                {podcastAuthor}
+                            </Text>
+                        </View>
+                        <View style={styles.descContainer}>
+                            <Text numberOfLines={7}>
+                                {this.props.podcastDesc}
+                            </Text>
+                            <Text>
+                                Tap to view more in Podcasts!
+                            </Text>
+                        </View>
                     </View>
-                    <View style={styles.contentContainer}>  
-                        <Text style={styles.titleText}>{podcastName}</Text>
-                        <Text style={styles.authorText}>{podcastAuthor}</Text>
-                    </View>
-                </View>
-            </TouchableOpacity>            
+                </TouchableOpacity>    
+            </View>   
         )
     }
 }
@@ -47,32 +64,56 @@ class PodcastBox extends Component {
 export default PodcastBox
 
 const styles = StyleSheet.create({
+    
+    // Containers
     boxContainer: {
         flexDirection: 'row',
-        height: 120,
-        borderBottomWidth: 1,
-        borderBottomColor: mainAccentColor,
-        padding: 5,
-    },
-    contentContainer: {
         flex: 1,
-        justifyContent: 'center',
+        width: width,
+        padding: 20,
     },
-    titleText: {
-        color: 'black',
-        fontSize: 18,
-        marginLeft: 10,
-    },
-    authorText: {
-        color: mainAccentColor,
-        fontSize: 14,
-        marginLeft: 10,
+    tileContainer: {
+        flex: 1,
+        borderRadius: 10,
+        backgroundColor: mainFillColor,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+
     },
     imageContainer: {
-        width: 110,
+        flex: 3,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        paddingTop: 20,
+        alignItems: 'center',
+        justifyContent: 'flex-start',
     },
-    imageStyle: {
-        height: 110,
-        width: 110,
+    titleContainer: {
+        flex: -1,
+        marginLeft: 20,
+        marginRight: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: mainAccentColor,
+        paddingTop: 5,
     },
+    descContainer: {
+        flex: 2,
+        padding: 20,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        justifyContent: 'space-between'
+    },
+
+    // Text 
+    podcastNameText: {
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    podcastAuthorText: {
+        fontSize: 14,
+        fontWeight: '400',
+        color: mainAccentColor,
+    }
 })

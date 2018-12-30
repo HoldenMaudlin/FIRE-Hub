@@ -3,66 +3,169 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  Linking
+  Linking,
+  ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
-
 import { 
     Header,
     Left,
     Icon,
   } from 'native-base';  
-import { mainFillColor } from "../../Styles/ColorConstants";
+import { mainFillColor, mainAccentColor, mainColor } from "../../Styles/ColorConstants";
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 import { _fetchAPI } from '../../Components/Functions/FetchAPI'
 import PodcastBox from '../../Components/PodcastBox'
+import GenreButton from '../../Components/GenreButton'
 import { ScrollView } from "react-native-gesture-handler";
 
-const podcastsURL = 'https://itunes.apple.com/lookup?id=540593710,1187770032,1276912032,896153632'
-const podcastsKey = 'data'
+// URL constants and blocks to fetch JSON data from iTunes API
+const featuredURL = 'https://itunes.apple.com/lookup?id=540593710,1187770032,1276912032,896153632'
+const genreBaseURL = 'https://itunes.apple.com/us/rss/toppodcasts/genre='
+const genreURLS = {
+    investing: '1412/json',
+    careers: '1410/json',
+    news: '1471/json',
+    marketing: '1413/json',
+    shopping: '1472/json',
+}
+
+// Keys to access data states
+const genreKeys = {
+    investing: 'investingData',
+    featured: 'featuredData',
+    careers: 'careersData',
+    news: 'newsData',
+    marketing: 'marketingData',
+    shopping: 'shoppingData'
+}
 
 class PodcastsScreen extends Component {
     constructor() {
         super()
         this.state = {
-            data: []
+            // Display activity indicator until component loads all data
+            mounted: false,
+
+            // Store Podcast JSON data for different genres
+            featuredData: [],
+            investingData: [],
+            careersData: [],
+            newsData: [],
+            marketingData: [],
+            shoppingData: [],
+
+            // Keys to determine which set of data is shown to user
+            featured: true,
+            investing: false,
+            careers: false,
+            news: false,
+            marketing: false,
+            shopping: false,
         }
     }
     
     componentDidMount(){
-        _fetchAPI.bind(this)(podcastsURL, podcastsKey)
+        // Fetch JSON data for all genres and bind to state variables
+        _fetchAPI.bind(this)(featuredURL, genreKeys.featured)
+        _fetchAPI.bind(this)(genreBaseURL + genreURLS.investing, genreKeys.investing)
+        _fetchAPI.bind(this)(genreBaseURL + genreURLS.careers, genreKeys.careers)
+        _fetchAPI.bind(this)(genreBaseURL + genreURLS.news, genreKeys.news)
+        _fetchAPI.bind(this)(genreBaseURL + genreURLS.marketing, genreKeys.marketing)
+        _fetchAPI.bind(this)(genreBaseURL + genreURLS.shopping, genreKeys.shopping)
+        this.setState({mounted: true})
+    }
+
+    // Function to pass to Genre Button component to set state of this screen
+    _setState(stateKey){
+        for (state in this.state) {
+            if (this.state[state] === true && state !== 'mounted') {
+                this.setState({[state]: false})
+                this.setState({[stateKey]: true})
+                break;
+            }
+        }
     }
 
     _openURL(URL) {
+        // Function to open selected podcast in Podcast app on press
         Linking.openURL(URL).catch(error => {
-            console.log("Error: ", error)
+            console.log("Error opening podcast: ", error)
         })
     }
 
     render() {
-        const podcastData = this.state.data
-        if (podcastData !== undefined) {
-            var podcasts = []
-            for(var i = 0; i < podcastData.resultCount; i++) {
-                podcasts.push(
-                    <PodcastBox 
-                        key = {podcastData.results[i].trackId}
-                        podcastAuthor = {podcastData.results[i].artistName} 
-                        podcastName = {podcastData.results[i].trackName}
-                        podcastURL = {podcastData.results[i].trackViewUrl}
-                        podcastImage = {podcastData.results[i].artworkUrl600}
-                    />
-                )
+        // Checks state booleans to determine which JSON data to pass to parsing
+        var podcastData = []
+        for (state in this.state) {
+            if (this.state[state] === true && state !== 'mounted') {
+                podcastData = this.state[state + 'Data']
             }
+        }
+        
+        // Parsing for JSON data retrieved by Genre tag
+        if (!this.state.featured) {
+            if (podcastData.feed !== undefined) {
+                var podcasts = []
+                for (var i = 0; i < podcastData.feed.entry.length; i++) {    
+                    var imgLen = podcastData.feed.entry[i]['im:image'].length
+                    podcasts.push(              
+                        <PodcastBox
+                            key = {podcastData.feed.entry[i].id.attributes['im:id']}
+                            podcastAuthor = {podcastData.feed.entry[i]['im:artist'].label} 
+                            podcastName = {podcastData.feed.entry[i].title.label}
+                            podcastURL = {podcastData.feed.entry[i].id.label}
+                            podcastImage = {podcastData.feed.entry[i]['im:image'][imgLen - 1].label}
+                            podcastDesc = {podcastData.feed.entry[i].summary.label}
+                        />
+                    )
+                }
+            }
+        // Parsing for JSON data for featured podcasts
+        } else {    
+            if (podcastData !== undefined) {
+                var podcasts = []
+                for(var i = 0; i < podcastData.resultCount; i++) {
+                    podcasts.push(
+                        <PodcastBox 
+                            key = {podcastData.results[i].trackId}
+                            podcastAuthor = {podcastData.results[i].artistName} 
+                            podcastName = {podcastData.results[i].trackName}
+                            podcastURL = {podcastData.results[i].trackViewUrl}
+                            podcastImage = {podcastData.results[i].artworkUrl600}
+                        />
+                    )
+                }
+            }
+        }
+
+        // Checks if data has finished loading
+        if (this.state.mounted && podcastData !== undefined) {
             return(
                 <View style = {styles.container}>
                     <MainDrawerHeader title = 'Podcasts' navigation = {this.props.navigation}/>
-                    <ScrollView style= {styles.container}>   
-                        {podcasts}
-                    </ScrollView>
+                    <View style={styles.scrollContainer}>
+                        <ScrollView showsHorizontalScrollIndicator={false} pagingEnabled={true} horizontal={true} style= {styles.container}>   
+                            {podcasts}
+                        </ScrollView>
+                    </View>
+                    <View style={styles.categoryContainer}>
+                        <Text style={{fontSize: 16}}>Categories</Text>
+                        <View style={styles.topCategories}>
+                            <GenreButton active={this.state.featured} name='Featured' stateKey='featured' _setState={this._setState.bind(this)}/>
+                            <GenreButton active={this.state.investing} name='Investing' stateKey='investing' _setState={this._setState.bind(this)}/>
+                            <GenreButton active={this.state.careers} name='Careers' stateKey='careers' _setState={this._setState.bind(this)}/>
+                        </View>
+                        <View style={styles.bottomCategories}>
+                            <GenreButton active={this.state.marketing} name='Marketing' stateKey='marketing' _setState={this._setState.bind(this)}/>
+                            <GenreButton active={this.state.news} name='News' stateKey='news' _setState={this._setState.bind(this)}/>
+                            <GenreButton active={this.state.shopping} name='Shopping' stateKey='shopping' _setState={this._setState.bind(this)}/>
+                        </View>
+                    </View>
                 </View>
             )
         } else {
+            // Loading screen while data loads
             return (
                 <View style = {{flex: 1, alignItems: 'center', justifyContent: 'center'}} >
                     <ActivityIndicator size = 'small' color = {mainAccentColor} />
@@ -75,8 +178,38 @@ class PodcastsScreen extends Component {
 export default PodcastsScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: mainFillColor,
-  }
+    // Entire screen
+    container: {
+        flex: 1,
+        backgroundColor: mainFillColor,
+    },
+    // Horizontal paginated (sp? lol ) scroll container
+    scrollContainer: {
+        flex: 3.5,
+        backgroundColor: mainFillColor,
+    },
+    // Category button container 
+    categoryContainer: {
+        flex: 1,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingTop: 10,
+        borderTopWidth: 1,
+        borderTopColor: mainAccentColor,
+    },
+    // Container for top butotns
+    topCategories: {
+        flex: 1,
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    // Container for bottom buttons
+    bottomCategories: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    }
 })

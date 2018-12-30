@@ -26,8 +26,8 @@ class AdvancedFireGraph extends Component {
       this.state = {
           didMount: false,
           data: [],
-          color1pressed: false,
-          color2pressed: false,
+          color1: false,
+          color2: false,
       }    
     }
     
@@ -53,25 +53,14 @@ class AdvancedFireGraph extends Component {
         if (data.length !== 0) {
             age = data[data.length - 1].age
         }
-
-        if (!this.state.color1pressed) {
-            var color1 = 'rgba(45, 45, 45, 1)'
-        } else {
-            var color1 = 'rgba(45, 45, 45, 0.8 )'
-        }
-
-        if (!this.state.color2pressed) {
-            var color2 = 'rgba(170, 0, 255,0.8)'
-        } else {
-            var color2 = 'rgba(0, 0, 0,0.8)'
-        }
+        var color1 = this.state.color1 ? 'rgba(123, 0, 115, 1)' :'black';
+        var color2 = this.state.color2 ? 'blue' : 'green'
 
         const colors = [ color1, color2 ]
         const keys   = [ 'principal', 'growth' ]
-        const svgs = [
-            
-            { onPressIn: () => this.setState({color1pressed: true}), onPressOut: () => this.setState({color1pressed: false}) },
-            { onPressIn: () => this.setState({color2pressed: true}), onPressOut: () => this.setState({color2pressed: false}) },
+        const svgs = [ 
+            { onPress: () => console.log('pressed') },
+            { onPress: () => console.log('color2')},
         ]
 
         if (!this.state.didMount) {
@@ -93,7 +82,6 @@ class AdvancedFireGraph extends Component {
                         colors={ colors }
                         curve={ shape.curveNatural }
                         svgs={ svgs }
-                        svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
                         >
                         <Grid/>
                     </StackedAreaChart>

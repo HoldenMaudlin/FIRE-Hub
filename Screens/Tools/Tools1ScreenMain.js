@@ -128,11 +128,11 @@ class Tool1ScreenMain extends Component {
         <View style={styles.mainBackdrop}>
           <MainBackHeader title = "FIRE Basic" backButtonName = "Tools" navigation = {this.props.navigation}/>
           <ScrollView style={styles.mainScroll}>                            
-            <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' description={ageDescription} _setState={this._setState.bind(this)} storageKey={T1AgeKey} {...this.state}/>
-            <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' description={'hi'} _setState={this._setState.bind(this)} storageKey={assetKey} {...this.state}/>
-            <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money' mask='money' description={incomeDescription} _setState={this._setState.bind(this)} storageKey={incomeKey} {...this.state}/>
-            <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={spendKey} {...this.state}/>
-            <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' iconType='font-awesome' description={''} _setState={this._setState.bind(this)} storageKey={targetKey} {...this.state}/>
+            <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T1AgeKey} {...this.state}/>
+            <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' precision={0} description={'hi'} _setState={this._setState.bind(this)} storageKey={assetKey} {...this.state}/>
+            <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money'  mask='money' precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={incomeKey} {...this.state}/>
+            <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={spendKey} {...this.state}/>
+            <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' precision={0} iconType='font-awesome' description={''} _setState={this._setState.bind(this)} storageKey={targetKey} {...this.state}/>
             <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
             <View style={styles.buttonContainer}>
               <Text style={{paddingBottom: 30, textAlign: 'center', color: mainColor, fontSize: 14, fontWeight: 'bold'}}>{this.state.warningText}</Text>

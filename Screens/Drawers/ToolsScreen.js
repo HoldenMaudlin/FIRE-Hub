@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  Dimensions
 } from 'react-native';
 
 import {
@@ -21,6 +22,8 @@ import MainDrawerHeader from '../../Components/MainDrawerHeader'
 import { createAnimatableComponent } from 'react-native-animatable'
 import { View as AView, Text as AText } from 'react-native-animatable'
 
+var {height, width} = Dimensions.get('window')
+
 class ToolsScreen extends Component {
   
     constructor() {
@@ -29,6 +32,7 @@ class ToolsScreen extends Component {
             desc1Vis: false,
             desc2Vis: false,
             desc3Vis: false,
+            desc4Vis: false,
         }
     }
 
@@ -51,31 +55,37 @@ class ToolsScreen extends Component {
         this.setState({[stateKey]: !this.state[stateKey]})
     }
 
+    _addOpacity(rgbString, opacity) {
+        var temp = rgbString.split('(')[0] + 'a(' + rgbString.split(')')[0].split('(')[1] + "," + opacity + ")"
+        console.log(temp)
+        return temp
+      }
+
     render() {
 
         if (!this.state.desc1Vis) {
             var button1  =                
             <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'Tool1Main')} onLongPress={this._onLongPressButton.bind(this, 'desc1Vis')}>
-                <Text style={styles.textStyle}>{Tool1Name} </Text>
-                <View style = {{height: 100, width: 200, justifyContent: 'stretch', alignItems: 'flex-end'}} >
-                    <Icon flex={1} color={mainColor} name= 'area-graph' type='entypo' size={130} />
+                <View style={styles.iconContainer}>
+                    <Icon containerStyle={{paddingTop: 5,}} flex={1} color={'white'} name= 'area-graph' type='entypo' size={50} />
                 </View>
+                <Text style={styles.textStyle}>FIRE Basic </Text>
             </TouchableOpacity>
 
         } else {
             var button1 = 
             <TouchableOpacity style ={styles.mainTabDesc} onPress={this._onPressButton.bind(this, 'Tool1Main')} onLongPress={this._onLongPressButton.bind(this, 'desc1Vis')} >
-                <Text style={styles.toolDescText}>{Tool1Desc} </Text>
+                <Text style={styles.toolDescText}>{Tool1Desc}</Text>
             </TouchableOpacity>
         }
         
         if (!this.state.desc2Vis) {
             var button2 = 
             <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'Tool2Main')} onLongPress={this._onLongPressButton.bind(this, 'desc2Vis')}>
-                <Text style={styles.textStyle}>{Tool2Name}</Text>
-                <View style = {{height: 100, width: 200, justifyContent: 'stretch', paddingRight: 20, alignItems: 'flex-end'}} >
-                    <Icon flex={1} color={mainColor} name= 'line-graph' type='entypo' size={100} />
+                <View style={styles.iconContainer}>
+                    <Icon containerStyle={{paddingTop: 5,}} flex={1} color={'white'} name= 'line-graph' type='entypo' size={50} />
                 </View>
+                <Text style={styles.textStyle}>Break Even </Text>
             </TouchableOpacity>
         } else {
             var button2 = 
@@ -87,14 +97,29 @@ class ToolsScreen extends Component {
         if(!this.state.desc3Vis) {
             var button3=
             <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'AdvancedFireMain')} onLongPress={this._onLongPressButton.bind(this, 'desc3Vis')}>
-                <Text style={styles.textStyle}>Countdown </Text>
-                <View style = {{height: 100, width: 200, justifyContent: 'stretch', paddingRight: 40, paddingTop: 10, alignItems: 'flex-end'}} >
-                    <Icon flex={1} color={mainColor} name= 'circular-graph' type='entypo' size={80} />
+                <View style={styles.iconContainer}>
+                    <Icon containerStyle={{paddingTop: 5,}} flex={1} color={'white'} name= 'stopwatch' type='entypo' size={50} />
                 </View>
+                <Text style={styles.textStyle}>FIRE Advanced</Text>
             </TouchableOpacity>
         } else {
             var button3 = 
             <TouchableOpacity style ={styles.mainTabDesc} onPress={this._onPressButton.bind(this,'AdvancedFireMain')} onLongPress={this._onLongPressButton.bind(this, 'desc3Vis')} >
+                <Text style={styles.toolDescText}>Sup </Text>
+            </TouchableOpacity>
+        }
+
+        if(!this.state.desc4Vis) {
+            var button4=
+            <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'AdvancedFireMain')} onLongPress={this._onLongPressButton.bind(this, 'desc4Vis')}>
+                <View style={styles.iconContainer}>
+                    <Icon containerStyle={{paddingTop: 5,}} flex={1} color={'white'} name= 'dice-5' type='material-community' size={50} />
+                </View>
+                <Text style={styles.textStyle}>Monte Carlo </Text>
+            </TouchableOpacity>
+        } else {
+            var button4 = 
+            <TouchableOpacity style ={styles.mainTabDesc} onPress={this._onPressButton.bind(this,'AdvancedFireMain')} onLongPress={this._onLongPressButton.bind(this, 'desc34is')} >
                 <Text style={styles.toolDescText}>Sup </Text>
             </TouchableOpacity>
         }
@@ -108,6 +133,7 @@ class ToolsScreen extends Component {
                     {button1}
                     {button2}
                     {button3}
+                    {button4}
                 </ScrollView>
             </View>
         </View>
@@ -146,7 +172,7 @@ const styles = StyleSheet.create({
       paddingRight: 8,
   },
   toolNameText: {
-    color: mainColor,
+    color: 'black',
     fontWeight: 'bold',
     marginTop: 10,
     fontSize: 30,
@@ -171,21 +197,31 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: mainFillColor,
     alignItems: 'flex-end',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     flexDirection: 'row',
   },
   mainTabDesc: {
     height: 100,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderColor: mainAccentColor,
     padding: 10,
     backgroundColor: mainFillColor,
     justifyContent: 'center'
   },
   textStyle: {
-    color: mainColor,
+    color: 'black',
     fontWeight: '500',
+    marginLeft: 15,
     marginTop: 10,
     fontSize: 30,
+  },
+  iconContainer: {
+    width: 60, 
+    height: 60, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: mainColor, 
+    borderRadius: 8, 
+    marginBottom: 5
   }
 })

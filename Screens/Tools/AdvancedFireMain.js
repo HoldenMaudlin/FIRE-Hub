@@ -141,19 +141,19 @@ export default class AdvancedFireMain extends Component {
                 <MainBackHeader navigation = {this.props.navigation} backButtonName = 'Tools' title = 'Monte Carlo' />
                 <ScrollView style={styles.mainScroll}>
                     <InputBoxHeader text="Personal Information"/>
-                    <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' description={''} _setState={this._setState.bind(this)} storageKey={T3AgeKey} {...this.state}/>
-                    <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' description={'hi'} _setState={this._setState.bind(this)} storageKey={T3AssetKey} {...this.state}/>
-                    <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money' mask='money' description={''} _setState={this._setState.bind(this)} storageKey={T3IncomeKey} {...this.state}/>
-                    <InputBox name = 'Income Growth' stateKey = 'incomeGrowth' iconName = 'attach-money' mask='only-numbers' description={'hi'} _setState={this._setState.bind(this)} storageKey={T3IncomeGrowthKey} {...this.state}/>
-                    <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' description={''} _setState={this._setState.bind(this)} storageKey={T3SpendKey} {...this.state}/>
-                    <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' iconType='font-awesome' description={''} _setState={this._setState.bind(this)} storageKey={T3TargetKey} {...this.state}/>
+                    <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' precision={0} description={''} _setState={this._setState.bind(this)} storageKey={T3AgeKey} {...this.state}/>
+                    <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' precision={0} description={'hi'} _setState={this._setState.bind(this)} storageKey={T3AssetKey} {...this.state}/>
+                    <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money' mask='money' precision={0} description={''} _setState={this._setState.bind(this)} storageKey={T3IncomeKey} {...this.state}/>
+                    <InputBox name = 'Income Growth' stateKey = 'incomeGrowth' iconName = 'attach-money' mask='only-numbers' precision={2} description={'hi'} _setState={this._setState.bind(this)} storageKey={T3IncomeGrowthKey} {...this.state}/>
+                    <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' precision={0} description={''} _setState={this._setState.bind(this)} storageKey={T3SpendKey} {...this.state}/>
+                    <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' precision={0} iconType='font-awesome' description={''} _setState={this._setState.bind(this)} storageKey={T3TargetKey} {...this.state}/>
                     <InputBoxHeader text="Portfolio Allocation"/>
-                    <InputBox name = 'Stocks' stateKey = 'stocks' iconName ='home' mask='only-numbers' description={'hi'} _setState={this._setState.bind(this)} storageKey={T3StockAllocKey} {...this.state}/>
-                    <InputBox name = 'Bonds' stateKey = 'bonds' iconName = 'attach-money' mask='only-numbers' description={''} _setState={this._setState.bind(this)} storageKey={T3BondAllocKey} {...this.state}/>
-                    <InputBox name = 'Cash' stateKey = 'cash' iconName = 'attach-money' mask='only-numbers' description={'hi'} _setState={this._setState.bind(this)} storageKey={T3CashAllocKey} {...this.state}/>
+                    <InputBox name = 'Stocks' stateKey = 'stocks' iconName ='home' mask='only-numbers' precision={0} description={'hi'} _setState={this._setState.bind(this)} storageKey={T3StockAllocKey} {...this.state}/>
+                    <InputBox name = 'Bonds' stateKey = 'bonds' iconName = 'attach-money' mask='only-numbers' precision={0} description={''} _setState={this._setState.bind(this)} storageKey={T3BondAllocKey} {...this.state}/>
+                    <InputBox name = 'Cash' stateKey = 'cash' iconName = 'attach-money' mask='only-numbers' precision={0} description={'hi'} _setState={this._setState.bind(this)} storageKey={T3CashAllocKey} {...this.state}/>
                     <InputBoxHeader text = "Portfolio Returns"/>
-                    <InputBox name = 'Stock Returns' stateKey = 'stockReturns' iconName = 'credit-card' mask='only-numbers' description={''} _setState={this._setState.bind(this)} storageKey={T3StockReturnKey} {...this.state}/>
-                    <InputBox name = 'Bond Returns' stateKey = 'bondReturns' iconName = 'trophy' mask='only-numbers' iconType='font-awesome' description={''} _setState={this._setState.bind(this)} storageKey={T3BondReturnKey} {...this.state}/>
+                    <InputBox name = 'Stock Returns' stateKey = 'stockReturns' iconName = 'credit-card' mask='only-numbers' precision={2} description={''} _setState={this._setState.bind(this)} storageKey={T3StockReturnKey} {...this.state}/>
+                    <InputBox name = 'Bond Returns' stateKey = 'bondReturns' iconName = 'trophy' mask='only-numbers' precision={2} iconType='font-awesome' description={''} _setState={this._setState.bind(this)} storageKey={T3BondReturnKey} {...this.state}/>
                     <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
                     <View style={styles.buttonContainer}>
                         <Text style={{paddingBottom: 30, textAlign: 'center', color: mainColor, fontSize: 14, fontWeight: 'bold'}}>{this.state.warningText}</Text>
