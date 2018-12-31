@@ -3,9 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  Linking,
   ActivityIndicator,
-  TouchableOpacity,
 } from 'react-native';
 import { 
     Header,
@@ -15,7 +13,7 @@ import {
 import { mainFillColor, mainAccentColor, mainColor } from "../../Styles/ColorConstants";
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 import { _fetchAPI } from '../../Components/Functions/FetchAPI'
-import PodcastBox from '../../Components/PodcastBox'
+import ContentBox from '../../Components/ContentBox'
 import GenreButton from '../../Components/GenreButton'
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -87,13 +85,6 @@ class PodcastsScreen extends Component {
         }
     }
 
-    _openURL(URL) {
-        // Function to open selected podcast in Podcast app on press
-        Linking.openURL(URL).catch(error => {
-            console.log("Error opening podcast: ", error)
-        })
-    }
-
     render() {
         // Checks state booleans to determine which JSON data to pass to parsing
         var podcastData = []
@@ -110,13 +101,13 @@ class PodcastsScreen extends Component {
                 for (var i = 0; i < podcastData.feed.entry.length; i++) {    
                     var imgLen = podcastData.feed.entry[i]['im:image'].length
                     podcasts.push(              
-                        <PodcastBox
+                        <ContentBox
                             key = {podcastData.feed.entry[i].id.attributes['im:id']}
-                            podcastAuthor = {podcastData.feed.entry[i]['im:artist'].label} 
-                            podcastName = {podcastData.feed.entry[i].title.label}
-                            podcastURL = {podcastData.feed.entry[i].id.label}
-                            podcastImage = {podcastData.feed.entry[i]['im:image'][imgLen - 1].label}
-                            podcastDesc = {podcastData.feed.entry[i].summary.label}
+                            author = {podcastData.feed.entry[i]['im:artist'].label} 
+                            name = {podcastData.feed.entry[i].title.label}
+                            URL = {podcastData.feed.entry[i].id.label}
+                            image = {podcastData.feed.entry[i]['im:image'][imgLen - 1].label}
+                            desc = {podcastData.feed.entry[i].summary.label}
                         />
                     )
                 }
@@ -127,12 +118,12 @@ class PodcastsScreen extends Component {
                 var podcasts = []
                 for(var i = 0; i < podcastData.resultCount; i++) {
                     podcasts.push(
-                        <PodcastBox 
+                        <ContentBox 
                             key = {podcastData.results[i].trackId}
-                            podcastAuthor = {podcastData.results[i].artistName} 
-                            podcastName = {podcastData.results[i].trackName}
-                            podcastURL = {podcastData.results[i].trackViewUrl}
-                            podcastImage = {podcastData.results[i].artworkUrl600}
+                            author = {podcastData.results[i].artistName} 
+                            name = {podcastData.results[i].trackName}
+                            URL = {podcastData.results[i].trackViewUrl}
+                            image = {podcastData.results[i].artworkUrl600}
                         />
                     )
                 }
@@ -200,7 +191,6 @@ const styles = StyleSheet.create({
     // Container for top butotns
     topCategories: {
         flex: 1,
-        marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -210,6 +200,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
     }
 })

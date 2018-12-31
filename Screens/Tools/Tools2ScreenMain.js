@@ -53,6 +53,7 @@ class Tool2ScreenMain extends Component {
   _updateAsyncValues() {
     BEstateKeys.forEach((item) => {
       AsyncStorage.setItem(item.asyncKey, this.state[item.stateKey] + '')
+      console.log(item.stateKey," set to ", this.state[item.stateKey])
     })
   }
 

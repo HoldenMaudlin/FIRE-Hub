@@ -12,43 +12,43 @@ import { mainAccentColor, mainFillColor } from '../Styles/ColorConstants';
 
 var {height, width} = Dimensions.get('window')
 
-class PodcastBox extends Component {
+class ContentBox extends Component {
     constructor(props) {
         super(props)
     
     }
 
-    _onPressPodcast(URL){
+    _onPressContent(URL){
         Linking.openURL(URL).catch(error =>
-            console.log("Error opening podcast link: ", error)
+            console.log("Error opening content link: ", error)
         )
     }
 
     _trimString(string){
-        return string.split(/[:-@--]/)[0]
+        return string.split(/[|:-@--]/)[0]
     }
 
     render(){
-        var podcastName = this._trimString(this.props.podcastName)
-        var podcastAuthor = this._trimString(this.props.podcastAuthor)
+        var name = this._trimString(this.props.name)
+        var author = this._trimString(this.props.author)
         return(
             <View style ={styles.boxContainer}>
-                <TouchableOpacity style={{flex:1}} onPress={() => this._onPressPodcast(this.props.podcastURL)}>        
+                <TouchableOpacity style={{flex:1}} onPress={() => this._onPressContent(this.props.URL)}>        
                     <View style={styles.tileContainer}>
                         <View style={styles.imageContainer}> 
-                            <Image style={{width: 200, height: 200, borderRadius: 10,}} source={{uri: this.props.podcastImage}}/>
+                            <Image style={{width: 200, height: 200, borderRadius: 10,}} source={{uri: this.props.image}}/>
                         </View>
                         <View style={styles.titleContainer}> 
-                            <Text style={styles.podcastNameText} >
-                                {podcastName}
+                            <Text style={styles.nameText} >
+                                {name}
                             </Text>
-                            <Text style={styles.podcastAuthorText}>
-                                {podcastAuthor}
+                            <Text style={styles.authorText}>
+                                {author}
                             </Text>
                         </View>
                         <View style={styles.descContainer}>
                             <Text numberOfLines={7}>
-                                {this.props.podcastDesc}
+                                {this.props.desc}
                             </Text>
                             <Text>
                                 Tap to view more in Podcasts!
@@ -61,7 +61,7 @@ class PodcastBox extends Component {
     }
 }
 
-export default PodcastBox
+export default ContentBox
 
 const styles = StyleSheet.create({
     
@@ -107,11 +107,11 @@ const styles = StyleSheet.create({
     },
 
     // Text 
-    podcastNameText: {
+    nameText: {
         fontSize: 16,
         fontWeight: '500',
     },
-    podcastAuthorText: {
+    authorText: {
         fontSize: 14,
         fontWeight: '400',
         color: mainAccentColor,

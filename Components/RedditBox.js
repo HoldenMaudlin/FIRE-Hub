@@ -72,27 +72,27 @@ class RedditBox extends Component {
 
         return (
             <Animated.View style={[styles.container, {opacity: this.state.yValue}]} > 
-                <View style={{flex:1,  backgroundColor: mainFillColor,}}>
-                    <TouchableOpacity onPress={() => this._openRedditPost(this.props.url)} style = {{flex: 2, padding: 10, justifyContent: 'center', alignItems: 'flex-start'}}>
+                <View style={[styles.postBox, {borderBottomLeftRadius: this.state.collapsed ? 5 : 0, borderBottomRightRadius: this.state.collapsed ? 5 : 0}]}>
+                    <TouchableOpacity onPress={() => this._onPressIcon()} style = {{flex: 2, padding: 10, justifyContent: 'center', alignItems: 'flex-start'}}>
                         <Text style ={{color: 'black', fontSize: 16, fontWeight: '600'}}>{this.props.title}</Text>
                     </TouchableOpacity>
-                    <View style={{flex:1, backgroundColor: mainFillColor, flexDirection: 'row'}}>    
+                    <View style={{flex:1, flexDirection: 'row'}}>    
                         <View style={{flex: 2, justifyContent: 'flex-start', paddingLeft: 15, alignItems: 'center', flexDirection: 'row'}}>
                             <Icon size={22} name='thumbs-o-up' type='font-awesome' color = {mainColor}/>
                             <Text style={{color: mainColor, fontSize: 14, marginLeft: 15,}}>{this.props.ups}</Text>
                         </View>
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
-                            <Text style={{color: mainColor}}>See Post</Text>
+                            <TouchableWithoutFeedback onPress={() => this._openRedditPost(this.props.url) } style={styles.animatedContainer}>
+                                <View style={styles.animatedContainer}>
+                                    <Text style={{color: mainColor, marginRight: 10,}}>View Post</Text>
+                                    <Icon color={mainColor} size={32} name ='logo-reddit' type='ionicon'/>
+                                </View>
+                            </TouchableWithoutFeedback>
                         </View>
-                        <TouchableWithoutFeedback onPress={() => this._onPressIcon()} style={{flex: 1,}}>
-                            <Animated.View style = {[styles.animatedContainer, { transform: [{rotate: spin}] }]} >
-                                <Icon color={mainColor} size={32} name ='keyboard-arrow-down'/>
-                            </Animated.View>
-                        </TouchableWithoutFeedback>
                     </View>
                 </View>
                 <Collapsible collapsed= {this.state.collapsed}>
-                    <View style={{flex: 1, width: width, backgroundColor: mainFillColor, padding: 10, borderTopColor: mainAccentColor, borderTopWidth: 1,}}>
+                    <View style={[styles.textBox, {borderBottomLeftRadius: this.state.collapsed ? 0 : 5, borderBottomRightRadius: this.state.collapsed ? 0 : 5}]}>
                         <Text style={{color: 'black', fontSize: 16}}>{this.props.body}</Text>
                     </View>
                 </Collapsible>  
@@ -106,12 +106,36 @@ export default RedditBox
 const styles = StyleSheet.create({
     container: {
         alignItems: 'stretch', 
-        borderBottomWidth: 3,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        borderRadius: 5,
         borderBottomColor: mainAccentColor,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.18,
+        shadowRadius: 3,
     }, 
     animatedContainer: {
-        flex: .5,
+        flex: 1,
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        paddingRight: 10,
+    },
+    postBox: {
+        flex: 1,
+        backgroundColor: mainFillColor,
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+    },
+    textBox: {
+        flex: 1, 
+        width: width, 
+        backgroundColor: 
+        mainFillColor, 
+        padding: 10, 
+        borderTopColor: mainAccentColor, 
+        borderTopWidth: 1,
     }
 })

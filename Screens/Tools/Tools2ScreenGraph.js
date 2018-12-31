@@ -34,6 +34,7 @@ class Tool2ScreenGraph extends React.PureComponent {
                 if (value !== null) {
                     this.setState({[item.stateKey]: value})
                 }
+                console.log(item.stateKey," set to ", this.state[item.stateKey] )
             })
         })
         this.setState({didMount: true})

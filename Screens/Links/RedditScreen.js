@@ -59,7 +59,7 @@ class RedditScreen extends Component {
         }
       }     
       return(
-          <View style = {styles.scrollContainer}>
+          <View style = {styles.container}>
             <MainDrawerHeader title = 'Forums' navigation = {this.props.navigation} />
             <ScrollView style = {styles.scrollContainer}>
               {authors}
@@ -82,7 +82,10 @@ class RedditScreen extends Component {
 export default RedditScreen;
 
 const styles = StyleSheet.create({
-  scrollContainer: {
+  container: {
     flex:1,
   },
+  scrollContainer: {
+    flex: 1,
+  }
 })

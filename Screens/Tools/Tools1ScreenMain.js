@@ -72,8 +72,10 @@ class Tool1ScreenMain extends Component {
   }
 
   _updateAsyncValues() {
+    console.log("called")
     stateKeys.forEach((item) => {
       AsyncStorage.setItem(item.asyncKey, this.state[item.stateKey] + '')
+      console.log(item.stateKey," set to ", this.state[item.stateKey] )
     })
   }
 
