@@ -16,7 +16,7 @@ import DismissKeyboardView from '../../Components/DismissKeyboardView'
 import { mainColor, mainHeaderText, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
 import { Tool1Name } from '../../Components/Constants/ToolNames'
 import InputBox from '../../Components/InputBox'
-
+import HelpView from '../../Components/HelpView'
 import { incomeIconName } from '../../Components/Constants/IconNames'
 import MainBackHeader from '../../Components/MainBackHeader';
 
@@ -118,7 +118,13 @@ class Tool1ScreenMain extends Component {
   }
 
   render() {
-
+    // Information to be passed to the Tools Help Screen
+    const helpLines = [
+      { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
+      { key: 2, icon: 'format-list-numbers', iconType: 'material-community', text: 'Fill in all fields, then press Go!',},
+      { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Tap an input name or icon for an explanation of the input!"},
+    ]
+    var helpView = <HelpView helpLines={helpLines}/>
     if (this._checkIfEmpty()) {
       var buttonColor = mainAccentColor
     } else {
@@ -128,7 +134,7 @@ class Tool1ScreenMain extends Component {
 
     return(    
         <View style={styles.mainBackdrop}>
-          <MainBackHeader title = "FIRE Basic" backButtonName = "Tools" navigation = {this.props.navigation}/>
+          <MainBackHeader title = "FIRE Basic" backButtonName = "Tools" navigation = {this.props.navigation} helpView={helpView}/>
           <ScrollView style={styles.mainScroll}>                            
             <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T1AgeKey} {...this.state}/>
             <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' precision={0} description={'hi'} _setState={this._setState.bind(this)} storageKey={assetKey} {...this.state}/>

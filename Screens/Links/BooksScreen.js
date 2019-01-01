@@ -12,6 +12,7 @@ import {
     Left,
     Icon,
   } from 'native-base';  
+import HelpView from '../../Components/HelpView'
 import { mainFillColor, mainAccentColor, mainColor } from "../../Styles/ColorConstants";
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 import { _fetchAPI, _setState } from '../../Components/Functions/FetchAPI'
@@ -75,6 +76,14 @@ class BooksScreen extends Component {
     }
 
     render() {
+        // Information to be passed to the Reddit Help Screen
+        const helpLines = [
+            { key: 1, icon: 'menu', iconType: '', text: 'Tap on the Menu Button to navigate to another screen!',},
+            { key: 2, icon: 'gesture-swipe-left', iconType: 'material-community', text: 'Swipe to view more books!',},
+            { key: 3, icon: 'book-open-variant', iconType: 'material-community', text: "Tap a podcast to view it in iBooks!",},
+            { key: 4, icon: 'gesture-tap', iconType: 'material-community', text: "Tap a category to change the genre of books!",},
+        ]
+        var helpView = <HelpView helpLines={helpLines}/>
         // Checks state booleans to determine which JSON data to pass to parsing
         var bookData = []
         for (state in this.state) {
@@ -120,7 +129,7 @@ class BooksScreen extends Component {
         if (bookData !== undefined && this.state.mounted) {
             return(
                 <View style = {styles.container}>
-                    <MainDrawerHeader title = 'Books' navigation = {this.props.navigation}/>
+                    <MainDrawerHeader title = 'Books' navigation = {this.props.navigation} helpView={helpView}/>
                     <View style={styles.scrollContainer}>
                         <ScrollView horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false}>
                             {books}

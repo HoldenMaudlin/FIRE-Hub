@@ -5,14 +5,14 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Icon } from 'react-native-elements'
-import { mainFillColor } from "../../Styles/ColorConstants";
+import { mainFillColor, mainColor } from "../../Styles/ColorConstants";
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 
 class AboutFIREScreen extends Component {
     
     static navigationOptions = {
         drawerIcon: ({tintColor}) => (
-             <Icon name = 'menu' style={{size: 24, color: tintColor}}/>
+             <Icon name = 'information-outline' type='material-community' color={tintColor}/>
         )
     }
     

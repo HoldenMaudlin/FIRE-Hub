@@ -8,12 +8,18 @@ import {
 import { 
     Header,
     Left,
-    Icon,
   } from 'native-base';  
+import { Icon } from 'react-native-elements'
 import { mainFillColor } from "../../Styles/ColorConstants";
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 
 class SettingsScreen extends Component {
+    static navigationOptions = {
+        drawerIcon: ({tintColor}) => (
+             <Icon name='settings' type='simple-line-icon' color={tintColor}/>
+        ),
+    }
+
     render() {
         return(
             <View style = {styles.container}>

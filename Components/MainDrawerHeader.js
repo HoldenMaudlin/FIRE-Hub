@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Overlay from 'react-native-modal-overlay';
-import { Text, View } from 'react-native'
+import { Text, View, TouchableWithoutFeedback, StyleSheet } from 'react-native'
 import { mainColor, mainHeaderText } from '../Styles/ColorConstants';
 import { Icon }  from 'react-native-elements'
 import { Header, Left, Button, Body, Right, Title } from 'native-base'
@@ -37,17 +37,37 @@ class MainDrawerHeader extends Component {
                 <Overlay
                     visible={this.state.helpVisible}
                     onClose={this.onClose} closeOnTouchOutside
-                    containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}
-                    childrenWrapperStyle={{backgroundColor: 'pink'}}
+                    containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.8)'}}
+                    childrenWrapperStyle={{backgroundColor: 'rgba(0, 0, 0, 0)'}}
                 >
-                    <View style={{width: 200, height: 400, backgroundColor: 'blue'}}>
-                        <Text>Hi</Text>
+                    <View style={{alignItems: 'center'}}>
+                        {this.props.helpView}
+                        <TouchableWithoutFeedback onPress={() => this.onClose()}>
+                            <View style={styles.buttonContainer}>
+                                    <Text style={styles.buttonText}>Got it!</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
                 </Overlay>
             </View>
-
         )
     }
 }
 
 export default MainDrawerHeader
+
+const styles = StyleSheet.create({
+    buttonText: {
+        fontSize: 20,
+        color: 'white',
+    },
+    buttonContainer: {
+        height: 40,
+        width: 80,
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
+})

@@ -1,3 +1,4 @@
+// Base React imports
 import React, {Component} from "react"
 import {
   View,
@@ -14,13 +15,15 @@ import {
     Left,
     Title
 } from 'native-base'
+import { createAnimatableComponent } from 'react-native-animatable'
+import { View as AView, Text as AText } from 'react-native-animatable'
 
+// My component imports
 import { mainColor, mainHeaderText, mainFillColor, mainAccentColor } from '../../Styles/ColorConstants'
 import { ToolsName, Tool1Name, Tool1Desc, Tool2Name } from "../../Components/Constants/ToolNames";
 import { Icon } from 'react-native-elements'
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
-import { createAnimatableComponent } from 'react-native-animatable'
-import { View as AView, Text as AText } from 'react-native-animatable'
+import HelpView from '../../Components/HelpView'
 
 var {height, width} = Dimensions.get('window')
 
@@ -36,17 +39,14 @@ class ToolsScreen extends Component {
         }
     }
 
-
-
     _onPressHelp(){
         this.props.navigation.navigate()
     }
 
     static navigationOptions = {
-        header: null
+        header: null,
     };
   
-
     _onPressButton(screen){
         this.props.navigation.navigate(screen)
     }
@@ -62,7 +62,14 @@ class ToolsScreen extends Component {
       }
 
     render() {
-
+        // Information to be passed to the Tools Help Screen
+        const helpLines = [
+            { key: 1, icon: 'menu', iconType: '', text: 'Tap on the Menu Button to navigate to another screen!',},
+            { key: 2, icon: 'hand-pointing-left', iconType: 'material-community', text: 'Or slide from the left!',},
+            { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Tap a tool box to go to that tool!",},
+            { key: 4, icon: 'gesture-double-tap', iconType: 'material-community', text: "Hold a tool box to see a brief description of the tool!",},
+        ]
+        var helpView = <HelpView helpLines={helpLines}/>
         if (!this.state.desc1Vis) {
             var button1  =                
             <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'Tool1Main')} onLongPress={this._onLongPressButton.bind(this, 'desc1Vis')}>
@@ -126,7 +133,7 @@ class ToolsScreen extends Component {
 
     return(
         <View style= {{flex: 1, backgroundColor: mainColor}} >
-            <MainDrawerHeader title = 'Tools' navigation = {this.props.navigation}/>
+            <MainDrawerHeader title = 'Tools' navigation = {this.props.navigation} helpView={helpView}/>
             <StatusBar backgroundColor = {mainColor} barStyle={'light-content'}/>
             <View style = {{flex: 1, backgroundColor: mainFillColor}} >
                 <ScrollView contentContainerStyle = {styles.container}>

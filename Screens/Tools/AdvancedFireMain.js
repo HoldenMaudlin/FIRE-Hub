@@ -32,6 +32,7 @@ import MainBackHeader from '../../Components/MainBackHeader'
 import { _createMonteCarloData } from '../../Components/Functions/MonteCarlo'
 import { TextInputMask } from 'react-native-masked-text'
 import InputBox from '../../Components/InputBox'
+import HelpView from '../../Components/HelpView'
 
 var { height, width } = Dimensions.get('window')
 
@@ -128,6 +129,13 @@ export default class AdvancedFireMain extends Component {
     }
 
     render() {
+        // Information to be passed to the Tools Help Screen
+        const helpLines = [
+            { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
+            { key: 2, icon: 'format-list-numbers', iconType: 'material-community', text: 'Fill in all fields, then press Go!',},
+            { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Tap an input name or icon for an explanation of the input!"},
+        ]  
+        var helpView = <HelpView helpLines={helpLines}/>
 
         // Control button color based on state of text input
         if (this._checkIfEmpty()) {
@@ -138,7 +146,7 @@ export default class AdvancedFireMain extends Component {
 
         return (
             <View style={styles.mainBackdrop}>
-                <MainBackHeader navigation = {this.props.navigation} backButtonName = 'Tools' title = 'Monte Carlo' />
+                <MainBackHeader navigation = {this.props.navigation} backButtonName = 'Tools' title = 'Monte Carlo' helpView={helpView}/>
                 <ScrollView style={styles.mainScroll}>
                     <InputBoxHeader text="Personal Information"/>
                     <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' precision={0} description={''} _setState={this._setState.bind(this)} storageKey={T3AgeKey} {...this.state}/>

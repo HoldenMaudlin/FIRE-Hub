@@ -49,9 +49,6 @@ class Tool2ScreenGraph extends React.PureComponent {
             data1.push(data[i].cur)
             data2.push(data[i].pot)
         }
-        console.log(data1 )
-        console.log(data2)
-
 
         const Shadow = ({ line }) => (
             <Path

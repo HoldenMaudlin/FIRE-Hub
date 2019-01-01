@@ -13,8 +13,8 @@ import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorCon
 
 import InputBox from '../../Components/InputBox'
 import MainBackHeader from '../../Components/MainBackHeader'
-import InputBoxHeader from "../../Components/InputBoxHeader";
-
+import InputBoxHeader from '../../Components/InputBoxHeader';
+import HelpView from '../../Components/HelpView'
 
 var { height, width } = Dimensions.get('window')
 
@@ -96,6 +96,13 @@ class Tool2ScreenMain extends Component {
   }
 
   render() {
+    // Information to be passed to the Tools Help Screen
+    const helpLines = [
+      { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
+      { key: 2, icon: 'format-list-numbers', iconType: 'material-community', text: 'Fill in all fields, then press Go!',},
+      { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Tap an input name or icon for an explanation of the input!"},
+    ]
+    var helpView = <HelpView helpLines={helpLines}/>
     if (this._checkIfEmpty()) {
       var buttonColor = mainAccentColor
     } else {
@@ -104,7 +111,7 @@ class Tool2ScreenMain extends Component {
 
     return(    
       <View style={styles.mainBackdrop}>
-        <MainBackHeader navigation = {this.props.navigation} title = 'Break Even' backButtonName = 'Tools' />
+        <MainBackHeader navigation = {this.props.navigation} title = 'Break Even' backButtonName = 'Tools' helpView={helpView}/>
         <ScrollView style={styles.mainScroll}>                 
           <InputBox name = 'Amount' mask='money' precision={0} stateKey='amount' iconName = 'attach-money' _setState={this._setState.bind(this)} storageKey = {T2AmountKey} description = 'Amount' {...this.state}/>
           <InputBoxHeader text='Current Investment' />
