@@ -9,7 +9,7 @@ import {
   Dimensions,
   AsyncStorage,
 } from 'react-native'
-import { T1AgeKey, incomeKey, targetKey, spendKey, assetKey } from '../../Components/Constants/InputKeys'
+import { T1AgeKey, incomeKey, targetKey, spendKey, assetKey, BFstateKeys } from '../../Components/Constants/InputKeys'
 
 import { totalSpendingDescription, ageDescription, incomeDescription } from '../../Components/Constants/InputDescriptions'
 import DismissKeyboardView from '../../Components/DismissKeyboardView'
@@ -22,21 +22,6 @@ import MainBackHeader from '../../Components/MainBackHeader';
 
 
 var { height, width } = Dimensions.get('window')
-
-const ageState = 'age'
-const incomeState = 'income'
-const assetsState = 'assets'
-const spendState = 'spend'
-const targetState = 'target'
-
-stateKeys = [
-    { stateKey: ageState, asyncKey: T1AgeKey },
-    { stateKey: incomeState, asyncKey: incomeKey },
-    { stateKey: targetState, asyncKey: targetKey },
-    { stateKey: assetsState, asyncKey: assetKey },
-    { stateKey: spendState, asyncKey: spendKey },
-  ]
-
 
 class Tool1ScreenMain extends Component {
     
@@ -61,7 +46,7 @@ class Tool1ScreenMain extends Component {
   }
 
   componentDidMount() {
-    stateKeys.forEach((item) => {
+    BFstateKeys.forEach((item) => {
       AsyncStorage.getItem(item.asyncKey).then((value) => {
         if (value !== null) {
           this.setState({[item.stateKey]: value})
@@ -72,10 +57,8 @@ class Tool1ScreenMain extends Component {
   }
 
   _updateAsyncValues() {
-    console.log("called")
-    stateKeys.forEach((item) => {
+    BFstateKeys.forEach((item) => {
       AsyncStorage.setItem(item.asyncKey, this.state[item.stateKey] + '')
-      console.log(item.stateKey," set to ", this.state[item.stateKey] )
     })
   }
 
@@ -84,7 +67,7 @@ class Tool1ScreenMain extends Component {
   }
 
   _updateStateValues() {
-    stateKeys.forEach((item) => {
+    BFstateKeys.forEach((item) => {
       AsyncStorage.getItem(item.asyncKey).then((value) => {
         value = parseInt(value, 10)
         if (!isNaN(value)) {
@@ -136,11 +119,11 @@ class Tool1ScreenMain extends Component {
         <View style={styles.mainBackdrop}>
           <MainBackHeader title = "FIRE Basic" backButtonName = "Tools" navigation = {this.props.navigation} helpView={helpView}/>
           <ScrollView style={styles.mainScroll}>                            
-            <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T1AgeKey} {...this.state}/>
-            <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' precision={0} description={'hi'} _setState={this._setState.bind(this)} storageKey={assetKey} {...this.state}/>
-            <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money'  mask='money' precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={incomeKey} {...this.state}/>
-            <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={spendKey} {...this.state}/>
-            <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' precision={0} iconType='font-awesome' description={''} _setState={this._setState.bind(this)} storageKey={targetKey} {...this.state}/>
+            <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' percent={false} precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T1AgeKey} {...this.state}/>
+            <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' percent={false} precision={0} description={'hi'} _setState={this._setState.bind(this)} storageKey={assetKey} {...this.state}/>
+            <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money'  mask='money' percent={false} precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={incomeKey} {...this.state}/>
+            <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' percent={false} precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={spendKey} {...this.state}/>
+            <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' percent={false} precision={0} iconType='font-awesome' description={''} _setState={this._setState.bind(this)} storageKey={targetKey} {...this.state}/>
             <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
             <View style={styles.buttonContainer}>
               <Text style={{paddingBottom: 30, textAlign: 'center', color: mainColor, fontSize: 14, fontWeight: 'bold'}}>{this.state.warningText}</Text>

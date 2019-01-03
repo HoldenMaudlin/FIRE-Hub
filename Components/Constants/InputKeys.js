@@ -53,3 +53,12 @@ export var BEstateKeys = [
     { stateKey: 'fees2', asyncKey: T2Inv2FeeKey },
     { stateKey: 'taxes', asyncKey: T2TaxKey },
 ]
+
+// Basic Fire Dictionary
+export var BFstateKeys = [
+    { stateKey: 'age', asyncKey: T1AgeKey },
+    { stateKey: 'income', asyncKey: incomeKey },
+    { stateKey: 'target', asyncKey: targetKey },
+    { stateKey: 'assets', asyncKey: assetKey },
+    { stateKey: 'spend', asyncKey: spendKey },
+]

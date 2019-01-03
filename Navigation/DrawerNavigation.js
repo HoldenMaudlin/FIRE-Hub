@@ -7,6 +7,7 @@ import SettingsScreen from '../Screens/Drawers/SettingsScreen'
 import AboutFIREScreen from '../Screens/Drawers/AboutFIREScreen'
 import ToolsNavigator from '../Navigation/ToolsNavigation'
 import LinksTabNavigator from '../Navigation/LinksTabNavigation'
+import DrawerContents from '../Navigation/DrawerContents'
 
 
 const CustomDrawerComponent = (props) => (
@@ -21,12 +22,16 @@ const CustomDrawerComponent = (props) => (
 )
 
 const MainDrawerNavigator = createDrawerNavigator({
-    Tools: ToolsNavigator,
+    Tools: {
+        screen: ToolsNavigator,
+    },
     Links: LinksTabNavigator,
     AboutFIRE: AboutFIREScreen,
     Settings: SettingsScreen,
 },{
-    contentComponent: CustomDrawerComponent
+    contentComponent: ({ navigation }) => (
+        <DrawerContents navigation={navigation} />
+      ),
 })
 
 export default MainDrawerNavigator

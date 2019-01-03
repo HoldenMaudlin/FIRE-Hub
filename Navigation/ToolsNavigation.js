@@ -10,7 +10,7 @@ import Tool2ScreenGraph from '../Screens/Tools/Tools2ScreenGraph'
 import AdvancedFireMain from '../Screens/Tools/AdvancedFireMain'
 import AdvancedFireGraph from '../Screens/Tools/AdvancedFireGraph'
 import { mainColor , mainHeaderText } from '../Styles/ColorConstants';
-
+import { Icon } from 'react-native-elements'
 
 const ToolsNavigator = createStackNavigator({
     ToolsHome: { 

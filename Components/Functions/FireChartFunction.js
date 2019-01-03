@@ -1,4 +1,4 @@
-import { _stringToInt } from './ParseNumber'
+import { _stringToInt, _stringToFloat } from './ParseNumber'
 
 // Basic Fire Function
 export function _createFireGraph( age, assets, income, spend, target ) {
@@ -20,7 +20,7 @@ export function _createFireGraph( age, assets, income, spend, target ) {
         var node = {
             age: age,
             principal: principal,
-            growth: ( savings - principal )
+            total: ( savings )
         }
         data.push(node);
         age++;
@@ -37,18 +37,18 @@ stockAlloc, bondAlloc, cashAlloc, stockReturns, bondReturns) {
     if (spend !== undefined) { spend = _stringToInt(spend) };
     if (assets !== undefined) { assets = _stringToInt(assets) };
     if (income !== undefined) { income = _stringToInt(income) };
-    if (incomeGrowth !== undefined) { incomeGrowth = _stringToInt(incomeGrowth) };
+    if (incomeGrowth !== undefined) { incomeGrowth = parseFloat(incomeGrowth) };
     if (target !== undefined) { target = _stringToInt(target) };
     if (stockAlloc !== undefined) { stockAlloc = _stringToInt(stockAlloc) };
     if (bondAlloc !== undefined) { bondAlloc = _stringToInt(bondAlloc) };
     if (cashAlloc !== undefined) { cashAlloc = _stringToInt(cashAlloc) };
-    if (stockReturns !== undefined) { stockReturns = _stringToInt(stockReturns) };
-    if (bondReturns !== undefined) { bondReturns = _stringToInt(bondReturns) };
+    if (stockReturns !== undefined) { stockReturns = parseFloat(stockReturns) };
+    if (bondReturns !== undefined) { bondReturns = parseFloat(bondReturns) };
     var bondSavings = assets * bondAlloc / 100;
     var stockSavings = assets * stockAlloc / 100;
     var cashSavings = assets * cashAlloc / 100;
     var savings = assets;
-    var principal = 0;
+    var principal = assets;
     var data = [];
 
     while (savings < target) {
@@ -59,15 +59,16 @@ stockAlloc, bondAlloc, cashAlloc, stockReturns, bondReturns) {
         var node = {
             age: age,
             principal: principal,
-            growth: savings - principal,
+            savings: savings,
         }
         data.push(node)
         income *= ( 1 + incomeGrowth/100 )
         bondSavings += ( income  - spend ) * bondAlloc/100;
+        bondSavings *= ( 1 + bondReturns/100 )
         stockSavings += ( income - spend ) * stockAlloc/100;
+        stockSavings *= ( 1 + stockReturns/100 )
         cashSavings += ( income - spend ) * cashAlloc/100;
         age++;
-        if(age=== 100 ) {break;}
     }
     return data;
 }
@@ -76,15 +77,17 @@ stockAlloc, bondAlloc, cashAlloc, stockReturns, bondReturns) {
 export function _createInvestment1Line(amount, returns1, fees1, returns2, fees2, taxes) {
     // Convert inputs from strings to numbers
     if (amount !== undefined) { amount = _stringToInt(amount) };
-    if (returns1 !== undefined) { returns1 = _stringToInt(returns1) };
-    if (fees1 !== undefined) { fees1 = _stringToInt(fees1) };
-    if (returns2 !== undefined) { returns2 = _stringToInt(returns2) };
-    if (fees2 !== undefined) { fees2 = _stringToInt(fees2) };
-    if (taxes !== undefined) { taxes = _stringToInt(taxes) };
+    if (returns1 !== undefined) { returns1 = parseFloat(returns1) };
+    if (fees1 !== undefined) { fees1 = parseFloat(fees1) };
+    if (returns2 !== undefined) { returns2 = parseFloat(returns2) };
+    if (fees2 !== undefined) { fees2 = parseFloat(fees2) };
+    if (taxes !== undefined) { taxes = parseFloat(taxes) };
 
+    console.log('taxes',taxes)
     taxes /= 100
     returns1 = 1 + (returns1 - fees1)/100
     returns2 = 1 + (returns2 - fees2)/100
+    console.log('ret1,', returns1)
 
     var amount1 = amount
     var amount2 = amount - ( amount * taxes )

@@ -48,6 +48,36 @@ class InputBox extends Component {
     // Styles were not working when put in style sheet; try again later //
 
     render() {
+        var input
+        if(this.props.percent === true) {
+            input = 
+            <TextInput
+                onChangeText = {(input) => { this._updateInput(input); this.setState({inputted: true})}}
+                value = {this.state.input}
+                placeholder = {this.props.placeholder ? this.props.placeholder : this.props.name}
+                placeholderTextColor = {mainAccentColor}
+                keyboardType='numeric'
+                style={{alignItems: 'stretch', fontSize: 16, color: 'black', fontWeight: 'bold', textAlign: 'right', marginRight: 5, marginTop: 17,}}
+            />
+        } else {
+            input = 
+            <TextInputMask
+                /* Takes input, updates own state, parent's state, and Async state */
+                onChangeText = {(input) => { this._updateInput(input); this.setState({inputted: true})}}
+                value = {this.state.input}
+                style={{alignItems: 'stretch', fontSize: 16, color: 'black', fontWeight: 'bold', textAlign: 'right', marginRight: 5, marginTop: 17,}}
+                keyboardType='numeric'
+                type={this.props.mask}
+                options={{
+                    precision: this.props.precision,
+                    unit: '$',
+                    delimiter: ',',
+                    separator: '.'
+                }}
+                placeholder = {this.props.placeholder ? this.props.placeholder : this.props.name}
+                placeholderTextColor = {mainAccentColor}
+            />
+        }
         return (
             <View style={styles.container}>             
                 {/* Entire Input Box*/}
@@ -80,22 +110,7 @@ class InputBox extends Component {
                             {/* Dismisses keyboard on tap outside */}
                             <DismissKeyboardView>
                                 <View>
-                                    <TextInputMask
-                                    /* Takes input, updates own state, parent's state, and Async state */
-                                    onChangeText = {(input) => { this._updateInput(input); this.setState({inputted: true})}}
-                                    value = {this.state.input}
-                                    style={{alignItems: 'stretch', fontSize: 16, color: 'black', fontWeight: 'bold', textAlign: 'right', marginRight: 5, marginTop: 17,}}
-                                    keyboardType='numeric'
-                                    type={this.props.mask}
-                                    options={{
-                                        precision: this.props.precision,
-                                        unit: '$',
-                                        delimiter: ',',
-                                        separator: '.'
-                                    }}
-                                    placeholder = {this.props.name}
-                                    placeholderTextColor = {mainAccentColor}
-                                    />
+                                    {input}
                                 </View>
                             </DismissKeyboardView>
                         </View>

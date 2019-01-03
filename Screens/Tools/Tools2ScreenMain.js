@@ -51,6 +51,7 @@ class Tool2ScreenMain extends Component {
   }
 
   _updateAsyncValues() {
+    console.log('call')
     BEstateKeys.forEach((item) => {
       AsyncStorage.setItem(item.asyncKey, this.state[item.stateKey] + '')
       console.log(item.stateKey," set to ", this.state[item.stateKey])
@@ -64,7 +65,7 @@ class Tool2ScreenMain extends Component {
   _updateStateValues() {
     BEstateKeys.forEach((item) => {
       AsyncStorage.getItem(item.asyncKey).then((value) => {
-        value = parseInt(value, 10)
+        value = parseFloat(value, 10)
         if (!isNaN(value)) {
           this.setState({[item.stateKey]: value})
         }
@@ -73,8 +74,9 @@ class Tool2ScreenMain extends Component {
   }
 
    _onPressButton(){ 
-    this._updateStateValues()
+    console.log(this.state)
     this._updateAsyncValues()
+    this._updateStateValues()
     if(!this._checkIfEmpty()) {
       this.props.navigation.navigate('Tool2Graph')
       this.setState({warningText: ''})
@@ -115,13 +117,13 @@ class Tool2ScreenMain extends Component {
         <ScrollView style={styles.mainScroll}>                 
           <InputBox name = 'Amount' mask='money' precision={0} stateKey='amount' iconName = 'attach-money' _setState={this._setState.bind(this)} storageKey = {T2AmountKey} description = 'Amount' {...this.state}/>
           <InputBoxHeader text='Current Investment' />
-          <InputBox name = 'Returns' mask='only-numbers' precision={2} stateKey = 'returns1' iconName = 'trending-up' _setState={this._setState.bind(this)} storageKey = {T2Inv1ReturnKey} description = 'Returns 1' {...this.state}/>
-          <InputBox name = 'Fees' mask='only-numbers' precision={2} stateKey = 'fees1' iconName = 'trending-down' _setState={this._setState.bind(this)} storageKey = {T2Inv1FeeKey} description = 'Fees 1' {...this.state}/>
+          <InputBox name = 'Returns' placeholder='Returns %' percent={true} precision={2} stateKey = 'returns1' iconName = 'trending-up' _setState={this._setState.bind(this)} storageKey = {T2Inv1ReturnKey} description = 'Returns 1' {...this.state}/>
+          <InputBox name = 'Fees' placeholder='Fees %' percent={true} precision={2} stateKey = 'fees1' iconName = 'trending-down' _setState={this._setState.bind(this)} storageKey = {T2Inv1FeeKey} description = 'Fees 1' {...this.state}/>
           <InputBoxHeader text='Potential Investment' />
-          <InputBox name = 'Returns' mask='only-numbers' precision={2} stateKey = 'returns2' iconName = 'trending-up' _setState={this._setState.bind(this)} storageKey = {T2Inv2ReturnKey} description = 'Returns 2' {...this.state}/>
-          <InputBox name = 'Fees' mask='only-numbers' precision={2} stateKey = 'fees2' iconName = 'trending-down' _setState={this._setState.bind(this)} storageKey = {T2Inv2FeeKey} description = 'Fees 2' {...this.state}/>
+          <InputBox name = 'Returns' placeholder='Returns %' percent={true} precision={2} stateKey = 'returns2' iconName = 'trending-up' _setState={this._setState.bind(this)} storageKey = {T2Inv2ReturnKey} description = 'Returns 2' {...this.state}/>
+          <InputBox name = 'Fees' placeholder='Fees %' percent={true} precision={2} stateKey = 'fees2' iconName = 'trending-down' _setState={this._setState.bind(this)} storageKey = {T2Inv2FeeKey} description = 'Fees 2' {...this.state}/>
           <InputBoxHeader text='Involuntary Contributions'/>
-          <InputBox name = 'Expected Taxes' mask='only-numbers' precision={2} stateKey = 'taxes' iconName = 'mood-bad' _setState={this._setState.bind(this)} storageKey = {T2TaxKey} description = 'Taxes' {...this.state}/>
+          <InputBox name = 'Expected Taxes' placeholder='Taxes %' percent={true} precision={2} stateKey = 'taxes' iconName = 'mood-bad' _setState={this._setState.bind(this)} storageKey = {T2TaxKey} description = 'Taxes' {...this.state}/>
           <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
           <View style={styles.buttonContainer}>
             <Text style={{paddingBottom: 30, textAlign: 'center', color: mainColor, fontSize: 14, fontWeight: 'bold'}}>{this.state.warningText}</Text>
