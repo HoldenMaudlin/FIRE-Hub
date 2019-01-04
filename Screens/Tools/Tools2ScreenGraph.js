@@ -1,13 +1,20 @@
 import React from 'react'
 import { LineChart, Path, Grid, YAxis, XAxis } from 'react-native-svg-charts'
 import { Circle, Rect, Line } from 'react-native-svg'
-
-import { AsyncStorage, View, StyleSheet, Dimensions, Text } from 'react-native'
+import { mainColor } from '../../Styles/ColorConstants'
+import { AsyncStorage, View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native'
 import { _createInvestment1Line } from '../../Components/Functions/FireChartFunction'
 import { BEstateKeys } from '../../Components/Constants/InputKeys'
 import { mainFillColor, mainAccentColor } from '../../Styles/ColorConstants';
 import MainBackHeader from '../../Components/MainBackHeader'
-
+import DataTable from '../../Components/DataTable'
+import { ScrollView } from 'react-native-gesture-handler';
+import { MaskService } from 'react-native-masked-text'
+import { 
+    Table, 
+    Row 
+} from 'react-native-table-component';
+import Collapsible from 'react-native-collapsible'
 
 class Tool2ScreenGraph extends React.PureComponent {
 
@@ -26,8 +33,10 @@ class Tool2ScreenGraph extends React.PureComponent {
             taxes: '',
 
             // Prevents line from being visible at start
-            lineX: -200,
-            lineXindex: '',
+            lineX: 5,
+            lineXindex: 0,
+
+            hideData: true,
         }
     }
 
@@ -69,13 +78,26 @@ class Tool2ScreenGraph extends React.PureComponent {
         var data = _createInvestment1Line(this.state.amount, this.state.returns1, this.state.fees1, this.state.returns2, this.state.fees2, this.state.taxes)
         var data1 = []
         var data2 = []
+
+        // Variables to be passed to the Table Display
+        var dataTableYears = []
+        var data1Table = []
+        var data2Table = []
+
         // Separate the data and find the Max and Min for the graph
         for (var i = 0; i < data.length; i++) {
             data1.push(data[i].cur)
             data2.push(data[i].pot)
+            dataTableYears.push(i + 1)
+            data1Table.push(MaskService.toMask('money', data[i].cur, {unit: '$', separator: '.', delimiter: ',', precision: 0,}))
+            data2Table.push(MaskService.toMask('money', data[i].pot, {unit: '$', separator: '.', delimiter: ',', precision: 0,}))
         }
         const graphMin = Math.min.apply(Math, data2)
         const graphMax = Math.max.apply(Math, data1)
+        var activeCur = ''
+        var activePot = ''
+        if (data1[this.state.lineXindex] !== undefined) { activeCur = MaskService.toMask('money', data1[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
+        if (data2[this.state.lineXindex] !== undefined) { activePot = MaskService.toMask('money', data2[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
 
         // Function adding circles to all data points
         const Decorator = ({ x, y, data }) => {
@@ -89,7 +111,6 @@ class Tool2ScreenGraph extends React.PureComponent {
                     r={ data.length > 35 ? 0 : 3 }
                     stroke={ 'rgb(134, 65, 244)' }
                     fill={ 'white' }
-                    onPress={() => console.log('press')}
                 />
             ))
         }
@@ -112,56 +133,71 @@ class Tool2ScreenGraph extends React.PureComponent {
         }
 
         return (
-            <View style = {{flex:1, backgroundColor: mainFillColor}} >
+            <View style = {{flex:1, backgroundColor: mainFillColor,}} >
                 <MainBackHeader navigation = {this.props.navigation} title = 'Break Even' backButtonName = 'Inputs' />
-                <View style={styles.graphContainer}>
-                    <YAxis
-                        data={data2}
-                        contentInset={ { top: 20, bottom: 20 }  }
-                        svg={{
-                            fill: 'grey',
-                            fontSize: 10,
-                        }}
-                        numberOfTicks={ 7 }
-                        formatLabel={ value => `${value/1000}k` }
-                    />
-                    <View style={{flex: 1}}>
-                        <LineChart
-                            style={ { flex: 1 } }
-                            data={ data1 }
-                            svg={{ stroke: 'rgb(0, 65, 244)', strokeWidth: 2, }}
-                            contentInset={ { top: 20, bottom: 20, left: 5, right: 5 } }
-                            gridMin={graphMin}
-                            gridMax={graphMax}
-                            >
-                            <Grid svg={{stroke: mainAccentColor}}/>
-                            <Line
-                                x1={this.state.lineX}
-                                x2={this.state.lineX}
-                                y1='0'
-                                y2='400'
-                                stroke='red'
-                                strokeWidth='2'
-                            />
-                            <Decorator/>
-                        </LineChart>
-                        <LineChart
-                            style={ StyleSheet.absoluteFill }
-                            data={ data2 }
-                            svg={{ stroke: 'rgb(200, 0, 0)', strokeWidth: 2, }}
-                            contentInset={ { top: 20, bottom: 20, left: 5, right: 5 } }
-                            gridMin={graphMin}
-                            gridMax={graphMax}
-                            >
-                            <Decorator/>
-                            <LineCreator/>
-                        </LineChart>
+                <ScrollView>
+                    <View style={styles.graphContainer}>
+                        <YAxis
+                            data={data2}
+                            contentInset={ { top: 20, bottom: 20 }  }
+                            svg={{
+                                fill: 'grey',
+                                fontSize: 10,
+                            }}
+                            numberOfTicks={ 7 }
+                            formatLabel={ value => `${value/1000}k` }
+                        />
+                        <View style={{flex: 1}}>
+                            <LineChart
+                                style={ { flex: 1 } }
+                                data={ data1 }
+                                svg={{ stroke: 'rgb(0, 65, 244)', strokeWidth: 2, }}
+                                contentInset={ { top: 20, bottom: 20, left: 5, right: 5 } }
+                                gridMin={graphMin}
+                                gridMax={graphMax}
+                                >
+                                <Grid svg={{stroke: mainAccentColor}}/>
+                                <Line
+                                    x1={this.state.lineX}
+                                    x2={this.state.lineX}
+                                    y1='0'
+                                    y2='400'
+                                    stroke='red'
+                                    strokeWidth='2'
+                                />
+                                <Decorator/>
+                            </LineChart>
+                            <LineChart
+                                style={ StyleSheet.absoluteFill }
+                                data={ data2 }
+                                svg={{ stroke: 'rgb(200, 0, 0)', strokeWidth: 2, }}
+                                contentInset={ { top: 20, bottom: 20, left: 5, right: 5 } }
+                                gridMin={graphMin}
+                                gridMax={graphMax}
+                                >
+                                <Decorator/>
+                                <LineCreator/>
+                            </LineChart>
+                        </View>
                     </View>
-                </View>
-                <View style={{height: 40}}>
-                    <Text>{data1[this.state.lineXindex]}</Text>
-                    <Text>{data2[this.state.lineXindex]}</Text>
-                </View>
+                    <View>
+                        <Text style={styles.goalText}>The potential investment will surpass the current investment after {data1.length} years! </Text>
+                        <Table borderStyle={{borderWidth: 0.01, }}>
+                            <Row textStyle={styles.headText} style={styles.headStyle} flexArr={[1,2,2]} data={['Year', 'Current', 'Potential']}/>
+                            <Row textStyle={styles.columnText} flexArr={[1, 2, 2]} data={[this.state.lineXindex + 1, activeCur, activePot]}/>
+                        </Table>      
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity style={styles.button} onPress={() => this.setState({hideData: !this.state.hideData})}>
+                                <Text style={styles.buttonText}>{this.state.hideData ? 'Show' : 'Hide'} Data</Text>
+                            </TouchableOpacity>        
+                        </View>
+                        <Collapsible collapsed={this.state.hideData}>
+                            <View>
+                                <DataTable tableHead={['Year', 'Current', 'Potential']} flexArr={[1, 2, 2]} tableData={[dataTableYears, data1Table, data2Table]}/>
+                            </View>
+                        </Collapsible>
+                    </View>
+                </ScrollView>
             </View>
         )
     }
@@ -181,4 +217,41 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
         flexDirection: 'row'
     },
+    buttonContainer: {
+        height: 80,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: mainColor,
+        borderRadius: 5,
+        width: 90,
+        height: 40,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+    },
+    buttonText: {
+        color: mainFillColor,
+    },
+    headStyle: {
+        height: 30,
+    },
+    headText: {
+        textAlign: 'center',
+        color: mainColor,
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    columnText: {
+        textAlign: 'center',
+        fontWeight: '500'
+    },
+    goalText: {
+        textAlign: 'center', 
+        margin: 10,
+        marginTop: 20, 
+    }
 })

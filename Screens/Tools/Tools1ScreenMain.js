@@ -171,7 +171,10 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
   },
   clearButtonInnerContainer: {
     height: 20,

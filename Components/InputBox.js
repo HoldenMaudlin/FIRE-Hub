@@ -116,9 +116,7 @@ class InputBox extends Component {
                         </View>
                     </View>
                 </View>
-                <Collapsible
-                    collapsed= {this.state.collapsed}
-                    >
+                <Collapsible collapsed= {this.state.collapsed}>
                     <View style={{flex: 1, width: width, backgroundColor: mainColor, padding: 4}}>
                         <Text style={{color: 'white', fontSize: 18}} >{this.props.description} </Text>
                     </View>

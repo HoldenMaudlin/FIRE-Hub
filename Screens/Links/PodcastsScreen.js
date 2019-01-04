@@ -64,7 +64,7 @@ class PodcastsScreen extends Component {
         }
     }
     
-    componentDidMount(){
+    componentWillMount(){
         // Fetch JSON data for all genres and bind to state variables
         _fetchAPI.bind(this)(featuredURL, genreKeys.featured)
         _fetchAPI.bind(this)(genreBaseURL + genreURLS.investing, genreKeys.investing)

@@ -51,10 +51,8 @@ class Tool2ScreenMain extends Component {
   }
 
   _updateAsyncValues() {
-    console.log('call')
     BEstateKeys.forEach((item) => {
       AsyncStorage.setItem(item.asyncKey, this.state[item.stateKey] + '')
-      console.log(item.stateKey," set to ", this.state[item.stateKey])
     })
   }
 
@@ -74,7 +72,6 @@ class Tool2ScreenMain extends Component {
   }
 
    _onPressButton(){ 
-    console.log(this.state)
     this._updateAsyncValues()
     this._updateStateValues()
     if(!this._checkIfEmpty()) {
@@ -169,7 +166,10 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
   },
   clearButtonInnerContainer: {
     height: 20,

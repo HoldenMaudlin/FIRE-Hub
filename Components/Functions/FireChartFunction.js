@@ -1,4 +1,4 @@
-import { _stringToInt, _stringToFloat } from './ParseNumber'
+import { _stringToInt } from './ParseNumber'
 
 // Basic Fire Function
 export function _createFireGraph( age, assets, income, spend, target ) {
@@ -83,11 +83,9 @@ export function _createInvestment1Line(amount, returns1, fees1, returns2, fees2,
     if (fees2 !== undefined) { fees2 = parseFloat(fees2) };
     if (taxes !== undefined) { taxes = parseFloat(taxes) };
 
-    console.log('taxes',taxes)
     taxes /= 100
     returns1 = 1 + (returns1 - fees1)/100
     returns2 = 1 + (returns2 - fees2)/100
-    console.log('ret1,', returns1)
 
     var amount1 = amount
     var amount2 = amount - ( amount * taxes )
