@@ -48,12 +48,18 @@ class InputBox extends Component {
     // Styles were not working when put in style sheet; try again later //
 
     render() {
+        var value
+        if( this.props.maxValue !== undefined ) {
+            value = this.state.input > this.props.maxValue ? this.props.maxValue : this.state.input
+        } else {
+            value = this.state.input
+        }
         var input
         if(this.props.percent === true) {
             input = 
             <TextInput
                 onChangeText = {(input) => { this._updateInput(input); this.setState({inputted: true})}}
-                value = {this.state.input}
+                value = {value}
                 placeholder = {this.props.placeholder ? this.props.placeholder : this.props.name}
                 placeholderTextColor = {mainAccentColor}
                 keyboardType='numeric'
@@ -64,7 +70,7 @@ class InputBox extends Component {
             <TextInputMask
                 /* Takes input, updates own state, parent's state, and Async state */
                 onChangeText = {(input) => { this._updateInput(input); this.setState({inputted: true})}}
-                value = {this.state.input}
+                value = {value}
                 style={{alignItems: 'stretch', fontSize: 16, color: 'black', fontWeight: 'bold', textAlign: 'right', marginRight: 5, marginTop: 17,}}
                 keyboardType='numeric'
                 type={this.props.mask}

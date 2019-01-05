@@ -1,3 +1,5 @@
+import { _stringToInt } from '../Functions/ParseNumber'
+
 function _getDistributedList(n, mean, sd) {
     var list = _randomList(n, 0, 1)
     var newList = _distributedList(list, mean, sd)
@@ -54,11 +56,36 @@ function _distributedList(list, mean, sd) {
     return newList;
 }
 
-export function _createMonteCarloData( age, assets, income, spend, length, sims ) {
+// Insertion sort for monte carlo data
+function _sortData(data, length) {
+    for (var i = 0; i < data.length; i++) {
+        let value = data[i]
+        for (var j = i - 1; j > -1 && data[j][length] > value[length]; j--) {
+          data[j + 1] = data[j]
+        }
+        data[j + 1] = value
+    }
+    console.log(Math.floor(data.length / 10 - 1))
+    return [data[Math.floor(data.length / 10 - 1)], data[Math.floor(data.length/2 - 1)], data[Math.floor(data.length * 9 / 10 - 1)]]
+}
+
+export function _createMonteCarloData( assets, income, spend, returns, sims, length ) {
     // Convert inputs from strings to numbers
-    console.log("made it here")
+    assets = _stringToInt(assets)
+    income = _stringToInt(income)
+    spend = _stringToInt(spend)
+    returns = parseFloat(returns)
+    sims = parseInt(sims) > 5000 ? 5000 : parseInt(sims)
+    length = parseInt(length) > 40 ? 40 : parseInt(length)
+    const vol = .144
+    const ret = 0.072
+    const steps = 12 * length
+    const dt = 1/12
+    const sqdt = Math.sqrt(dt)
+    const drift = (ret - vol*vol/2) * dt
+    const shock = vol * sqdt
+
     var savings = assets + (income - spend);
-    
     var data = []
 
     for (var i = 0; i < sims; i++) {
@@ -66,13 +93,13 @@ export function _createMonteCarloData( age, assets, income, spend, length, sims 
         data[i][0] = savings
     }
     
-    for(var m = 1; m < length ; m++) {
+    for(var m = 1; m < steps ; m++) {
         var rates = []
-        rates = _getDistributedList(sims, 7.2, 1);
+        rates = _getDistributedList(sims, 0, 1);
         for (var k = 0; k < sims; k++) {
-            data[k][m] = data[k][m - 1] * (1 + rates[k]/100)
-            data[k][m] += (income - spend)
+            data[k][m] = data[k][m - 1] * (Math.exp(drift + shock * rates[k]))
+            data[k][m] += (income - spend) * dt
         }
     }
-    return data;
+    return _sortData(data, steps - 1);
 }

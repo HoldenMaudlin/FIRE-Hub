@@ -118,7 +118,7 @@ class ToolsScreen extends Component {
 
         if(!this.state.desc4Vis) {
             var button4=
-            <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'AdvancedFireMain')} onLongPress={this._onLongPressButton.bind(this, 'desc4Vis')}>
+            <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'MonteCarloMain')} onLongPress={this._onLongPressButton.bind(this, 'desc4Vis')}>
                 <View style={styles.iconContainer}>
                     <Icon containerStyle={{paddingTop: 5,}} flex={1} color={'white'} name= 'dice-5' type='material-community' size={50} />
                 </View>
@@ -126,7 +126,7 @@ class ToolsScreen extends Component {
             </TouchableOpacity>
         } else {
             var button4 = 
-            <TouchableOpacity style ={styles.mainTabDesc} onPress={this._onPressButton.bind(this,'AdvancedFireMain')} onLongPress={this._onLongPressButton.bind(this, 'desc34is')} >
+            <TouchableOpacity style ={styles.mainTabDesc} onPress={this._onPressButton.bind(this,'MonteCarloMain')} onLongPress={this._onLongPressButton.bind(this, 'desc34is')} >
                 <Text style={styles.toolDescText}>Sup </Text>
             </TouchableOpacity>
         }

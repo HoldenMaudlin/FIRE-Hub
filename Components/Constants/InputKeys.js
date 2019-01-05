@@ -27,7 +27,13 @@ export const T3CashAllocKey = 'T3CashAllocKey'
 export const T3StockReturnKey = 'T3StockReturnKey'
 export const T3BondReturnKey = 'T3BondReturnKey'
 
-
+// Monte Carlo Keys
+export const MCIncomeKey = 'MCIncomeKey'
+export const MCAssetsKey = 'MCAssetsKey'
+export const MCSpendKey = 'MCSpendKey'
+export const MCReturnsKey = 'MCReturnsKey'
+export const MCSimsKey = 'MCSimsKey'
+export const MCLengthKey = 'MCLengthKey'
 
 // Advanced Fire Dictionary
 export var AFstateKeys = [
@@ -61,4 +67,14 @@ export var BFstateKeys = [
     { stateKey: 'target', asyncKey: targetKey },
     { stateKey: 'assets', asyncKey: assetKey },
     { stateKey: 'spend', asyncKey: spendKey },
+]
+
+// Monte Carlo Dictionary
+export var MCstateKeys = [
+    { stateKey: 'income', asyncKey: MCIncomeKey },
+    { stateKey: 'assets', asyncKey: MCAssetsKey },
+    { stateKey: 'spend', asyncKey: MCSpendKey },
+    { stateKey: 'returns', asyncKey: MCReturnsKey },
+    { stateKey: 'sims', asyncKey: MCSimsKey },
+    { stateKey: 'length', asyncKey: MCLengthKey },
 ]

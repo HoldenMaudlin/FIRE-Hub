@@ -9,7 +9,8 @@ import Tool2ScreenMain from '../Screens/Tools/Tools2ScreenMain'
 import Tool2ScreenGraph from '../Screens/Tools/Tools2ScreenGraph'
 import AdvancedFireMain from '../Screens/Tools/AdvancedFireMain'
 import AdvancedFireGraph from '../Screens/Tools/AdvancedFireGraph'
-import { mainColor , mainHeaderText } from '../Styles/ColorConstants';
+import MonteCarloMain from '../Screens/Tools/MonteCarloMain'
+import MonteCarloGraph from '../Screens/Tools/MonteCarloGraph'
 import { Icon } from 'react-native-elements'
 
 const ToolsNavigator = createStackNavigator({
@@ -24,6 +25,8 @@ const ToolsNavigator = createStackNavigator({
     Tool2Graph: Tool2ScreenGraph,
     AdvancedFireMain: AdvancedFireMain,
     AdvancedFireGraph: AdvancedFireGraph,
+    MonteCarloMain: MonteCarloMain,
+    MonteCarloGraph: MonteCarloGraph,
     },
     {
         initialRouteName: 'ToolsHome',

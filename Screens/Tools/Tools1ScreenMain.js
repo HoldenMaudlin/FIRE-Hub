@@ -81,8 +81,12 @@ class Tool1ScreenMain extends Component {
     this._updateStateValues()
     this._updateAsyncValues()
     if(!this._checkIfEmpty()) {
-      this.props.navigation.navigate('Tool1Graph')
-      this.setState({warningText: ''})
+      if(this._checkInputLogic()) {
+        this.setState({warningText: 'Your assets already exceed your retirement goal! Congratulations!!!!'})
+      } else {
+        this.props.navigation.navigate('Tool1Graph')
+        this.setState({warningText: ''})
+      }
     } else {
       this.setState({warningText: 'Please Enter All Fields!'})
     }
@@ -90,6 +94,16 @@ class Tool1ScreenMain extends Component {
 
   _setState = (value, stateKey) => {
     this.setState({[stateKey]: value})
+  }
+
+  // Functions to regulate navigation
+
+  _checkInputLogic() {
+    if (parseInt(this.state.assets.replace('$', '')) > parseInt(this.state.target.replace('$', ''))) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   _checkIfEmpty () {
@@ -125,8 +139,10 @@ class Tool1ScreenMain extends Component {
             <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' percent={false} precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={spendKey} {...this.state}/>
             <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' percent={false} precision={0} iconType='font-awesome' description={''} _setState={this._setState.bind(this)} storageKey={targetKey} {...this.state}/>
             <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
+            <View style={styles.warningTextContainer}>
+              <Text style={styles.warningText}>{this.state.warningText}</Text>
+            </View>
             <View style={styles.buttonContainer}>
-              <Text style={{paddingBottom: 30, textAlign: 'center', color: mainColor, fontSize: 14, fontWeight: 'bold'}}>{this.state.warningText}</Text>
               <TouchableOpacity style={[styles.buttonStyle, {backgroundColor: buttonColor}]} onPress={() => this._onPressButton()}>
                 <Text style ={{color: mainFillColor, fontWeight: 'bold', fontSize: 20,}}> Go! </Text>
               </TouchableOpacity>
@@ -217,12 +233,23 @@ const styles = StyleSheet.create({
     marginLeft: 2.5,
     marginRight: 10,
 },
-inputStyle: {
-    marginRight: 3,
-},
-mainTab: {
-    flex: 1,
-    flexDirection: 'row',
-    height: 50,
-},
+  inputStyle: {
+      marginRight: 3,
+  },
+  mainTab: {
+      flex: 1,
+      flexDirection: 'row',
+      height: 50,
+  },
+  warningText: {
+    textAlign: 'center', 
+    color: mainColor, 
+    fontSize: 14, 
+    fontWeight: 'bold'
+  },
+  warningTextContainer: {
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 })

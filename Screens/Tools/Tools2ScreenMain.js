@@ -75,8 +75,12 @@ class Tool2ScreenMain extends Component {
     this._updateAsyncValues()
     this._updateStateValues()
     if(!this._checkIfEmpty()) {
-      this.props.navigation.navigate('Tool2Graph')
-      this.setState({warningText: ''})
+      if (this._checkInputLogic()) {
+        this.props.navigation.navigate('Tool2Graph')
+        this.setState({warningText: ''})
+      } else {
+        this.setState({warningText: 'Based on the given inputs, the potential investment will never exceed the current investment.'})
+      }
     } else {
       this.setState({warningText: 'Please Enter All Fields!'})
     }
@@ -86,12 +90,20 @@ class Tool2ScreenMain extends Component {
     this.setState({[stateKey]: value})
   }
 
+  // Functions to regulate navigation
   _checkIfEmpty () {
     if (this.state.amount === '' || this.state.returns1 === '' || this.state.returns2 === '' || this.state.fees1 === '' || this.state.fees2 === '' || this.state.taxes === '') {
       return true
     } else {
       return false
     }
+  }
+
+  _checkInputLogic() {
+    if (parseFloat(this.state.returns1) - parseFloat(this.state.fees1) < parseFloat(this.state.returns2) - parseFloat(this.state.fees2)) {
+      return true;
+    } else 
+     return false;
   }
 
   render() {
@@ -123,7 +135,9 @@ class Tool2ScreenMain extends Component {
           <InputBox name = 'Expected Taxes' placeholder='Taxes %' percent={true} precision={2} stateKey = 'taxes' iconName = 'mood-bad' _setState={this._setState.bind(this)} storageKey = {T2TaxKey} description = 'Taxes' {...this.state}/>
           <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
           <View style={styles.buttonContainer}>
-            <Text style={{paddingBottom: 30, textAlign: 'center', color: mainColor, fontSize: 14, fontWeight: 'bold'}}>{this.state.warningText}</Text>
+            <View style={styles.warningTextContainer}>
+              <Text style={styles.warningText}>{this.state.warningText}</Text>
+            </View>
             <TouchableOpacity style={[styles.buttonStyle, {backgroundColor: buttonColor}]} onPress={() => this._onPressButton()}>
               <Text style ={{color: mainFillColor, fontWeight: 'bold', fontSize: 20,}}> Go! </Text>
             </TouchableOpacity>
@@ -212,12 +226,23 @@ const styles = StyleSheet.create({
     marginLeft: 2.5,
     marginRight: 10,
 },
-inputStyle: {
+  inputStyle: {
     marginRight: 3,
-},
-mainTab: {
+  },
+  mainTab: {
     flex: 1,
     flexDirection: 'row',
     height: 50,
-},
+  },
+  warningText: {
+    textAlign: 'center', 
+    color: mainColor, 
+    fontSize: 14, 
+    fontWeight: 'bold'
+  },
+  warningTextContainer: {
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 })
