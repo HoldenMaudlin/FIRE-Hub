@@ -40,7 +40,7 @@ class MainDrawerHeader extends Component {
                     containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.8)'}}
                     childrenWrapperStyle={{backgroundColor: 'rgba(0, 0, 0, 0)'}}
                 >
-                    <View style={{alignItems: 'center'}}>
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
                         {this.props.helpView}
                         <TouchableWithoutFeedback onPress={() => this.onClose()}>
                             <View style={styles.buttonContainer}>
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         height: 40,
         width: 80,
+        marginTop: 20,
         borderColor: 'white',
         borderWidth: 1,
         borderRadius: 5,

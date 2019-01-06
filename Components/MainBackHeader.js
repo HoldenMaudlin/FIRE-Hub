@@ -32,7 +32,7 @@ class MainBackHeader extends Component {
                     <Body>
                         <Title style={{ color: mainHeaderText, fontSize: 20, fontWeight: 'normal' }}>{this.props.title}</Title>
                     </Body>
-                    <Right>  
+                    <Right>
                         <Button transparent style={{paddingLeft: 5}} onPress = {() => this.setState({helpVisible: true})}  >
                             <Icon color = {mainHeaderText} size = {20} name = 'help' type = 'material-community' />
                         </Button>
@@ -48,7 +48,7 @@ class MainBackHeader extends Component {
                         {this.props.helpView}
                         <TouchableWithoutFeedback onPress={() => this.onClose()}>
                             <View style={styles.buttonContainer}>
-                                    <Text style={styles.buttonText}>Got it!</Text>
+                                <Text style={styles.buttonText}>Got it!</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>

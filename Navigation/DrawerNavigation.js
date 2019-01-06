@@ -27,7 +27,7 @@ const MainDrawerNavigator = createDrawerNavigator({
     },
     Links: LinksTabNavigator,
     AboutFIRE: AboutFIREScreen,
-    Settings: SettingsScreen,
+    Disclaimer: SettingsScreen,
 },{
     contentComponent: ({ navigation }) => (
         <DrawerContents navigation={navigation} />

@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import { MCIncomeKey, MCAssetsKey, MCSpendKey, MCReturnsKey, MCSimsKey, MCLengthKey, MCstateKeys } from '../../Components/Constants/InputKeys'
 import { _createMonteCarloData } from '../../Components/Functions/MonteCarlo'
-import { totalSpendingDescription, ageDescription, incomeDescription } from '../../Components/Constants/InputDescriptions'
+import { totalSpendingDescription, ageDescription, incomeDescription, assetsDescription, returnsDescription, simsDescription, lengthDescription } from '../../Components/Constants/InputDescriptions'
 import DismissKeyboardView from '../../Components/DismissKeyboardView'
 import { mainColor, mainHeaderText, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
 import { Tool1Name } from '../../Components/Constants/ToolNames'
@@ -123,13 +123,13 @@ class MonteCarloMain extends Component {
                 <MainBackHeader title = "Monte Carlo" backButtonName = "Tools" navigation = {this.props.navigation} helpView={helpView}/>
                 <ScrollView style={styles.mainScroll}>                            
                     <InputBoxHeader text='Personal Information' />
-                    <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money' mask='money' percent={false} precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={MCIncomeKey} {...this.state}/>
-                    <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' percent={false} precision={0} description={'hi'} _setState={this._setState.bind(this)} storageKey={MCAssetsKey} {...this.state}/>
+                    <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' percent={false} precision={0} description={assetsDescription} _setState={this._setState.bind(this)} storageKey={MCAssetsKey} {...this.state}/>
+                    <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money' mask='money' percent={false} precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={MCIncomeKey} {...this.state}/>
                     <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' percent={false} precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={MCSpendKey} {...this.state}/>
                     <InputBoxHeader text='Simulation Information' />
-                    <InputBox name = 'Returns' stateKey = 'returns' iconName = 'trending-up' percent={true} placeholder='Returns %' precision={2} description={''} _setState={this._setState.bind(this)} storageKey={MCReturnsKey} {...this.state}/>
-                    <InputBox name = 'Simulations' stateKey = 'sims' iconName = 'webhook' iconType='material-community' mask='only-numbers' percent={false} maxValue={5000} placeholder='Sims' precision={0} description={''} _setState={this._setState.bind(this)} storageKey={MCSimsKey} {...this.state}/>
-                    <InputBox name = 'Length' stateKey = 'length' iconName = 'calendar-question' iconType='material-community' mask='only-numbers' percent={false} maxValue={40} precision={0} description={''} _setState={this._setState.bind(this)} storageKey={MCLengthKey} {...this.state}/>
+                    <InputBox name = 'Returns' stateKey = 'returns' iconName = 'trending-up' percent={true} placeholder='Returns %' precision={2} description={returnsDescription} _setState={this._setState.bind(this)} storageKey={MCReturnsKey} {...this.state}/>
+                    <InputBox name = 'Simulations' stateKey = 'sims' iconName = 'webhook' iconType='material-community' mask='only-numbers' percent={false} maxValue={10000} placeholder='Sims' precision={0} description={simsDescription} _setState={this._setState.bind(this)} storageKey={MCSimsKey} {...this.state}/>
+                    <InputBox name = 'Length' stateKey = 'length' iconName = 'calendar-question' iconType='material-community' mask='only-numbers' percent={false} maxValue={50} precision={0} description={lengthDescription} _setState={this._setState.bind(this)} storageKey={MCLengthKey} {...this.state}/>
                     <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
                     <View style={styles.buttonContainer}>
                         <View style={styles.warningTextContainer}>

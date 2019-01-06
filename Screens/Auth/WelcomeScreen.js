@@ -4,23 +4,30 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Button,
+  TouchableWithoutFeedback,
   Image,
   Animated,
   Easing,
-  AsyncStorage
+  AsyncStorage,
+  Linking
 } from 'react-native';
 import { mainFillColor, mainColor, mainAccentColor } from "../../Styles/ColorConstants";
 import MainBackHeader from '../../Components/MainBackHeader'
+import Overlay from 'react-native-modal-overlay';
+import { ScrollView } from "react-native-gesture-handler";
 
 class WelcomeScreen extends Component {
   constructor(props) {
     super(props)
     this.state={
-      welcomeUnderline: new Animated.Value(0)
+      welcomeUnderline: new Animated.Value(0),
+      display: false,
+      termsViewed: false,
+      warningTextColor: mainAccentColor,
     }
   }
 
+  // Animates underline of FireHub
   _animateUnderline() {
     Animated.timing(this.state.welcomeUnderline, {
       toValue: 1,
@@ -29,6 +36,23 @@ class WelcomeScreen extends Component {
     }).start()
   }
 
+  // Track if user has viewed terms
+  _pressTerms() {
+    this.props.navigation.navigate('Terms')
+    this.setState({termsViewed: true})
+  }
+
+  // Logic to determine if user can advance to app
+  _pressAgree = async() => {
+    if(this.state.termsViewed) {
+      await AsyncStorage.setItem('hasAcceptedTerms', 'true')
+      this.props.navigation.navigate('App')
+    } else {
+      this.setState({warningTextColor: mainColor})
+    }
+  }
+
+  // Functions for when passcode is implemented
   _pressCreatePasscode() {
     this.props.navigation.navigate('CreatePasscode')
   }
@@ -38,6 +62,7 @@ class WelcomeScreen extends Component {
     this.props.navigation.navigate('App')
   }
 
+  // Prevents native header from showing
   static navigationOptions={
     header: null
   }
@@ -46,7 +71,11 @@ class WelcomeScreen extends Component {
     this._animateUnderline()
   }
 
+  // Closes overlay display
+  onClose = () => this.setState({ display: false});
+
   render() {
+    const warningText = "Please view the Terms & Conditions before advancing!"
     const underline = this.state.welcomeUnderline.interpolate({
       inputRange: [0, 1],
       outputRange: [20, 265],
@@ -64,6 +93,15 @@ class WelcomeScreen extends Component {
             </Animated.View>
           </View>
           <View style={styles.bottomContainer}>
+            <Text style={[styles.warningText, {color: this.state.warningTextColor}]}>{warningText}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => this._pressAgree() }>
+              <Text style={styles.buttonText}>I Agree</Text>
+            </TouchableOpacity>
+            <Text style={styles.termsText} onPress={() => this._pressTerms()}>Terms & Conditions</Text>
+          </View>
+
+          {/*}
+          <View style={styles.bottomContainer}>
             <TouchableOpacity style={styles.button} onPress={() => this._pressCreatePasscode() }>
               <Text style={styles.buttonText}>Create a passcode</Text>
             </TouchableOpacity>
@@ -71,6 +109,7 @@ class WelcomeScreen extends Component {
               <Text style={styles.alternateText}>Create a passcode later</Text>
             </TouchableOpacity>
           </View>
+          {*/}
         </View>
     )
   }
@@ -89,13 +128,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   midContainer: {
-    flex: 1,
+    flex: 0.5,
     alignItems: 'center',
     justifyContent: 'center'
   },
   bottomContainer: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: 40,
   },
   imageContainer: {
     height: 200,
@@ -112,7 +153,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 10,
-    marginBottom: 5,
+    margin: 20,
   },
   buttonText: {
     color: mainFillColor,
@@ -127,5 +168,34 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 10,
+  },
+  termsText: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+  },
+  buttonContainer: {
+    height: 40,
+    width: 80,
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  warningText: {
+    marginLeft: 20,
+    marginRight: 20,
+    textAlign: 'center'
+  },
+  header: {
+    color: mainColor,
+    fontSize: 32, 
+    marginTop: 10,
+  },
+  body: {
+    marginTop: 10,
+  },
+  link: {
+      color: 'blue'
   }
-})
+})  

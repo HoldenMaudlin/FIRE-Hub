@@ -27,7 +27,7 @@ class HelpView extends Component {
         }
 
         return (
-            <View style={styles.container}>
+            <View>
                 {helpLines}
             </View>
         )
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     helpLineContainer: {
-        flex: 1,
+        height: 80,
         flexDirection: 'row',
         alignItems: 'center'
     },

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import MainBackHeader from '../../Components/MainBackHeader'
 import { mainFillColor } from "../../Styles/ColorConstants";
+import PINCode from '@haskkor/react-native-pincode'
 
 class CreatePasscodeScreen extends Component {
   constructor(props) {
@@ -26,14 +27,12 @@ class CreatePasscodeScreen extends Component {
     this.setState({passcode: value})
   }
 
-  _pressGo = async() => {
-    if(this.state.passcode !== '') {
-      try {
-        await AsyncStorage.setItem('userPasscode', this.state.passcode + '')
-      } catch (err) {
-        console.log('Error setting passcode: ', err)
-      }
+  _storePin = async(pin) => {
+    try {
+      await AsyncStorage.setItem('UserPin', pin)
       this.props.navigation.navigate('App')
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -42,8 +41,7 @@ class CreatePasscodeScreen extends Component {
         <View style = {styles.container}>
           <MainBackHeader title=''/>
           <View style={styles.contentContainer}>
-            <TextInput placeholder = "4 Digits" keyboardType='numeric' onChangeText={(value) => this._inputPasscode(value)}/>
-            <Button title='Go' onPress={() => this._pressGo()}/>
+            <PINCode timeLocked={1} status='choose' storePin={(pin) => this._storePin(pin)}/>
           </View>
         </View>
     )

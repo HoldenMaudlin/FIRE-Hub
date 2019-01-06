@@ -101,7 +101,6 @@ class MonteCarloGraph extends Component {
             { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
             { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
             { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
-            { key: 4, icon: 'download', iconType: 'feather', text: "Tap the download icon to view, download, or share the data!"},
         ]
         var helpView = <HelpView helpLines={helpLines}/>
         if(this.state.dataLoaded === true) {
@@ -110,11 +109,11 @@ class MonteCarloGraph extends Component {
             var tableData2 = []
             var tableData3 = []
             var dataTableYears = []
-            for (var i = 0; i < this.state.graphData1.length; i += 12) {
+            for (var i = 11; i < this.state.graphData1.length + 11; i += 12) {
                 tableData1.push(MaskService.toMask('money', this.state.graphData1[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
                 tableData2.push(MaskService.toMask('money', this.state.graphData2[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
                 tableData3.push(MaskService.toMask('money', this.state.graphData3[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                dataTableYears.push(i/12 + 1)  
+                dataTableYears.push((i - 11)/12 + 1)  
             }
             var graphMin = Math.min.apply(Math, this.state.graphData1)
             var graphMax = Math.max.apply(Math, this.state.graphData3)   
@@ -167,6 +166,7 @@ class MonteCarloGraph extends Component {
                 <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={helpView}/>
                 <View style={styles.activityContainer}>
                     <ActivityIndicator/>
+                    <Text style={{color: mainAccentColor, marginTop: 10,}}>For large inputs, allow up to 10 seconds!</Text>
                 </View>
             </View>
             )

@@ -75,8 +75,8 @@ export function _createMonteCarloData( assets, income, spend, returns, sims, len
     income = _stringToInt(income)
     spend = _stringToInt(spend)
     returns = parseFloat(returns)
-    sims = parseInt(sims) > 5000 ? 5000 : parseInt(sims)
-    length = parseInt(length) > 40 ? 40 : parseInt(length)
+    sims = parseInt(sims) > 10000 ? 10000 : parseInt(sims)
+    length = parseInt(length) > 50 ? 50 : parseInt(length)
     const vol = .144
     const ret = 0.072
     const steps = 12 * length

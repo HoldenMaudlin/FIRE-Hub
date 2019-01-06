@@ -10,6 +10,7 @@ import MainBackHeader from '../../Components/MainBackHeader'
 import DataTable from '../../Components/DataTable'
 import { ScrollView } from 'react-native-gesture-handler';
 import { MaskService } from 'react-native-masked-text'
+import HelpView from '../../Components/HelpView'
 import { 
     Table, 
     Row 
@@ -74,6 +75,14 @@ class Tool2ScreenGraph extends React.PureComponent {
     }
 
     render() {
+        // Information to be passed to the Tools Help Screen
+        const helpLines = [
+            { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
+            { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
+            { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
+        ]
+        var helpView = <HelpView helpLines={helpLines}/>
+
         // Send data through function to create the two sets of data
         var data = _createInvestment1Line(this.state.amount, this.state.returns1, this.state.fees1, this.state.returns2, this.state.fees2, this.state.taxes)
         var data1 = []
@@ -134,7 +143,7 @@ class Tool2ScreenGraph extends React.PureComponent {
 
         return (
             <View style = {{flex:1, backgroundColor: mainFillColor,}} >
-                <MainBackHeader navigation = {this.props.navigation} title = 'Break Even' backButtonName = 'Inputs' />
+                <MainBackHeader navigation = {this.props.navigation} title = 'Break Even' backButtonName = 'Inputs' helpView={helpView}/>
                 <ScrollView>
                     <View style={styles.graphContainer}>
                         <YAxis

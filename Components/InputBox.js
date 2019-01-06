@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Dialog, { DialogContent } from 'react-native-popup-dialog'
 import { View, Text, TouchableOpacity, StyleSheet, AsyncStorage, Dimensions } from 'react-native'
-import { mainAccentColor, mainColor } from '../Styles/ColorConstants'
+import { mainAccentColor, mainColor, mainFillColor } from '../Styles/ColorConstants'
 import { Icon }  from 'react-native-elements'
 import { TextInput } from 'react-native-gesture-handler'
 import DismissKeyboardView from './DismissKeyboardView'
@@ -123,8 +123,8 @@ class InputBox extends Component {
                     </View>
                 </View>
                 <Collapsible collapsed= {this.state.collapsed}>
-                    <View style={{flex: 1, width: width, backgroundColor: mainColor, padding: 4}}>
-                        <Text style={{color: 'white', fontSize: 18}} >{this.props.description} </Text>
+                    <View style={{flex: 1, width: width, backgroundColor: mainFillColor, padding: 4, borderTopWidth: 1, borderTopColor: mainAccentColor}}>
+                        <Text style={{color: 'black', fontSize: 16}} >{this.props.description} </Text>
                     </View>
                 </Collapsible>   
             </View>

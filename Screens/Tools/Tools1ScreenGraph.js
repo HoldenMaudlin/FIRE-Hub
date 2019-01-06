@@ -87,7 +87,6 @@ class Tool1ScreenGraph extends Component {
             { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
             { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
             { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
-            { key: 4, icon: 'download', iconType: 'feather', text: "Tap the download icon to view, download, or share the data!"},
         ]
         var helpView = <HelpView helpLines={helpLines}/>
     

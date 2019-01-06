@@ -10,8 +10,7 @@ import {
   AsyncStorage,
 } from 'react-native'
 import { T1AgeKey, incomeKey, targetKey, spendKey, assetKey, BFstateKeys } from '../../Components/Constants/InputKeys'
-
-import { totalSpendingDescription, ageDescription, incomeDescription } from '../../Components/Constants/InputDescriptions'
+import { ageDescription, incomeDescription, assetsDescription, totalSpendingDescription, targetDescription } from '../../Components/Constants/InputDescriptions'
 import DismissKeyboardView from '../../Components/DismissKeyboardView'
 import { mainColor, mainHeaderText, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
 import { Tool1Name } from '../../Components/Constants/ToolNames'
@@ -19,6 +18,7 @@ import InputBox from '../../Components/InputBox'
 import HelpView from '../../Components/HelpView'
 import { incomeIconName } from '../../Components/Constants/IconNames'
 import MainBackHeader from '../../Components/MainBackHeader';
+import { _stringToInt } from '../../Components/Functions/ParseNumber'
 
 
 var { height, width } = Dimensions.get('window')
@@ -99,11 +99,7 @@ class Tool1ScreenMain extends Component {
   // Functions to regulate navigation
 
   _checkInputLogic() {
-    if (parseInt(this.state.assets.replace('$', '')) > parseInt(this.state.target.replace('$', ''))) {
-      return true;
-    } else {
-      return false;
-    }
+    return (_stringToInt(this.state.assets) > _stringToInt(this.state.target))
   }
 
   _checkIfEmpty () {
@@ -134,10 +130,10 @@ class Tool1ScreenMain extends Component {
           <MainBackHeader title = "FIRE Basic" backButtonName = "Tools" navigation = {this.props.navigation} helpView={helpView}/>
           <ScrollView style={styles.mainScroll}>                            
             <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' percent={false} precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T1AgeKey} {...this.state}/>
-            <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' percent={false} precision={0} description={'hi'} _setState={this._setState.bind(this)} storageKey={assetKey} {...this.state}/>
+            <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' percent={false} precision={0} description={assetsDescription} _setState={this._setState.bind(this)} storageKey={assetKey} {...this.state}/>
             <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money'  mask='money' percent={false} precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={incomeKey} {...this.state}/>
             <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' percent={false} precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={spendKey} {...this.state}/>
-            <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' percent={false} precision={0} iconType='font-awesome' description={''} _setState={this._setState.bind(this)} storageKey={targetKey} {...this.state}/>
+            <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' percent={false} precision={0} iconType='font-awesome' description={targetDescription} _setState={this._setState.bind(this)} storageKey={targetKey} {...this.state}/>
             <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
             <View style={styles.warningTextContainer}>
               <Text style={styles.warningText}>{this.state.warningText}</Text>

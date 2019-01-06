@@ -53,10 +53,11 @@ class DrawerContents extends Component {
                         <Icon color={this.state.aboutFIREActive ? mainColor : 'black'} name='information-outline' type='material-community'/>
                         <Text style={[styles.linkText, {color: this.state.aboutFIREActive ? mainColor : 'black'}]}>About FIRE</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.navigateToScreen('Settings', 'settingsActive')} style={styles.linkContainer}>
-                        <Icon color={this.state.settingsActive ? mainColor : 'black'} name='settings' type='simple-line-icon'/>
-                        <Text style={[styles.linkText, {color: this.state.settingsActive ? mainColor : 'black'}]}>Settings</Text>
+                    <TouchableOpacity onPress={() => this.navigateToScreen('Disclaimer', 'settingsActive')} style={styles.linkContainer}>
+                        <Icon color={this.state.settingsActive ? mainColor : 'black'} size={19} name='balance-scale' type='font-awesome'/>
+                        <Text style={[styles.linkText, {color: this.state.settingsActive ? mainColor : 'black'}]}>Disclaimer & Privacy</Text>
                     </TouchableOpacity>
+                    <Text style={{marginTop: 10, textAlign: 'center', color: mainAccentColor}}> More Coming Soon! </Text>
                 </ScrollView>
             </SafeAreaView>
         )
