@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   mainScroll: {
     flex: 1,
     backgroundColor: 'white',
-    marginBottom: 30,
+    paddingBottom: 30,
   },
   mainBackdrop: {
     flex: 1,

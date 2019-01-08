@@ -98,7 +98,7 @@ class InputBox extends Component {
                             </View>
                             {/* Text area and text */}
                             <View style = {{flex: 6, height: 40, justifyContent: 'flex-end' }}>
-                                <Text style={{fontWeight: 'bold', fontSize: 20, color: mainColor, paddingLeft: 6,}}> {this.props.name} </Text>
+                                <Text style={{fontWeight: 'bold', fontSize: 20, color: 'black', paddingLeft: 6,}}> {this.props.name} </Text>
                             </View>
                         </TouchableOpacity>
                         {/* Pop up box visible when above touchable area is pressed */}

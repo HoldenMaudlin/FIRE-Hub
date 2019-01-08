@@ -65,7 +65,6 @@ function _sortData(data, length) {
         }
         data[j + 1] = value
     }
-    console.log(Math.floor(data.length / 10 - 1))
     return [data[Math.floor(data.length / 10 - 1)], data[Math.floor(data.length/2 - 1)], data[Math.floor(data.length * 9 / 10 - 1)]]
 }
 

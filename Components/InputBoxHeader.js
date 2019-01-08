@@ -4,6 +4,7 @@ import {
     Text,
     StyleSheet,
 } from 'react-native'
+import { mainColor } from '../Styles/ColorConstants';
 
 export default class InputBoxHeader extends Component {
     render() {
@@ -27,8 +28,9 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         fontSize: 18,
+        color: mainColor,
         fontWeight: 'bold',
-        textDecorationStyle: 'solid',
-        textDecorationColor: 'black'
+        textDecorationLine: 'underline',
+        textDecorationColor: mainColor,
     },
 })

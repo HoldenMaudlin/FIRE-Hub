@@ -38,8 +38,9 @@ class DrawerContents extends Component {
         return (
             <SafeAreaView style={{flex: 1,}}>
                 <View style={styles.imageContainer}>
-                    <Image source={require('../assets/flamer.png')} style={{height: 120, width: 120, borderRadius: 60}} />
+                    <Image source={require('../assets/flamemint.png')} style={{height: 120, width: 120, borderRadius: 60}} />
                 </View>
+                <Text style={styles.headText}>FIRE Hub</Text>
                 <ScrollView>
                     <TouchableOpacity onPress={() => this.navigateToScreen('Tools', 'toolsActive')} style={styles.linkContainer}>
                         <Icon color={this.state.toolsActive ? mainColor : 'black'} name='calculator' type='material-community'/>
@@ -82,5 +83,11 @@ const styles = StyleSheet.create({
     linkText: {
         fontSize: 16,
         marginLeft: 20,
+    },
+    headText: {
+        textAlign: 'center',
+        color: mainColor,
+        fontSize: 20,
+        margin: 5,
     }
 })

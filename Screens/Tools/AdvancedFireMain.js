@@ -3,8 +3,8 @@ import React, {Component} from 'react'
 import {
     AsyncStorage,
     View,
-    Button,
     ScrollView,
+    SafeAreaView,
     Text,
     StyleSheet,
     TouchableOpacity,
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     mainScroll: {
       flex: 1,
       backgroundColor: mainFillColor,
-      marginBottom: 30,
+      paddingBottom: 30,
     },
     mainBackdrop: {
       flex: 1,

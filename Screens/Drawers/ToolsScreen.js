@@ -7,7 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
-  Dimensions
+  Dimensions,
+  Linking
 } from 'react-native';
 
 import {
@@ -40,7 +41,11 @@ class ToolsScreen extends Component {
     _onPressHelp(){
         this.props.navigation.navigate()
     }
-
+    
+    _onPressEmail() {
+        Linking.openURL("mailto:FIREHubMobileApp@gmail.com?subject=FIRE Hub Suggestion")
+    }
+    
     static navigationOptions = {
         header: null,
     };
@@ -139,7 +144,9 @@ class ToolsScreen extends Component {
                     {AFButton}
                     {MCButton}
                     {BEButton}
-                    <Text style={{color: mainAccentColor, textAlign: 'center', marginTop: 15,}}>More tools coming soon!</Text>
+                    <Text style={{textAlign: 'center', marginTop: 20}}>
+                        <Text style={{color: mainAccentColor}}>Have a suggestion? Email me at </Text><Text onPress={() => this._onPressEmail()} style={{color: mainColor, textDecorationLine: 'underline'}}>FIREHubMobileApp@gmail.com</Text>
+                    </Text>
                 </ScrollView>
             </View>
         </View>

@@ -11,10 +11,10 @@ class AuthLoadingScreen extends Component {
   
   constructor() {
     super()
-    this.loadApp();
+    this._loadApp();
   }
 
-  loadApp = async() => {
+  _loadApp = async() => {
     const firstLoad = await AsyncStorage.getItem('hasAcceptedTerms')
     this.props.navigation.navigate(firstLoad !== 'true' ? 'Auth' : 'App')
   }

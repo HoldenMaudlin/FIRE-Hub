@@ -1,4 +1,4 @@
-export const mainColor = 'rgb(255,87,0)'
+export const mainColor = 'rgb(33,206,153)'
 export const mainHeaderText = '#ffffff'
 export const mainFillColor = '#ffffff'
 export const mainAccentColor = '#C7C7CD'

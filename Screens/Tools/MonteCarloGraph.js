@@ -37,9 +37,11 @@ class MonteCarloGraph extends Component {
         graphData1: [],
         graphData2: [],
         graphData3: [],
+
         tableData1: [],
         tableData2: [],
         tableData3: [],
+        dataTableYears: 0,
 
         dataLoaded: false,
         graphLoaded: false,
@@ -48,6 +50,8 @@ class MonteCarloGraph extends Component {
 
         lineX: 5 ,
         lineXindex: 0,
+        graphMin: 0,
+        graphMax: 0,
 
         hideData: true,
     }
@@ -60,12 +64,21 @@ class MonteCarloGraph extends Component {
     componentDidMount() {
         this.getAsyncData().then((values) => {
             var data = _createMonteCarloData(values[0], values[1], values[2], values[3], values[4], values[5])
-            this.setState({sims: values[4]})
-            this.setState({length: values[5]})
-            this.setState({data: data})
-            this.setState({graphData1: data[0]})
-            this.setState({graphData2: data[1]})
-            this.setState({graphData3: data[2]})
+            this.setState({sims: values[4], length: values[5]})
+            this.setState({data: data, graphData1: data[0], graphData2: data[1], graphData3: data[2]})
+            var tableData1 = []
+            var tableData2 = []
+            var tableData3 = []
+            var dataTableYears = []
+            for (var i = 11; i < this.state.graphData1.length + 11; i += 12) {
+                tableData1.push(MaskService.toMask('money', this.state.graphData1[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
+                tableData2.push(MaskService.toMask('money', this.state.graphData2[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
+                tableData3.push(MaskService.toMask('money', this.state.graphData3[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
+                dataTableYears.push((i - 11)/12 + 1)  
+            }
+            this.setState({tableData1: tableData1, tableData2: tableData2, tableData3: tableData3, dataTableYears: dataTableYears})
+            this.setState({graphMin: Math.min.apply(Math, this.state.graphData1)})
+            this.setState({graphMax: Math.max.apply(Math, this.state.graphData3)})
             this.setState({dataLoaded: true})
         })
     }
@@ -79,19 +92,12 @@ class MonteCarloGraph extends Component {
         }
         return Promise.all(promises)
     }
-    
 
     handlePress = (evt, data, x) => {
-        var val = []
-        data.map((value, index) => {
-            val.push(Math.abs(evt.nativeEvent.locationX - x(index)))
-        })
-        var min = Math.min.apply(Math, val)
-        data.map((value, index) => {
-            if (min === Math.abs(evt.nativeEvent.locationX - x(index))) {
-                this.setState({lineX: x(index), lineXindex: index})
-            }
-        })
+        var val = Math.floor(data.length * evt.nativeEvent.locationX/(x(data.length - 1)))
+        if (val > data.length - 1) val = data.length - 1;
+        if (val < 0) val = 0;
+        this.setState({lineX: x(val), lineXindex: val})
         return true
     }
 
@@ -104,20 +110,6 @@ class MonteCarloGraph extends Component {
         ]
         var helpView = <HelpView helpLines={helpLines}/>
         if(this.state.dataLoaded === true) {
-            // Configure data for the graph
-            var tableData1 = []
-            var tableData2 = []
-            var tableData3 = []
-            var dataTableYears = []
-            for (var i = 11; i < this.state.graphData1.length + 11; i += 12) {
-                tableData1.push(MaskService.toMask('money', this.state.graphData1[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                tableData2.push(MaskService.toMask('money', this.state.graphData2[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                tableData3.push(MaskService.toMask('money', this.state.graphData3[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                dataTableYears.push((i - 11)/12 + 1)  
-            }
-            var graphMin = Math.min.apply(Math, this.state.graphData1)
-            var graphMax = Math.max.apply(Math, this.state.graphData3)   
-        
             // Masks for active selected node
             var active1 = ''
             var active2 = ''
@@ -125,22 +117,6 @@ class MonteCarloGraph extends Component {
             if (this.state.graphData1[this.state.lineXindex] !== undefined) { active1 = MaskService.toMask('money', this.state.graphData1[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
             if (this.state.graphData2[this.state.lineXindex] !== undefined) { active2 = MaskService.toMask('money', this.state.graphData2[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }    
             if (this.state.graphData3[this.state.lineXindex] !== undefined) { active3 = MaskService.toMask('money', this.state.graphData3[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
-        }
-
-        // Function adding circles to all data points
-        const Decorator = ({ x, y, data }) => {
-            return data.map((value, index) => (
-                <Circle
-                    key={ index }
-                    cx={ x(index) }
-                    cy={ y(value) }
-
-                    // Prevents graph being cluttered with circles there are too many data points
-                    r={ this.state.length * 12 > 35 ? 0 : 3 }
-                    stroke={ 'rgb(134, 65, 244)' }
-                    fill={ 'white' }
-                />
-            ))
         }
 
         // Invisible rectangle to capture user touch and set state of Line
@@ -192,8 +168,8 @@ class MonteCarloGraph extends Component {
                                     data={ this.state.graphData1 }
                                     svg={{ stroke: 'rgb(0, 0, 200)', strokeWidth: 2, }}
                                     contentInset={{ top: 20, bottom: 20, left: 5, right: 5 }}
-                                    gridMin={graphMin}
-                                    gridMax={graphMax}
+                                    gridMin={this.state.graphMin}
+                                    gridMax={this.state.graphMax}
                                     >
                                     <Grid svg={{stroke: mainAccentColor}}/>
                                     <Line
@@ -204,27 +180,24 @@ class MonteCarloGraph extends Component {
                                         stroke='red'
                                         strokeWidth='2'
                                     />
-                                    <Decorator/>
                                 </LineChart>
                                 <LineChart
                                     style={ StyleSheet.absoluteFill }
                                     data={ this.state.graphData2 }
                                     svg={{ stroke: 'rgb(200, 0, 0)', strokeWidth: 2, }}
                                     contentInset={{ top: 20, bottom: 20, left: 5, right: 5 }}
-                                    gridMin={graphMin}
-                                    gridMax={graphMax}
+                                    gridMin={this.state.graphMin}
+                                    gridMax={this.state.graphMax}
                                     >
-                                    <Decorator/>
                                 </LineChart>
                                 <LineChart
                                     style={ StyleSheet.absoluteFill }
                                     data={ this.state.graphData3 }
                                     svg={{ stroke: 'rgb(0, 200, 0)', strokeWidth: 2, }}
                                     contentInset={{ top: 20, bottom: 20, left: 5, right: 5 }}
-                                    gridMin={graphMin}
-                                    gridMax={graphMax}
+                                    gridMin={this.state.graphMin}
+                                    gridMax={this.state.graphMax}
                                     >
-                                    <Decorator/>
                                     <LineCreator/>
                                 </LineChart>
                             </View>
@@ -242,7 +215,7 @@ class MonteCarloGraph extends Component {
                             </View>
                             <Collapsible collapsed={this.state.hideData}>
                                 <View>
-                                    <DataTable tableHead={['Year', '10%', '50%', '90%']} flexArr={[1, 2, 2, 2]} tableData={[dataTableYears, tableData1, tableData2, tableData3]}/>
+                                    <DataTable tableHead={['Year', '10%', '50%', '90%']} flexArr={[1, 2, 2, 2]} tableData={[this.state.dataTableYears, this.state.tableData1, this.state.tableData2, this.state.tableData3]}/>
                                 </View>
                             </Collapsible>
                         </View>
