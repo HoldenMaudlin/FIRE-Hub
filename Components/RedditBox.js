@@ -1,3 +1,5 @@
+// Package imports
+import React, {Component} from 'react'
 import {
     View,
     StyleSheet,
@@ -9,16 +11,16 @@ import {
     Dimensions,
     TouchableWithoutFeedback
 } from 'react-native'
-
 import { Icon } from 'react-native-elements'
-
 import Collapsible from 'react-native-collapsible'
 
-import React, {Component} from 'react'
+// Style imports
 import { mainAccentColor, mainColor, mainFillColor } from '../Styles/ColorConstants'
 
 var {height, width} = Dimensions.get('window')
 
+// DESC:
+// Receives props from Reddit Screen and displays content box back to user
 class RedditBox extends Component {
     constructor(props) {
         super(props)
@@ -29,31 +31,14 @@ class RedditBox extends Component {
         }
     }
 
-    _animateSpin = ({ toValue }) => {
-        Animated.timing(this.state.spinValue, {
-            toValue: toValue,
-            duration: 250,
-            easing: Easing.linear,
-            //useNativeDriver: Platform.OS === 'android',
-        }).start()
-    }
-
-    _onPressIcon() {
-        if (this.state.collapsed) {
-            this.setState({collapsed: !this.state.collapsed})
-            this._animateSpin({toValue: 1});
-        } else {
-            this.setState({collapsed: !this.state.collapsed})
-            this._animateSpin({toValue: 0});
-        }
-    }
-
+    // Opens selected post in Reddit App (if available) or default broswer
     _openRedditPost(postURL){
         Linking.openURL(postURL).catch(error => {
           console.log("Error: ", error)
         })
     }
 
+    // Slide in animation for the posts
     componentDidMount() {
         Animated.timing(this.state.yValue, {
             toValue: 1,
@@ -64,12 +49,6 @@ class RedditBox extends Component {
     }
 
     render() {
-    const spin = this.state.spinValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '180deg'],
-    })
-
-
         return (
             <Animated.View style={[styles.container, {opacity: this.state.yValue}]} > 
                 <View style={[styles.postBox, {borderBottomLeftRadius: this.state.collapsed ? 5 : 0, borderBottomRightRadius: this.state.collapsed ? 5 : 0}]}>
@@ -82,8 +61,8 @@ class RedditBox extends Component {
                             <Text style={{color: mainColor, fontSize: 14, marginLeft: 15,}}>{this.props.ups}</Text>
                         </View>
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
-                            <TouchableWithoutFeedback onPress={() => this._openRedditPost(this.props.url) } style={styles.animatedContainer}>
-                                <View style={styles.animatedContainer}>
+                            <TouchableWithoutFeedback onPress={() => this._openRedditPost(this.props.url) } style={styles.viewPostContainer}>
+                                <View style={styles.viewPostContainer}>
                                     <Text style={{color: mainColor, marginRight: 10,}}>View Post</Text>
                                     <Icon color={mainColor} size={32} name ='logo-reddit' type='ionicon'/>
                                 </View>
@@ -104,6 +83,7 @@ class RedditBox extends Component {
 export default RedditBox
 
 const styles = StyleSheet.create({
+    // Main box container
     container: {
         alignItems: 'stretch', 
         marginLeft: 10,
@@ -117,18 +97,21 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.18,
         shadowRadius: 3,
     }, 
-    animatedContainer: {
+    // Holds view post and reddit icon
+    viewPostContainer: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         paddingRight: 10,
     },
+    // Inner part of post box
     postBox: {
         flex: 1,
         backgroundColor: mainFillColor,
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
     },
+    // Title of post
     textBox: {
         flex: 1, 
         width: width, 

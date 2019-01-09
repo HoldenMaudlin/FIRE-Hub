@@ -1,6 +1,7 @@
+// Package imports
 import React, {Component} from 'react'
 import { LineChart, Grid, YAxis, } from 'react-native-svg-charts'
-import { Rect, Line, Circle, Mask } from 'react-native-svg'
+import { Rect, Line, Circle } from 'react-native-svg'
 import { 
     View, 
     Text, 
@@ -10,15 +11,6 @@ import {
     ScrollView,
     TouchableOpacity
  } from 'react-native'
-
-import { TextMask } from 'react-native-masked-text'
-
-//import { _createFireGraph } from '../../Components/Functions/FireChartFunction'
-import HelpView from '../../Components/HelpView'
-import { BFstateKeys } from '../../Components/Constants/InputKeys'
-import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
-import MainBackHeader from '../../Components/MainBackHeader'
-import { _createFireGraph, _createAdvancedFireGraph } from '../../Components/Functions/FireChartFunction'
 import { MaskService } from 'react-native-masked-text'
 import { 
     Table, 
@@ -27,8 +19,16 @@ import {
 import Collapsible from 'react-native-collapsible'
 import DataTable from '../../Components/DataTable'
 
-class Tool1ScreenGraph extends Component {
+// Custom imports
+import HelpView from '../../Components/HelpView'
+import { BFstateKeys } from '../../Components/Constants/InputKeys'
+import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
+import MainBackHeader from '../../Components/MainBackHeader'
+import { _createFireGraph } from '../../Components/Functions/FireChartFunction'
 
+// DESC: 
+// Retrieves inputs from stoage, passes them through a funciton, and displays data back to user
+class Tool1ScreenGraph extends Component {
 
     constructor(props) {
       super(props)
@@ -36,14 +36,15 @@ class Tool1ScreenGraph extends Component {
       this.state = {
           didMount: false,
 
+          // Input vars
           age: this.props.navigation.state.age,
           income: this.props.navigation.state.income,
           spend: this.props.navigation.state.spend,
           target: this.props.navigation.state.target,
           assets: this.props.navigation.state.assets,
-
           data: [],
 
+          // Graph vars
           lineX: 5 ,
           lineXindex: 0,
 
@@ -51,10 +52,12 @@ class Tool1ScreenGraph extends Component {
       }    
     }
     
+    // hides native header
     static navigationOptions = {
         header: null
     }       
 
+    // Retrieve data from storage on mount
     componentDidMount() {        
         BFstateKeys.forEach((item) => {
             AsyncStorage.getItem(item.asyncKey).then((value) => {

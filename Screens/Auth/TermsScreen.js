@@ -1,18 +1,21 @@
+// Package imports
 import React, {Component} from "react"
 import {
   View,
-  Text,
   StyleSheet,
-  ActivityIndicator,
-  AsyncStorage,
-  Linking,
   ScrollView
 } from "react-native";
-import { mainColor, mainFillColor } from '../../Styles/ColorConstants'
+
+// Custom Imports
 import MainBackHeader from "../../Components/MainBackHeader";
 import HelpView from '../../Components/HelpView'
 import Disclaimer from "../../Components/Disclaimer";
 
+// Style imports
+import { mainColor, mainFillColor } from '../../Styles/ColorConstants'
+
+// DESC:
+// Displays Terms & Conditions of app to user
 class TermsScreen extends Component {
   
   constructor() {
@@ -22,6 +25,7 @@ class TermsScreen extends Component {
       header: null
   }
 
+  // Renders basic text page with T&C
   render() {
     const helpLines = [{ key: 1, icon: 'sleep', iconType: 'material-community', text: "Tap 'Got it!' if this page was boring."}]
     var helpView = <HelpView helpLines={helpLines}/>
@@ -43,15 +47,4 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: mainFillColor,
     },
-    header: {
-        color: mainColor,
-        fontSize: 32, 
-        marginTop: 10,
-    },
-    body: {
-        marginTop: 10,
-    },
-    link: {
-          color: 'blue'
-    }
 })

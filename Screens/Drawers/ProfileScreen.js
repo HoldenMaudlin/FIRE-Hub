@@ -1,18 +1,18 @@
+// Screen NOT used in current build
+
+// Package Imports
 import React, {Component} from "react"
 import {
   View,
   Text,
   StyleSheet,
 } from 'react-native';
-
-import { 
-  Header,
-  Left,
-  Icon,
-} from 'native-base';  
+// Custom imports  
 import { mainFillColor } from "../../Styles/ColorConstants";
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 
+// DESC:
+// Profile screen placeholder
 class ProfileScreen extends Component {
   render() {
       return(

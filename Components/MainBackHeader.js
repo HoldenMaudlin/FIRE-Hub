@@ -1,22 +1,26 @@
+// Package imports
 import React, {Component} from 'react'
-
 import { Text, StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
-import { mainColor, mainHeaderText } from '../Styles/ColorConstants';
 import { Icon }  from 'react-native-elements'
 import { Header, Left, Button, Body, Right, Title } from 'native-base'
-
 import Overlay from 'react-native-modal-overlay';
 
+// Style Imports
+import { mainColor, mainHeaderText } from '../Styles/ColorConstants';
 
+// DESC:
+// Header for screens more than one deep in a stack
 class MainBackHeader extends Component {
     constructor(props) {
         super(props)
 
+        // Controls visiblity of overlay
         this.state = {
             helpVisible: false,
         }  
     }
 
+    // Closes overlay
     onClose = () => this.setState({ helpVisible: false});
 
     render() {
@@ -61,10 +65,12 @@ class MainBackHeader extends Component {
 export default MainBackHeader
 
 const styles = StyleSheet.create({
+    // Got it button text
     buttonText: {
         fontSize: 20,
         color: 'white',
     },
+    // got it button container
     buttonContainer: {
         height: 40,
         width: 80,

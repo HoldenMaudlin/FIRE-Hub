@@ -1,3 +1,6 @@
+// Screen NOT IN USE
+// Screen will be added in next version of App
+
 import React, {Component} from "react"
 import {
   View,

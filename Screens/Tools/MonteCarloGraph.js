@@ -1,6 +1,7 @@
+// Package imports
 import React, {Component} from 'react'
 import { YAxis, Grid, LineChart } from 'react-native-svg-charts'
-import { Rect, Line, Circle } from 'react-native-svg'
+import { Rect, Line } from 'react-native-svg'
 import { 
     View, 
     Text, 
@@ -10,19 +11,20 @@ import {
     TouchableOpacity,
     ActivityIndicator,
 } from 'react-native'
-
-import HelpView from '../../Components/HelpView'
-import { MCstateKeys } from '../../Components/Constants/InputKeys'
-import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
-import MainBackHeader from '../../Components/MainBackHeader'
-import { _createMonteCarloData } from '../../Components/Functions/MonteCarlo'
-import { MaskService } from 'react-native-masked-text'
 import { 
     Table, 
     Row 
 } from 'react-native-table-component';
 import Collapsible from 'react-native-collapsible'
 import DataTable from '../../Components/DataTable'
+
+// Custom imports
+import HelpView from '../../Components/HelpView'
+import { MCstateKeys } from '../../Components/Constants/InputKeys'
+import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
+import MainBackHeader from '../../Components/MainBackHeader'
+import { _createMonteCarloData } from '../../Components/Functions/MonteCarlo'
+import { MaskService } from 'react-native-masked-text'
 
 
 class MonteCarloGraph extends Component {
@@ -33,6 +35,7 @@ class MonteCarloGraph extends Component {
       this.state = {
         didMount: false,
 
+        // Data holders
         data: [],
         graphData1: [],
         graphData2: [],
@@ -43,11 +46,13 @@ class MonteCarloGraph extends Component {
         tableData3: [],
         dataTableYears: 0,
 
+        // Input holders
         dataLoaded: false,
         graphLoaded: false,
         sims: '',
         length: '',
 
+        // Graph vars
         lineX: 5 ,
         lineXindex: 0,
         graphMin: 0,
@@ -61,8 +66,10 @@ class MonteCarloGraph extends Component {
         header: null
     }       
 
+    // Loads the data on mount
     componentDidMount() {
         this.getAsyncData().then((values) => {
+            // run simulation
             var data = _createMonteCarloData(values[0], values[1], values[2], values[3], values[4], values[5])
             this.setState({sims: values[4], length: values[5]})
             this.setState({data: data, graphData1: data[0], graphData2: data[1], graphData3: data[2]})
@@ -70,12 +77,15 @@ class MonteCarloGraph extends Component {
             var tableData2 = []
             var tableData3 = []
             var dataTableYears = []
+           
+            // Populate table data
             for (var i = 11; i < this.state.graphData1.length + 11; i += 12) {
                 tableData1.push(MaskService.toMask('money', this.state.graphData1[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
                 tableData2.push(MaskService.toMask('money', this.state.graphData2[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
                 tableData3.push(MaskService.toMask('money', this.state.graphData3[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
                 dataTableYears.push((i - 11)/12 + 1)  
             }
+            // Set all relevant state
             this.setState({tableData1: tableData1, tableData2: tableData2, tableData3: tableData3, dataTableYears: dataTableYears})
             this.setState({graphMin: Math.min.apply(Math, this.state.graphData1)})
             this.setState({graphMax: Math.max.apply(Math, this.state.graphData3)})
@@ -83,6 +93,7 @@ class MonteCarloGraph extends Component {
         })
     }
 
+    // Function to away retrieval of all async data by returning promise
     getAsyncData= async() => {
         var promises = []
         for (var i = 0; i < MCstateKeys.length; i++) {
@@ -93,6 +104,7 @@ class MonteCarloGraph extends Component {
         return Promise.all(promises)
     }
 
+    // Math to interpolate user press and find closest index
     handlePress = (evt, data, x) => {
         var val = Math.floor(data.length * evt.nativeEvent.locationX/(x(data.length - 1)))
         if (val > data.length - 1) val = data.length - 1;

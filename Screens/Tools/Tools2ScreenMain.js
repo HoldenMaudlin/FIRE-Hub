@@ -1,3 +1,4 @@
+// Package imports
 import React, {Component} from "react"
 import {
   View,
@@ -8,14 +9,16 @@ import {
   TouchableOpacity,
   AsyncStorage
 } from 'react-native';
-import { BEstateKeys, T2AmountKey, T2Inv1ReturnKey, T2Inv1FeeKey, T2Inv2ReturnKey, T2Inv2FeeKey, T2TaxKey } from "../../Components/Constants/InputKeys";
-import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
 
+// Custom imports
+import { BEstateKeys, T2AmountKey, T2Inv1ReturnKey, T2Inv1FeeKey, T2Inv2ReturnKey, T2Inv2FeeKey, T2TaxKey } from "../../Components/Constants/InputKeys";
 import InputBox from '../../Components/InputBox'
 import MainBackHeader from '../../Components/MainBackHeader'
 import InputBoxHeader from '../../Components/InputBoxHeader';
 import HelpView from '../../Components/HelpView'
 import { amountDescription, curInvRetDescription, curInvFeesDescription, potInvRetDescription, potInvFeesDescription, expectedTaxesDescription } from "../../Components/Constants/InputDescriptions";
+
+// Style imports
 
 var { height, width } = Dimensions.get('window')
 
@@ -27,6 +30,8 @@ class Tool2ScreenMain extends Component {
       
     this.state = {
         warningText: '',
+
+        // Input vars
         amount: '',
         returns1: '',
         fees1: '',
@@ -36,10 +41,12 @@ class Tool2ScreenMain extends Component {
       }
   }
 
+  // Hides default header
   static navigationOptions = {
       header: null
   }
   
+  // Retrieve data from storage
   componentDidMount() {
     BEstateKeys.forEach((item) => {
       AsyncStorage.getItem(item.asyncKey).then((value) => {
@@ -51,6 +58,7 @@ class Tool2ScreenMain extends Component {
     this.setState({didMount: true})
   }
 
+  // Update stored values based on user input
   _updateAsyncValues() {
     BEstateKeys.forEach((item) => {
       AsyncStorage.setItem(item.asyncKey, this.state[item.stateKey] + '')
@@ -72,6 +80,7 @@ class Tool2ScreenMain extends Component {
     })
   }
 
+   // Regulate navigation logic on user press butotn
    _onPressButton(){ 
     this._updateAsyncValues()
     this._updateStateValues()
@@ -100,6 +109,7 @@ class Tool2ScreenMain extends Component {
     }
   }
 
+  // Ensures data is safe to pass to graph
   _checkInputLogic() {
     if (parseFloat(this.state.returns1) - parseFloat(this.state.fees1) < parseFloat(this.state.returns2) - parseFloat(this.state.fees2)) {
       return true;

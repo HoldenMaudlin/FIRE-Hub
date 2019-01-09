@@ -1,11 +1,16 @@
+// Package imports
 import React, { Component } from 'react'
 import {
     View,
     Text,
     StyleSheet,
 } from 'react-native'
+
+// Style imports
 import { mainColor } from '../Styles/ColorConstants';
 
+// DESC:
+// Header for a category on input screen
 export default class InputBoxHeader extends Component {
     render() {
         return(
@@ -26,6 +31,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end'
     },
+    // Title style
     textStyle: {
         fontSize: 18,
         color: mainColor,

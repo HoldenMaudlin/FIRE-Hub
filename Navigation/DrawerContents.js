@@ -1,3 +1,4 @@
+// Package imports
 import React, { Component } from 'react'
 import {
     View,
@@ -9,13 +10,19 @@ import {
     Text,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
+
+// Style imports
 import { mainColor, mainAccentColor } from '../Styles/ColorConstants';
 
+
+// DESC:
+// This component is the UI for the drawer navigation
 class DrawerContents extends Component {
     constructor(props) {
-        super(props)
+        super(props)   
         
         this.state ={
+            // Track active tab to highlight tab on ress 
             toolsActive: true,
             linksActive: false,
             aboutFIREActive: false,
@@ -23,6 +30,7 @@ class DrawerContents extends Component {
         }
     }
 
+    // Function to regulate navigation and adjust active state
     navigateToScreen( route, stateKey ){
         this.props.navigation.navigate(route);
         for (item in this.state) {
@@ -37,10 +45,12 @@ class DrawerContents extends Component {
     render() {
         return (
             <SafeAreaView style={{flex: 1,}}>
+                {/* Top of contianer including FIREHub Logo and Title*/}
                 <View style={styles.imageContainer}>
                     <Image source={require('../assets/flamemint.png')} style={{height: 120, width: 120, borderRadius: 60}} />
                 </View>
                 <Text style={styles.headText}>FIRE Hub</Text>
+                {/* Drawer Contents */}
                 <ScrollView>
                     <TouchableOpacity onPress={() => this.navigateToScreen('Tools', 'toolsActive')} style={styles.linkContainer}>
                         <Icon color={this.state.toolsActive ? mainColor : 'black'} name='calculator' type='material-community'/>
@@ -67,12 +77,15 @@ class DrawerContents extends Component {
 
 export default DrawerContents
 
+// Styling
 const styles = StyleSheet.create({
+    // Holds FIREHub Logo
     imageContainer: {
         height: 150,
         justifyContent: 'center',
         alignItems: 'center',
     },
+    // Holds the drawer links
     linkContainer: {
         paddingLeft: 10,
         height: 50,
@@ -80,10 +93,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
     },
+    // Styles drawer links
     linkText: {
         fontSize: 16,
         marginLeft: 20,
     },
+    // FIRE Hub title
     headText: {
         textAlign: 'center',
         color: mainColor,

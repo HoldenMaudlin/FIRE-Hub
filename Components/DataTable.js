@@ -1,3 +1,4 @@
+// Package imports
 import React, { Component } from 'react'
 import {
     StyleSheet,
@@ -5,13 +6,15 @@ import {
 } from 'react-native'
 import { 
     Table, 
-    TableWrapper,
     Cols,
-    Rows,
     Row 
 } from 'react-native-table-component';
+
+// Style imports
 import { mainColor, mainFillColor } from '../Styles/ColorConstants';
 
+// DESC:
+// Displays graph data in a data table to screen
 class DataTable extends Component {
     constructor(props) {
         super(props)
@@ -40,6 +43,7 @@ const styles = StyleSheet.create({
         margin: 10,
         marginBottom: 20,
     },
+    // Styles header
     headStyle: {
         height: 30,
     },
@@ -49,6 +53,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '500',
     },
+    // Styles columns
     columnStyle: {
         alignItems: 'center',
         justifyContent: 'center'

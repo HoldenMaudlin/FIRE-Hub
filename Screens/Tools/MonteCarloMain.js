@@ -14,11 +14,9 @@ import { _createMonteCarloData } from '../../Components/Functions/MonteCarlo'
 import { totalSpendingDescription, ageDescription, incomeDescription, assetsDescription, returnsDescription, simsDescription, lengthDescription } from '../../Components/Constants/InputDescriptions'
 import DismissKeyboardView from '../../Components/DismissKeyboardView'
 import { mainColor, mainHeaderText, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
-import { Tool1Name } from '../../Components/Constants/ToolNames'
 import InputBox from '../../Components/InputBox'
 import InputBoxHeader from '../../Components/InputBoxHeader'
 import HelpView from '../../Components/HelpView'
-import { incomeIconName } from '../../Components/Constants/IconNames'
 import MainBackHeader from '../../Components/MainBackHeader';
 
 

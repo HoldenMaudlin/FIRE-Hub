@@ -1,3 +1,4 @@
+// Package imports
 import React, { Component } from 'react'
 import {
     View,
@@ -8,27 +9,35 @@ import {
     TouchableOpacity,
     Dimensions
 } from 'react-native'
+
+// Style imports
 import { mainAccentColor, mainFillColor } from '../Styles/ColorConstants';
 
 var {height, width} = Dimensions.get('window')
 
+
+// DESC:
+// Content box to be used by Books and Podcasts
 class ContentBox extends Component {
     constructor(props) {
         super(props)
     
     }
 
+    // Opens selected piece of content
     _onPressContent(URL){
         Linking.openURL(URL).catch(error =>
             console.log("Error opening content link: ", error)
         )
     }
 
+    // Trims Author and Titles to prevent overflow
     _trimString(string){
         return string.split(/[|:-@--]/)[0]
     }
 
     render(){
+        // Trim the author and title
         var name = this._trimString(this.props.name)
         var author = this._trimString(this.props.author)
         return(
@@ -72,6 +81,7 @@ const styles = StyleSheet.create({
         width: width,
         padding: 20,
     },
+    // Main tile
     tileContainer: {
         flex: 1,
         borderRadius: 10,
@@ -81,6 +91,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 10,
     },
+    // Image holder
     imageContainer: {
         flex: 3,
         borderTopLeftRadius: 10,
@@ -89,6 +100,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
+    // Holds title and author
     titleContainer: {
         flex: -1,
         marginLeft: 20,
@@ -97,6 +109,7 @@ const styles = StyleSheet.create({
         borderBottomColor: mainAccentColor,
         paddingTop: 5,
     },
+    // Holds description
     descContainer: {
         flex: 2,
         padding: 20,

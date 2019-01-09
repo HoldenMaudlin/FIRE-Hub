@@ -1,34 +1,26 @@
+// Package imports
 import React from 'react'
-import {ScrollView, SafeAreaView, View, Image} from 'react-native'
+import { createDrawerNavigator  } from 'react-navigation'
 
-import { createDrawerNavigator, DrawerItems } from 'react-navigation'
-
-import SettingsScreen from '../Screens/Drawers/SettingsScreen'
+// Screen imports
+import DisclaimerScreen from '../Screens/Drawers/DisclaimerScreen'
 import AboutFIREScreen from '../Screens/Drawers/AboutFIREScreen'
 import ToolsNavigator from '../Navigation/ToolsNavigation'
 import LinksTabNavigator from '../Navigation/LinksTabNavigation'
 import DrawerContents from '../Navigation/DrawerContents'
 
-
-const CustomDrawerComponent = (props) => (
-    <SafeAreaView style ={{flex: 1}}>
-        <View style={{height:150, justifyContent: 'center', alignItems: 'center'}}>
-            <Image source={require('../assets/flamer.png')} style={{height: 120, width: 120, borderRadius: 60}} />
-        </View>
-        <ScrollView>
-            <DrawerItems {...props}/>
-        </ScrollView>
-    </SafeAreaView>
-)
-
+// Main drawer navigator for app
+// Acessible from menu item or dragging from left anywhere in app
 const MainDrawerNavigator = createDrawerNavigator({
+    // Navigation config for the navigator
     Tools: {
         screen: ToolsNavigator,
     },
     Links: LinksTabNavigator,
     AboutFIRE: AboutFIREScreen,
-    Disclaimer: SettingsScreen,
+    Disclaimer: DisclaimerScreen,
 },{
+    // Styling for the drawer slide out component
     contentComponent: ({ navigation }) => (
         <DrawerContents navigation={navigation} />
       ),

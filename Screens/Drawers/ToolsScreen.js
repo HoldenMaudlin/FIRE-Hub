@@ -1,4 +1,4 @@
-// Base React imports
+// Package Imports
 import React, {Component} from "react"
 import {
   View,
@@ -11,25 +11,20 @@ import {
   Linking
 } from 'react-native';
 
-import {
-    Header,
-    Left,
-    Title
-} from 'native-base'
-
-// My component imports
-import { mainColor, mainHeaderText, mainFillColor, mainAccentColor } from '../../Styles/ColorConstants'
+// Custom imports
 import { BFDescription, AFDescription, BEDescription, MCDescription } from '../../Components/Constants/InputDescriptions'
 import { Icon } from 'react-native-elements'
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 import HelpView from '../../Components/HelpView'
 
-var {height, width} = Dimensions.get('window')
+// Style imports
+import { mainColor, mainFillColor, mainAccentColor } from '../../Styles/ColorConstants'
 
 class ToolsScreen extends Component {
   
     constructor() {
         super()
+        // Tracks which view of button to show
         this.state = {
             desc1Vis: false,
             desc2Vis: false,
@@ -38,31 +33,25 @@ class ToolsScreen extends Component {
         }
     }
 
-    _onPressHelp(){
-        this.props.navigation.navigate()
-    }
-    
+    // Prevents default header
+    static navigationOptions = {
+        header: null,
+    };
+
+    // Contact Me email function
     _onPressEmail() {
         Linking.openURL("mailto:FIREHubMobileApp@gmail.com?subject=FIRE Hub Suggestion")
     }
     
-    static navigationOptions = {
-        header: null,
-    };
-  
+    // Navigate to screen based on user touch
     _onPressButton(screen){
         this.props.navigation.navigate(screen)
     }
 
+    // Show the description for a tool
     _onLongPressButton(stateKey){
         this.setState({[stateKey]: !this.state[stateKey]})
     }
-
-    _addOpacity(rgbString, opacity) {
-        var temp = rgbString.split('(')[0] + 'a(' + rgbString.split(')')[0].split('(')[1] + "," + opacity + ")"
-        console.log(temp)
-        return temp
-      }
 
     render() {
         // Information to be passed to the Tools Help Screen
@@ -73,6 +62,10 @@ class ToolsScreen extends Component {
             { key: 4, icon: 'gesture-double-tap', iconType: 'material-community', text: "Hold a tool box to see a brief description of the tool!",},
         ]
         var helpView = <HelpView helpLines={helpLines}/>
+
+        // Load views based on state of tool
+        // Default will display tool name
+        // User can switch view by long pressing
         if (!this.state.desc1Vis) {
             var BFButton  =                
             <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'Tool1Main')} onLongPress={this._onLongPressButton.bind(this, 'desc1Vis')}>

@@ -1,34 +1,31 @@
+// Pacakge imports
 import React, {Component} from 'react'
-import { Animated, View, StyleSheet } from 'react-native'
+import { 
+     View, 
+     StyleSheet 
+    } from 'react-native'
 import { Icon } from 'react-native-elements'
+
+// Style imports
 import { mainColor, mainAccentColor } from '../Styles/ColorConstants';
 
-
+// DESC:
+// Icon component for Link Bottom Tab Navigator
 class BottomTabIcon extends Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            animation: new Animated.Value(0)
-        }
     }
     
     render() {
-
-        const spin = this.state.animation.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '180deg'],
-        })
-
         return (
-            <Animated.View style={[styles.iconContainer, {transform: [{rotate: spin}]}]} >
+            <View style={styles.iconContainer} >
                 <Icon 
                     name = {this.props.name}
                     type = {this.props.type}
                     color = {this.props.focused ? mainColor : mainAccentColor}
                     size = {24}
                 />
-            </Animated.View>
+            </View>
         )
     }
 }

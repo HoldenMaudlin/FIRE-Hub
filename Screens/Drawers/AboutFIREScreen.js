@@ -1,3 +1,4 @@
+// Package Imports
 import React, {Component} from "react"
 import {
   View,
@@ -6,17 +7,13 @@ import {
   ScrollView,
   Linking
 } from 'react-native';
-import { Icon } from 'react-native-elements'
+// Custom Imports
 import { mainFillColor, mainColor, mainAccentColor } from "../../Styles/ColorConstants";
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 
+// DESC:
+// Simple text based screen to display information about FIRE to user
 class AboutFIREScreen extends Component {
-    
-    static navigationOptions = {
-        drawerIcon: ({tintColor}) => (
-             <Icon name = 'information-outline' type='material-community' color={tintColor}/>
-        )
-    }
 
     _onPressLink(link) {
         Linking.openURL(link)
@@ -37,8 +34,13 @@ class AboutFIREScreen extends Component {
                         <Text style={[styles.body, {marginBottom: 10}]}>To decrease the time to retirement, you can increase your earning potential or decrease the amount you spend. Or, better yet, you can do both!</Text>
                         <Text style={styles.header}>Necessity for FIRE</Text>
                         <Text style={styles.body}>As this app does not transmit data, the main security concern is someone acessing this app without your consent. Because of this, a PIN Code feature, Touch ID, and Face ID support is coming soon!</Text>
+                        <Text style={styles.header}>Resources for FIRE</Text>
+                        <Text style={styles.body}>This app has a wide collection financial books and podcasts. Not all of these resources will be perfect for every person. I encourage you to browse the resources and listen or read to what you feel will help on your FIRE path.</Text>
+                        <Text>
+                            <Text style={[styles.body, {marginBottom: 10}]}>There are also many great blogs that can serve as great resources including</Text><Text style={styles.link} onPress={()=> this._onPressLink('http://www.mrmoneymustache.com')}> Mr. Money Mustache</Text>
+                        </Text>
                         <Text style={{textAlign: 'center', marginTop: 20}}>
-                            <Text style={{color: mainAccentColor}}>Have a suggestion? Email me at </Text><Text onPress={() => this._onPressLink()} style={{color: mainColor, textDecorationLine: 'underline'}}>FIREHubMobileApp@gmail.com</Text>
+                            <Text style={{color: mainAccentColor}}>Have a suggestion? Email me at </Text><Text onPress={() => this._onPressLink('mailto:FIREHubMobileApp@gmail.com?subject=Fire Hub Suggestion')} style={styles.link}>FIREHubMobileApp@gmail.com</Text>
                         </Text>
                     </View>
                 </ScrollView>
@@ -49,25 +51,30 @@ class AboutFIREScreen extends Component {
 
 export default AboutFIREScreen;
 
-
+// Style sheet for screen
 const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: mainFillColor,
     },
+    // Main text view
     contentContainer: {
         flex: 1,
         padding: 15,
     },
+    // Section title style
     header: {
         color: mainColor,
         fontSize: 22, 
         marginTop: 10,
     },
+    // Main text style
     body: {
       marginTop: 10,
     },
+    // HyperLink style
     link: {
-        color: 'blue'
-    }
+        color: mainColor, 
+        textDecorationLine: 'underline'
+    },
   })

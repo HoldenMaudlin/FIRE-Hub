@@ -1,19 +1,26 @@
+// Package imports
 import React, {Component} from 'react'
 import Overlay from 'react-native-modal-overlay';
 import { Text, View, TouchableWithoutFeedback, StyleSheet } from 'react-native'
-import { mainColor, mainHeaderText } from '../Styles/ColorConstants';
 import { Icon }  from 'react-native-elements'
 import { Header, Left, Button, Body, Right, Title } from 'native-base'
 
+// Style imports
+import { mainColor, mainHeaderText } from '../Styles/ColorConstants';
+
+// DESC:
+// Header for screens with direct access to open main drawer
 class MainDrawerHeader extends Component {
     constructor(props) {
         super(props)
 
+        // Controls visibility of help screen overlay
         this.state = {
             helpVisible: false,
         }  
     }
 
+    // Function to close help screen
     onClose = () => this.setState({ helpVisible: false});
 
     render() {
@@ -26,7 +33,7 @@ class MainDrawerHeader extends Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Title style={{ color: mainHeaderText, fontSize: 20, fontWeight: 'normal' }}>{this.props.title}</Title>
+                        <Title style={styles.titleText}>{this.props.title}</Title>
                     </Body>
                     <Right>  
                         <Button transparent style={{paddingLeft: 5}} onPress = {() => this.setState({helpVisible: true})}  >
@@ -57,10 +64,12 @@ class MainDrawerHeader extends Component {
 export default MainDrawerHeader
 
 const styles = StyleSheet.create({
+    // Got It button text
     buttonText: {
         fontSize: 20,
         color: 'white',
     },
+    // Got It help screen button container
     buttonContainer: {
         height: 40,
         width: 80,
@@ -70,5 +79,11 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    // Page title style
+    titleText: {
+        color: mainHeaderText, 
+        fontSize: 20, 
+        fontWeight: 'normal'
     }
 })

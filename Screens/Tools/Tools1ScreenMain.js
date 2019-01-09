@@ -11,12 +11,9 @@ import {
 } from 'react-native'
 import { T1AgeKey, incomeKey, targetKey, spendKey, assetKey, BFstateKeys } from '../../Components/Constants/InputKeys'
 import { ageDescription, incomeDescription, assetsDescription, totalSpendingDescription, targetDescription } from '../../Components/Constants/InputDescriptions'
-import DismissKeyboardView from '../../Components/DismissKeyboardView'
 import { mainColor, mainHeaderText, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
-import { Tool1Name } from '../../Components/Constants/ToolNames'
 import InputBox from '../../Components/InputBox'
 import HelpView from '../../Components/HelpView'
-import { incomeIconName } from '../../Components/Constants/IconNames'
 import MainBackHeader from '../../Components/MainBackHeader';
 import { _stringToInt } from '../../Components/Functions/ParseNumber'
 

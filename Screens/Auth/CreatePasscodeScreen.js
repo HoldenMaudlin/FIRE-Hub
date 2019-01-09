@@ -1,16 +1,22 @@
+// Screen NOT IN USE in current build
+
+// Package imports
 import React, {Component} from "react"
 import {
   View,
-  Text,
   StyleSheet,
-  Button,
   AsyncStorage,
-  TextInput,
 } from 'react-native';
-import MainBackHeader from '../../Components/MainBackHeader'
-import { mainFillColor } from "../../Styles/ColorConstants";
 import PINCode from '@haskkor/react-native-pincode'
 
+// Custom Imports
+import MainBackHeader from '../../Components/MainBackHeader'
+
+// Style imports
+import { mainFillColor } from "../../Styles/ColorConstants";
+
+// DESC:
+// Screen allowing user to enter and confirm PINcode
 class CreatePasscodeScreen extends Component {
   constructor(props) {
     super(props)
@@ -27,6 +33,7 @@ class CreatePasscodeScreen extends Component {
     this.setState({passcode: value})
   }
 
+  // Stores pin locally to user's deivce
   _storePin = async(pin) => {
     try {
       await AsyncStorage.setItem('UserPin', pin)

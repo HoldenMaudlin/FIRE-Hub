@@ -1,3 +1,4 @@
+// Package Imports
 import React, {Component} from "react"
 import {
   View,
@@ -5,18 +6,17 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { 
-    Header,
-    Left,
-    Icon,
-  } from 'native-base';  
+
+// Custom Imports
 import HelpView from '../../Components/HelpView'
-import { mainFillColor, mainAccentColor, mainColor } from "../../Styles/ColorConstants";
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 import { _fetchAPI } from '../../Components/Functions/FetchAPI'
 import ContentBox from '../../Components/ContentBox'
 import GenreButton from '../../Components/GenreButton'
 import { ScrollView } from "react-native-gesture-handler";
+
+// Style imports
+import { mainFillColor, mainAccentColor, mainColor } from "../../Styles/ColorConstants";
 
 // URL constants and blocks to fetch JSON data from iTunes API
 const featuredURL = 'https://itunes.apple.com/lookup?id=540593710,1187770032,1276912032,896153632'
@@ -39,6 +39,8 @@ const genreKeys = {
     shopping: 'shoppingData'
 }
 
+// DESC:
+// This screen displays tiles of podcasts based on a user selected genre
 class PodcastsScreen extends Component {
     constructor() {
         super()

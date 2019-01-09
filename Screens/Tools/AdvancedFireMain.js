@@ -65,6 +65,7 @@ export default class AdvancedFireMain extends Component {
     }
 
     componentDidMount() {
+        // Retrieves previously entered values
         AFstateKeys.forEach((item) => {
             AsyncStorage.getItem(item.asyncKey).then((value) => {
                 if (value !== null) {
@@ -86,6 +87,7 @@ export default class AdvancedFireMain extends Component {
         this._updateAsyncValues()
     }
 
+    // Update components state values
     _updateStateValues() {
         AFstateKeys.forEach((item) => {
             AsyncStorage.getItem(item.asyncKey).then((value) => {
@@ -97,6 +99,7 @@ export default class AdvancedFireMain extends Component {
         })
     }
 
+    // Regulate navigation after pressing button
     _onPressButton(){ 
         this._updateStateValues()
         this._updateAsyncValues()
@@ -116,9 +119,11 @@ export default class AdvancedFireMain extends Component {
         }
     } 
 
+    // updates state callback function
     _setState = (value, stateKey) => {
         this.setState({[stateKey]: value})
     }    
+
     // Navigation Logic
     _checkIfEmpty () {
         if (this.state.age === '' || this.state.assets === '' || this.state.income === '' || this.state.spend === '' || this.state.target === '' || this.state.incomeGrowth === '' 
@@ -129,6 +134,7 @@ export default class AdvancedFireMain extends Component {
         }
     }
 
+    // Ensures user hasn't hit goal 
     _checkInputLogic() {
         if (_stringToInt(this.state.assets) > _stringToInt(this.state.target)) {
             return true
@@ -137,6 +143,7 @@ export default class AdvancedFireMain extends Component {
         }
     }
 
+    // Ensures portfoilo adds up to 100%
     _checkPortfolioAlloc() {
         if (parseInt(this.state.cash) + parseInt(this.state.stocks) + parseInt(this.state.bonds) !== 100) {
             return true

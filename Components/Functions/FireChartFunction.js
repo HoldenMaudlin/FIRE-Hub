@@ -13,6 +13,7 @@ export function _createFireGraph( age, assets, income, spend, target ) {
     var savings = assets;
     var data = [];
 
+    // Until target is reached, grow portfolio
     while ( savings < target ) {
         principal += ( income - spend );
         savings *= 1.07;
@@ -44,6 +45,8 @@ stockAlloc, bondAlloc, cashAlloc, stockReturns, bondReturns) {
     if (cashAlloc !== undefined) { cashAlloc = _stringToInt(cashAlloc) };
     if (stockReturns !== undefined) { stockReturns = parseFloat(stockReturns) };
     if (bondReturns !== undefined) { bondReturns = parseFloat(bondReturns) };
+    
+    // Declare additonal varialbes
     var bondSavings = assets * bondAlloc / 100;
     var stockSavings = assets * stockAlloc / 100;
     var cashSavings = assets * cashAlloc / 100;
@@ -51,6 +54,7 @@ stockAlloc, bondAlloc, cashAlloc, stockReturns, bondReturns) {
     var principal = assets;
     var data = [];
 
+    // Until target is reached, iterate the portfolio, apply growth and savings
     while (savings < target) {
         bondSavings *= ( 1 + bondReturns/100 );
         stockSavings *= ( 1 + stockReturns/100 );
@@ -73,7 +77,7 @@ stockAlloc, bondAlloc, cashAlloc, stockReturns, bondReturns) {
     return data;
 }
 
-
+// Break even function to determine when one investment will surpass another
 export function _createInvestment1Line(amount, returns1, fees1, returns2, fees2, taxes) {
     // Convert inputs from strings to numbers
     if (amount !== undefined) { amount = _stringToInt(amount) };

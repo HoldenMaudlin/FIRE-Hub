@@ -1,14 +1,18 @@
+// Package imports
 import React from 'react'
 import { createBottomTabNavigator } from 'react-navigation'
-import { Icon } from 'react-native-elements'
 
+// Custome Imports
 import BottomTabIcon from '../Components/TabBarIcon'
 import BooksScreen from '../Screens/Links/BooksScreen'
 import RedditScreen from '../Screens/Links/RedditScreen'
 import PodcastsScreen from '../Screens/Links/PodcastsScreen'
+
+// Style imports
 import { mainColor, mainAccentColor } from '../Styles/ColorConstants';
  
-
+// DESC:
+// Bottom Tab Navigator for the Links Tool
 const LinksTabNavigator = createBottomTabNavigator ({
       Reddit:{
         screen: RedditScreen,
@@ -37,6 +41,7 @@ const LinksTabNavigator = createBottomTabNavigator ({
       },
     },
     {
+      // Highlights actie tab
       tabBarOptions: {
         activeTintColor: mainColor,
         inactiveTintColor: mainAccentColor,

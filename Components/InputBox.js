@@ -1,14 +1,20 @@
+// Package Imports
 import React, {Component} from 'react'
-import Dialog, { DialogContent } from 'react-native-popup-dialog'
 import { View, Text, TouchableOpacity, StyleSheet, AsyncStorage, Dimensions } from 'react-native'
-import { mainAccentColor, mainColor, mainFillColor } from '../Styles/ColorConstants'
 import { Icon }  from 'react-native-elements'
 import { TextInput } from 'react-native-gesture-handler'
 import DismissKeyboardView from './DismissKeyboardView'
 import Collapsible from 'react-native-collapsible'
 import { TextInputMask } from 'react-native-masked-text'
+
+// Style imports
+import { mainAccentColor, mainColor, mainFillColor } from '../Styles/ColorConstants'
 var {height, width} = Dimensions.get('window')
 
+// DESC:
+// Input box component used on all main tool screens
+// Allows user input of variables
+// Adjustable mask, precision, and maxiumum value
 class InputBox extends Component {
     constructor(props) {
       super(props)

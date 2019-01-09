@@ -1,33 +1,26 @@
 import React, {Component} from "react"
 import {
   View,
-  Text,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  Linking,
   ActivityIndicator,
-  Animated,
-  Easing,
-  Dimensions
 } from 'react-native';
 
+// Custom Imports
 import RedditBox from '../../Components/RedditBox'
-
-import { Icon } from 'react-native-elements'
 import HelpView from '../../Components/HelpView'
-import MainDrawerHeader from "../../Components/MainDrawerHeader";
+import MainDrawerHeader from "../../Components/MainDrawerHeader"
 import { _fetchAPI } from '../../Components/Functions/FetchAPI'
-import { mainAccentColor, mainColor, mainFillColor } from "../../Styles/ColorConstants";
-import Collapsible from 'react-native-collapsible'
 
-var {height, width } = Dimensions.get('window')
+// Styling imports
+import { mainAccentColor, mainColor, mainFillColor } from "../../Styles/ColorConstants"
 
+// URL to fetch data from
 const fiURL = 'https://www.reddit.com/r/financialindependence.json'
 const dataStateKey = 'data'
 
-//const AnimatedRedditBox = Animated.createAnimatedComponent(RedditBox)
-
+// DESC:
+// Main screen which loads and displays posts from reddit.com/r/financialindependence
 class RedditScreen extends Component {
     
   constructor(props) {
@@ -37,6 +30,7 @@ class RedditScreen extends Component {
     }
   }
   
+  // Fetch the data
   componentDidMount(){
     _fetchAPI.bind(this)(fiURL, dataStateKey);
   }

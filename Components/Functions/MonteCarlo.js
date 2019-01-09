@@ -1,4 +1,10 @@
+/*
+Monte Carlo Simulation:
+
+*/
+
 import { _stringToInt } from '../Functions/ParseNumber'
+
 
 function _getDistributedList(n, mean, sd) {
     var list = _randomList(n, 0, 1)
@@ -6,6 +12,7 @@ function _getDistributedList(n, mean, sd) {
     return newList
 }
 
+// Generate random list with given mean and SD
 function _randomList(n, a, b) {
     // create a list of n numbers between a and b
     var list = [],
@@ -76,10 +83,16 @@ export function _createMonteCarloData( assets, income, spend, returns, sims, len
     returns = parseFloat(returns)
     sims = parseInt(sims) > 10000 ? 10000 : parseInt(sims)
     length = parseInt(length) > 50 ? 50 : parseInt(length)
+    
+    // S&P 500 aerages
     const vol = .144
     const ret = 0.072
+
+    // Iterate by month
     const steps = 12 * length
     const dt = 1/12
+
+    // Constants for brownian motion process
     const sqdt = Math.sqrt(dt)
     const drift = (ret - vol*vol/2) * dt
     const shock = vol * sqdt
@@ -87,18 +100,22 @@ export function _createMonteCarloData( assets, income, spend, returns, sims, len
     var savings = assets + (income - spend);
     var data = []
 
+    // Create & Populate the 2D array
     for (var i = 0; i < sims; i++) {
         data[i] = []
         data[i][0] = savings
     }
     
+    // Iterate through number of months user requested
     for(var m = 1; m < steps ; m++) {
         var rates = []
+        // Gets Brownian generate random numbers
         rates = _getDistributedList(sims, 0, 1);
         for (var k = 0; k < sims; k++) {
             data[k][m] = data[k][m - 1] * (Math.exp(drift + shock * rates[k]))
             data[k][m] += (income - spend) * dt
         }
     }
+    // Returns data after insertion sort is applied
     return _sortData(data, steps - 1);
 }

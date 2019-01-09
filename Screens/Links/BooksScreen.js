@@ -1,28 +1,29 @@
+// Package imports
 import React, {Component} from "react"
 import {
   View,
   Text,
   StyleSheet,
-  Linking,
   ActivityIndicator,
-  TouchableOpacity,
+  ScrollView
 } from 'react-native';
-import { 
-    Header,
-    Left,
-    Icon,
-  } from 'native-base';  
+
+// Custom Imports
 import HelpView from '../../Components/HelpView'
-import { mainFillColor, mainAccentColor, mainColor } from "../../Styles/ColorConstants";
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 import { _fetchAPI, _setState } from '../../Components/Functions/FetchAPI'
 import ContentBox from '../../Components/ContentBox'
 import GenreButton from '../../Components/GenreButton'
-import { ScrollView } from "react-native-gesture-handler";
 
+// Style imports
+import { mainFillColor, mainAccentColor, mainColor } from "../../Styles/ColorConstants";
+
+// URL for iTunes lookup of Featured Books Category
 const featuredURL = 'https://itunes.apple.com/lookup?id=967539199'
+// Base URL for genre categories
 const genreBaseURL = 'https://itunes.apple.com/us/rss/topebooks/genre='
 
+// URL appenders for each genre
 const genreURLS = {
     investing: '10012/json',
     careers: '10010/json',
@@ -31,6 +32,7 @@ const genreURLS = {
     personalFinance: '10008/json',
 }
 
+// Book Genre state keys
 const genreKeys = {
     featured: 'featuredData',
     personalFinance: 'personalFinanceData',
@@ -40,6 +42,8 @@ const genreKeys = {
     leadership: 'leadershipData',
 }
 
+// DESC:
+// This screen displays tiles of books based on a user selected genre
 class BooksScreen extends Component {
     constructor(){
         super()
@@ -84,6 +88,7 @@ class BooksScreen extends Component {
             { key: 4, icon: 'gesture-tap', iconType: 'material-community', text: "Tap a category to change the genre of books!",},
         ]
         var helpView = <HelpView helpLines={helpLines}/>
+        
         // Checks state booleans to determine which JSON data to pass to parsing
         var bookData = []
         for (state in this.state) {
@@ -92,6 +97,7 @@ class BooksScreen extends Component {
             }
         }
 
+        // Parsing for iTunes lookup data for featured genre
         if (!this.state.featured) {
             if (bookData.feed !== undefined) {
                 var books = []
@@ -109,6 +115,7 @@ class BooksScreen extends Component {
                     )
                 }
             }
+        // Parsing for iTunes genre data
         } else {
             if (bookData !== undefined) {
                 var books = []
@@ -126,6 +133,7 @@ class BooksScreen extends Component {
                 }
             }
         }
+        // Returns books once data has been loaded
         if (bookData !== undefined && this.state.mounted) {
             return(
                 <View style = {styles.container}>
@@ -150,6 +158,8 @@ class BooksScreen extends Component {
                     </View>
                 </View>
             )
+
+        // Loading screen while component loads data
         } else {
               return (
                 <View style = {{flex: 1, alignItems: 'center', justifyContent: 'center'}} >
@@ -162,7 +172,7 @@ class BooksScreen extends Component {
 
 export default BooksScreen;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({  
     container: {
         flex: 1,
         backgroundColor: mainFillColor,
@@ -171,6 +181,7 @@ const styles = StyleSheet.create({
         flex: 3.5,
         backgroundColor: mainFillColor,
     },
+    // Category Buttons
     categoryContainer: {
         flex: 1,
         paddingLeft: 30,

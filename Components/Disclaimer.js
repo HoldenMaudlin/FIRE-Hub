@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
       marginTop: 10,
     },
     link: {
-        color: 'blue'
+        color: mainColor, 
+        textDecorationLine: 'underline'
     }
 })

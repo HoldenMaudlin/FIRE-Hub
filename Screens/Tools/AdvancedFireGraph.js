@@ -1,24 +1,15 @@
+// Package imports
 import React, {Component} from 'react'
-import { YAxis, Grid, LineChart } from 'react-native-svg-charts'
-import { Rect, Line, Circle } from 'react-native-svg'
-import * as shape from 'd3-shape'
 import { 
     View, 
     Text, 
     AsyncStorage,
-    Button,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
 } from 'react-native'
-
- import { Left, Header } from 'native-base'
-import HelpView from '../../Components/HelpView'
-import { AFstateKeys } from '../../Components/Constants/InputKeys'
-import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
-import { Tool1Name } from '../../Components/Constants/ToolNames'
-import MainBackHeader from '../../Components/MainBackHeader'
-import { _createAdvancedFireGraph } from '../../Components/Functions/FireChartFunction'
+import { YAxis, Grid, LineChart } from 'react-native-svg-charts'
+import { Rect, Line, Circle } from 'react-native-svg'
 import { MaskService } from 'react-native-masked-text'
 import { 
     Table, 
@@ -27,6 +18,17 @@ import {
 import Collapsible from 'react-native-collapsible'
 import DataTable from '../../Components/DataTable'
 
+// Cusome Imports
+import HelpView from '../../Components/HelpView'
+import { AFstateKeys } from '../../Components/Constants/InputKeys'
+import MainBackHeader from '../../Components/MainBackHeader'
+import { _createAdvancedFireGraph } from '../../Components/Functions/FireChartFunction'
+
+// Style imports
+import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
+
+// DESC: 
+// Retrieves data from Async Storage, Passes it through a function, and displays results to user
 class AdvancedFireGraph extends Component {
 
     constructor(props) {
@@ -35,12 +37,13 @@ class AdvancedFireGraph extends Component {
       this.state = {
         didMount: false,
 
-        age: this.props.navigation.state.age,
-        income: this.props.navigation.state.income,
-        spend: this.props.navigation.state.spend,
-        target: this.props.navigation.state.target,
+        // Input Variables
+        age: '',
+        income: '',
+        spend: '',
+        target: '',
         targetGrowth: '',
-        assets: this.props.navigation.state.assets,
+        assets: '',
         bonds: '',
         stocks: '',
         cash: '',
@@ -49,9 +52,11 @@ class AdvancedFireGraph extends Component {
 
         data: [],
 
+        // Touchable line varables
         lineX: 5 ,
         lineXindex: 0,
 
+        // Data switch regulator
         hideData: true,
     }
 }
@@ -61,6 +66,7 @@ class AdvancedFireGraph extends Component {
     }       
 
     componentDidMount() {
+        // Retrieve user inputs from storage
         AFstateKeys.forEach((item) => {
             AsyncStorage.getItem(item.asyncKey).then((value) => {
                 if(value !== null) {
@@ -72,6 +78,7 @@ class AdvancedFireGraph extends Component {
     }
 
 
+    // handles touching of the graph
     handlePress = (evt, data, x) => {
         var val = []
         data.map((value, index) => {

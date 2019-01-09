@@ -1,22 +1,41 @@
+// Package Imports
 import React from 'react'
-import { LineChart, Path, Grid, YAxis, XAxis } from 'react-native-svg-charts'
-import { Circle, Rect, Line } from 'react-native-svg'
-import { mainColor } from '../../Styles/ColorConstants'
-import { AsyncStorage, View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native'
-import { _createInvestment1Line } from '../../Components/Functions/FireChartFunction'
-import { BEstateKeys } from '../../Components/Constants/InputKeys'
-import { mainFillColor, mainAccentColor } from '../../Styles/ColorConstants';
-import MainBackHeader from '../../Components/MainBackHeader'
+import { 
+    LineChart, 
+    Grid, 
+    YAxis } from 'react-native-svg-charts'
+import { 
+    Circle, 
+    Rect, 
+    Line } from 'react-native-svg'
+import { AsyncStorage, 
+    View, 
+    StyleSheet, 
+    Text, 
+    TouchableOpacity,
+    ScrollView
+} from 'react-native'
 import DataTable from '../../Components/DataTable'
-import { ScrollView } from 'react-native-gesture-handler';
 import { MaskService } from 'react-native-masked-text'
-import HelpView from '../../Components/HelpView'
 import { 
     Table, 
     Row 
 } from 'react-native-table-component';
 import Collapsible from 'react-native-collapsible'
 
+// Custom imports
+import MainBackHeader from '../../Components/MainBackHeader'
+import HelpView from '../../Components/HelpView'
+import { _createInvestment1Line } from '../../Components/Functions/FireChartFunction'
+import { BEstateKeys } from '../../Components/Constants/InputKeys'
+
+// Style imports
+import { mainColor, mainFillColor, mainAccentColor } from '../../Styles/ColorConstants'
+
+
+// DESC:
+// Break even graph component
+// Retrieves, manipulates, then displays data to user
 class Tool2ScreenGraph extends React.PureComponent {
 
     constructor (props) {

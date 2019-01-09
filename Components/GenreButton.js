@@ -1,14 +1,17 @@
+// Package imports
 import React, {Component} from 'react'
 import {
     TouchableOpacity,
     StyleSheet,
-    Dimensions,
     Text,
 } from 'react-native'
+
+// Style imports
 import { mainColor, mainFillColor } from '../Styles/ColorConstants';
 
-var { height, width } = Dimensions.get('window')
-
+// DESC:
+// Buttons to switch genre of content on podcast and books screens
+// Adjusts color based on active status
 class GenreButton extends Component {
     constructor(props) {
         super(props)
@@ -25,6 +28,7 @@ class GenreButton extends Component {
 
 export default GenreButton
 
+// Button style
 const styles = StyleSheet.create({
     button: {
         width: 90,
