@@ -4,4 +4,13 @@ npm-debug.*
 *.jks
 *.p12
 *.key
+*.log
+*.lock
+*.watchmanconfig
+*.DS_Store
 *.mobileprovision
+Exponent-2.9.0.app/*
+Exponent-2.9.0.tar.gz
+package-lock.json
+
+

@@ -137,7 +137,7 @@ class ToolsScreen extends Component {
                     {AFButton}
                     {MCButton}
                     {BEButton}
-                    <Text style={{textAlign: 'center', marginTop: 20}}>
+                    <Text style={styles.suggestionText}>
                         <Text style={{color: mainAccentColor}}>Have a suggestion? Email me at </Text><Text onPress={() => this._onPressEmail()} style={{color: mainColor, textDecorationLine: 'underline'}}>FIREHubMobileApp@gmail.com</Text>
                     </Text>
                 </ScrollView>
@@ -229,5 +229,9 @@ const styles = StyleSheet.create({
     backgroundColor: mainColor, 
     borderRadius: 8, 
     marginBottom: 5
+  },
+  suggestionText: {
+    textAlign: 'center', 
+    margin: 20
   }
 })

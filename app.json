@@ -1,14 +1,14 @@
 {
   "expo": {
     "name": "firehub",
-    "description": "This project is really great.",
+    "description": "Visualize your path to retirement!",
     "slug": "firehub",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/flameminticon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,7 +21,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "bundleIdentifier": "com.holdenmaudlin.firehub",
+      "supportsTablet": false,
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["reddit"]
       }

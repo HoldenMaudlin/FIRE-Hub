@@ -19,6 +19,7 @@ import HelpView from '../../Components/HelpView'
 import { amountDescription, curInvRetDescription, curInvFeesDescription, potInvRetDescription, potInvFeesDescription, expectedTaxesDescription } from "../../Components/Constants/InputDescriptions";
 
 // Style imports
+import { mainFillColor, mainColor, mainAccentColor } from '../../Styles/ColorConstants'
 
 var { height, width } = Dimensions.get('window')
 

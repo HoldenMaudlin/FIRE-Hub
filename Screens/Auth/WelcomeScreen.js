@@ -88,7 +88,7 @@ class WelcomeScreen extends Component {
         <View style = {styles.container}>
           <View style = {styles.topContainer}>
             <View style={styles.imageContainer}>
-              <Image source={require('../../assets/flamer.png')} style={{height: 200, width: 200, borderRadius: 100}} />
+              <Image source={require('../../assets/flamemint.png')} style={{height: 200, width: 200, borderRadius: 100}} />
             </View>
           </View>
           <View style={styles.midContainer}>
