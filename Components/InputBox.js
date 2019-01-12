@@ -93,32 +93,32 @@ class InputBox extends Component {
         return (
             <View style={styles.container}>             
                 {/* Entire Input Box*/}
-                <View style = {{height: 60, flexDirection: 'row', alignItems: 'flex-end', marginTop: 5, marginLeft: 10, marginRight: 10}}>
+                <View style = {styles.subContainer}>
                     {/* Text Side of Input Box */}
-                    <View style = {{flex: 1.6, height: 60, flexDirection: 'row', alignItems: 'flex-end', marginBottom: 3}}>
+                    <View style = {styles.titleSide}>
                         {/* Touchable area for text and icon */}
                         <TouchableOpacity onPress = { () => this.setState({collapsed: !this.state.collapsed})} style={{flexDirection: 'row',}}> 
                             {/* Icon box and icon */}
-                            <View style = {{flex: 1, height: 40, justifyContent: 'flex-end'}}> 
+                            <View style = {styles.iconContainer}> 
                                 <Icon name={this.props.iconName} type={this.props.iconType} color={mainColor} size={27} />
                             </View>
                             {/* Text area and text */}
-                            <View style = {{flex: 6, height: 40, justifyContent: 'flex-end' }}>
-                                <Text style={{fontWeight: 'bold', fontSize: 20, color: 'black', paddingLeft: 6,}}> {this.props.name} </Text>
+                            <View style = {styles.titleTextContainer}>
+                                <Text style={styles.titleText}> {this.props.name} </Text>
                             </View>
                         </TouchableOpacity>
                         {/* Pop up box visible when above touchable area is pressed */}
                     </View>
                     {/* Input side of text box*/}
-                    <View style = {{flex: 1, height: 70, marginBottom: 3, flexDirection: 'row', alignItems: 'flex-end'}}> 
+                    <View style = {styles.inputSide}> 
                         {/* Clear button touch area and icon */}
                         <TouchableOpacity 
                             onPress={() => {AsyncStorage.removeItem(this.props.storageKey), this.setState({input: '', inputted: false}), this.props._setState('', this.props.stateKey)}} 
-                            style = {{flex: 1, height: 40, justifyContent: 'flex-end', backgroundColor: 'white'}}>
+                            style = {styles.clearButton}>
                                 <Icon name='clear' color={mainAccentColor}/>
                         </TouchableOpacity>
                         {/* Text input area */}
-                        <View style = {{flex: 3, height: 40, justifyContent: 'center'}}>
+                        <View style = {styles.inputContainer}>
                             {/* Dismisses keyboard on tap outside */}
                             <DismissKeyboardView>
                                 <View>
@@ -129,7 +129,7 @@ class InputBox extends Component {
                     </View>
                 </View>
                 <Collapsible collapsed= {this.state.collapsed}>
-                    <View style={{flex: 1, width: width, backgroundColor: mainFillColor, padding: 4, borderTopWidth: 1, borderTopColor: mainAccentColor}}>
+                    <View style={styles.collapsedContainer}>
                         <Text style={{color: 'black', fontSize: 16}} >{this.props.description} </Text>
                     </View>
                 </Collapsible>   
@@ -141,28 +141,72 @@ class InputBox extends Component {
 export default InputBox
  
 styles = StyleSheet.create({
-
-container: {
-    alignItems: 'stretch', 
-    borderBottomWidth: 1,
-    borderBottomColor: mainAccentColor,
-    }, 
-dialogBoxStyle: {
-    flex: -1,
-    width: 200,
+    // Main Wrapper
+    container: {
+        alignItems: 'stretch', 
+        borderBottomWidth: 1,
+        borderBottomColor: mainAccentColor,
+        }, 
+    // Main Container
+    subContainer: {
+        height: 60, 
+        flexDirection: 'row', 
+        alignItems: 'flex-end', 
+        marginTop: 5, 
+        marginLeft: 10, 
+        marginRight: 10
     },
-dialogTitleStyle: {
-    height: 40,
-    backgroundColor: 'white',
-    borderColor: 'black',
-    borderBottomWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // Title side container 
+    titleSide: {
+        flex: 1.2, 
+        height: 60, 
+        flexDirection: 'row', 
+        alignItems: 'flex-end', 
+        marginBottom: 3
     },
-dialogMainStyle: {
-    flex: -1,
-    paddingTop: 10,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    // Icon container
+    iconContainer: {
+        flex: 1, 
+        height: 40, 
+        justifyContent: 'flex-end'
     },
+    // Title text
+    titleTextContainer: {
+        flex: 6, 
+        height: 40, 
+        justifyContent: 'flex-end' 
+    },
+    titleText: {
+        fontWeight: 'bold', 
+        fontSize: 20, 
+        color: 'black', 
+        paddingLeft: 6,
+    },
+    // Input side
+    inputSide: {
+        flex: 1, 
+        height: 70, 
+        marginBottom: 3, 
+        flexDirection: 'row', 
+        alignItems: 'flex-end'
+    },
+    clearButton: {
+        flex: 1, 
+        height: 40, 
+        justifyContent: 'flex-end', 
+        backgroundColor: 'white'
+    },
+    inputContainer: {
+        flex: 3, 
+        height: 40, 
+        justifyContent: 'center'
+    },
+    collapsedContainer: {
+        flex: 1, 
+        width: width, 
+        backgroundColor: mainFillColor, 
+        padding: 6, 
+        borderTopWidth: 1, 
+        borderTopColor: mainAccentColor
+    }
 })

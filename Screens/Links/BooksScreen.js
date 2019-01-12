@@ -111,6 +111,7 @@ class BooksScreen extends Component {
                             URL = {bookData.feed.entry[i].id.label}
                             image = {bookData.feed.entry[i]['im:image'][imgLen - 1].label}
                             desc = {bookData.feed.entry[i].summary.label}
+                            linkName = 'iBooks'
                         />
                     )
                 }
@@ -128,6 +129,7 @@ class BooksScreen extends Component {
                             name = {bookData.results[i].trackName}
                             URL = {bookData.results[i].trackViewUrl}
                             image = {image}
+                            linkName = 'iBooks'
                         />
                     )
                 }

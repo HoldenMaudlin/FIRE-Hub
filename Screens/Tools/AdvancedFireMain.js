@@ -170,7 +170,7 @@ export default class AdvancedFireMain extends Component {
 
         return (
             <View style={styles.mainBackdrop}>
-                <MainBackHeader navigation = {this.props.navigation} backButtonName = 'Tools' title = 'FIRE Advanced' helpView={helpView}/>
+                <MainBackHeader navigation = {this.props.navigation} backButtonName = 'Tools' title = 'Advanced' helpView={helpView}/>
                 <ScrollView style={styles.mainScroll}>
                     <InputBoxHeader text="Personal Information"/>
                     <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T3AgeKey} {...this.state}/>

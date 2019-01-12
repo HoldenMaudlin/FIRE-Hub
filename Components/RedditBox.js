@@ -38,6 +38,10 @@ class RedditBox extends Component {
         })
     }
 
+    _onPressTitle(){
+        this.setState({collapsed: !this.state.collapsed})
+    }
+
     // Slide in animation for the posts
     componentDidMount() {
         Animated.timing(this.state.yValue, {
@@ -52,7 +56,7 @@ class RedditBox extends Component {
         return (
             <Animated.View style={[styles.container, {opacity: this.state.yValue}]} > 
                 <View style={[styles.postBox, {borderBottomLeftRadius: this.state.collapsed ? 5 : 0, borderBottomRightRadius: this.state.collapsed ? 5 : 0}]}>
-                    <TouchableOpacity onPress={() => this._onPressIcon()} style = {{flex: 2, padding: 10, justifyContent: 'center', alignItems: 'flex-start'}}>
+                    <TouchableOpacity onPress={() => this._onPressTitle()} style = {{flex: 2, padding: 10, justifyContent: 'center', alignItems: 'flex-start'}}>
                         <Text style ={{color: 'black', fontSize: 16, fontWeight: '600'}}>{this.props.title}</Text>
                     </TouchableOpacity>
                     <View style={{flex:1, flexDirection: 'row'}}>    

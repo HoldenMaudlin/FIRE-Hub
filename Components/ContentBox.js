@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 
 // Style imports
-import { mainAccentColor, mainFillColor } from '../Styles/ColorConstants';
+import { mainAccentColor, mainFillColor, mainColor } from '../Styles/ColorConstants';
 
 var {height, width} = Dimensions.get('window')
 
@@ -48,10 +48,10 @@ class ContentBox extends Component {
                             <Image style={{width: 200, height: 200, borderRadius: 10,}} source={{uri: this.props.image}}/>
                         </View>
                         <View style={styles.titleContainer}> 
-                            <Text style={styles.nameText} >
+                            <Text style={styles.nameText} numberOfLines={2} >
                                 {name}
                             </Text>
-                            <Text style={styles.authorText}>
+                            <Text style={styles.authorText} numberOfLines={1}>
                                 {author}
                             </Text>
                         </View>
@@ -59,8 +59,8 @@ class ContentBox extends Component {
                             <Text numberOfLines={7}>
                                 {this.props.desc}
                             </Text>
-                            <Text>
-                                Tap to view more in Podcasts!
+                            <Text style={styles.viewMoreText}>
+                                Tap to view more in {this.props.linkName}!
                             </Text>
                         </View>
                     </View>
@@ -127,5 +127,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '400',
         color: mainAccentColor,
+    },
+    viewMoreText: {
+        textAlign: 'center',
+        color: mainColor,
     }
 })

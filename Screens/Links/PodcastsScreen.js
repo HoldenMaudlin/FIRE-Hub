@@ -120,6 +120,7 @@ class PodcastsScreen extends Component {
                             URL = {podcastData.feed.entry[i].id.label}
                             image = {podcastData.feed.entry[i]['im:image'][imgLen - 1].label}
                             desc = {podcastData.feed.entry[i].summary.label}
+                            linkName = 'Podcasts'
                         />
                     )
                 }
@@ -136,6 +137,7 @@ class PodcastsScreen extends Component {
                             name = {podcastData.results[i].trackName}
                             URL = {podcastData.results[i].trackViewUrl}
                             image = {podcastData.results[i].artworkUrl600}
+                            linkName = 'Podcasts'
                         />
                     )
                 }

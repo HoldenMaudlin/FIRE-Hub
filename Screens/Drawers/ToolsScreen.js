@@ -16,6 +16,7 @@ import { BFDescription, AFDescription, BEDescription, MCDescription } from '../.
 import { Icon } from 'react-native-elements'
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 import HelpView from '../../Components/HelpView'
+import ToolButton from '../../Components/ToolButton'
 
 // Style imports
 import { mainColor, mainFillColor, mainAccentColor } from '../../Styles/ColorConstants'
@@ -133,10 +134,10 @@ class ToolsScreen extends Component {
             <StatusBar backgroundColor = {mainColor} barStyle={'light-content'}/>
             <View style = {{flex: 1, backgroundColor: mainFillColor}} >
                 <ScrollView contentContainerStyle = {styles.container}>
-                    {BFButton}
-                    {AFButton}
-                    {MCButton}
-                    {BEButton}
+                    <ToolButton title='FIRE Basic' icon='area-graph' iconType='entypo' desc={BFDescription} nextScreen='Tool1Main' navigation={this.props.navigation}/>
+                    <ToolButton title='FIRE Advanced' icon='graph' iconType='simple-line-icon' desc={AFDescription} nextScreen='AdvancedFireMain' navigation={this.props.navigation}/>
+                    <ToolButton title='Monte Carlo' icon='dice-5' iconType='material-community' desc={MCDescription} nextScreen='MonteCarloMain' navigation={this.props.navigation}/>
+                    <ToolButton title='Break Even' icon='line-graph' iconType='entypo' desc={MCDescription} nextScreen='Tool2Main' navigation={this.props.navigation}/>
                     <Text style={styles.suggestionText}>
                         <Text style={{color: mainAccentColor}}>Have a suggestion? Email me at </Text><Text onPress={() => this._onPressEmail()} style={{color: mainColor, textDecorationLine: 'underline'}}>FIREHubMobileApp@gmail.com</Text>
                     </Text>
