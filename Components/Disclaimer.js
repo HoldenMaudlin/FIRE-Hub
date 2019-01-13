@@ -19,8 +19,8 @@ class Disclaimer extends Component {
                 <Text style={styles.header}>Privacy</Text>
                 <Text style={styles.body}>All information is stored locally on your phone. There is no backend server for this app so your data cannot be transmitted anywhere.</Text>
                 <Text style={[styles.body, {marginBottom: 10}]}>
-                    <Text style={styles.body}>This app is completely open source, the repository for this project can be found</Text>
-                    <Text style={styles.link} onPress={() => Linking.openURL('https://github.com/HoldenMaudlin/FIRE-Hub')}> here.</Text>
+                    <Text style={styles.body}>This app is completely open source, the repository for this project can be found </Text>
+                    <Text style={styles.link} onPress={() => Linking.openURL('https://github.com/HoldenMaudlin/FIRE-Hub')}>here.</Text>
                 </Text>
                 <Text style={styles.header}>Security</Text>
                 <Text style={styles.body}>As this app does not transmit data, the main security concern is someone acessing this app without your consent. Because of this, a PIN Code feature, Touch ID, and Face ID support is coming soon!</Text>

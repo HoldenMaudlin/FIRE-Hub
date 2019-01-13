@@ -14,6 +14,7 @@ import { _fetchAPI } from '../../Components/Functions/FetchAPI'
 import ContentBox from '../../Components/ContentBox'
 import GenreButton from '../../Components/GenreButton'
 import { ScrollView } from "react-native-gesture-handler";
+import { PodcastDescriptions } from '../../Components/Constants/FeaturedDescriptions'
 
 // Style imports
 import { mainFillColor, mainAccentColor, mainColor } from "../../Styles/ColorConstants";
@@ -137,6 +138,7 @@ class PodcastsScreen extends Component {
                             name = {podcastData.results[i].trackName}
                             URL = {podcastData.results[i].trackViewUrl}
                             image = {podcastData.results[i].artworkUrl600}
+                            desc = {PodcastDescriptions[i]}
                             linkName = 'Podcasts'
                         />
                     )

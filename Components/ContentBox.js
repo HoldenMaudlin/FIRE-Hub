@@ -113,6 +113,8 @@ const styles = StyleSheet.create({
     descContainer: {
         flex: 2,
         padding: 20,
+        paddingTop: 15,
+        paddingBottom: 10,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
         justifyContent: 'space-between'

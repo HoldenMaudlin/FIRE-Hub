@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "firehub",
+    "name": "FIRE Hub",
     "description": "Visualize your path to retirement!",
     "slug": "firehub",
     "privacy": "public",
@@ -10,7 +10,7 @@
     "orientation": "portrait",
     "icon": "./assets/flameminticon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/flamemint.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

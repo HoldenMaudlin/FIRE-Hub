@@ -19,7 +19,7 @@ import GenreButton from '../../Components/GenreButton'
 import { mainFillColor, mainAccentColor, mainColor } from "../../Styles/ColorConstants";
 
 // URL for iTunes lookup of Featured Books Category
-const featuredURL = 'https://itunes.apple.com/lookup?id=967539199'
+const featuredURL = 'https://itunes.apple.com/lookup?id=967539199,364902571,1342443152'
 // Base URL for genre categories
 const genreBaseURL = 'https://itunes.apple.com/us/rss/topebooks/genre='
 
@@ -128,6 +128,7 @@ class BooksScreen extends Component {
                             author = {bookData.results[i].artistName} 
                             name = {bookData.results[i].trackName}
                             URL = {bookData.results[i].trackViewUrl}
+                            desc = {bookData.results[i].description.replace(/<.*>/, '')}
                             image = {image}
                             linkName = 'iBooks'
                         />

@@ -24,8 +24,13 @@ class ToolButton extends Component {
         return(
             <TouchableOpacity onPress={() => this._pressTool(this.props.nextScreen)} style={styles.button}>
                 <View style={styles.nameContainer}>
-                    <Icon color={mainFillColor} size={35} name={this.props.icon} type={this.props.iconType}/>
-                    <Text style={styles.titleText}>{this.props.title}</Text>
+                    <View style={styles.nameLeft}>
+                        <Icon color={mainFillColor} size={35} name={this.props.icon} type={this.props.iconType}/>
+                        <Text style={styles.titleText}>{this.props.title}</Text>
+                    </View>
+                    <View style={styles.nameRight}>
+                        <Icon color={mainFillColor} size={22} name='arrow-right' type='simple-line-icon' />
+                    </View>
                 </View>
                 <View style={styles.descContainer}>
                     <Text>{this.props.desc}</Text>
@@ -63,6 +68,18 @@ const styles = StyleSheet.create({
         fontSize: 30,
         marginLeft: 10,
         color: mainFillColor,
+    },
+    nameLeft: {
+        flex: 4, 
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    nameRight: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingRight: 5,
     },
 
     // Bottom description styles
