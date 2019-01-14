@@ -70,7 +70,7 @@ class MonteCarloGraph extends Component {
     componentDidMount() {
         this.getAsyncData().then((values) => {
             // run simulation
-            var data = _createMonteCarloData(values[0], values[1], values[2], values[3], values[4], values[5])
+            var data = _createMonteCarloData(values[0]['assets'], values[0]['income'], values[0]['spend'], values[0]['returns'], values[0]['sims'], values[0]['length'])
             this.setState({sims: values[4], length: values[5]})
             this.setState({data: data, graphData1: data[0], graphData2: data[1], graphData3: data[2]})
             var tableData1 = []
@@ -95,13 +95,17 @@ class MonteCarloGraph extends Component {
 
     // Function to away retrieval of all async data by returning promise
     getAsyncData= async() => {
-        var promises = []
+        var promises = {}
         for (var i = 0; i < MCstateKeys.length; i++) {
+            console.log(MCstateKeys[i].asyncKey)
             await AsyncStorage.getItem(MCstateKeys[i].asyncKey).then((val) => {
-                promises.push(val)
+                promises[MCstateKeys[i].stateKey] = val
+                console.log(promises[MCstateKeys[i].stateKey])
             })
         }
-        return Promise.all(promises)
+        var tem = []
+        tem.push(promises)
+        return Promise.all(tem)
     }
 
     // Math to interpolate user press and find closest index

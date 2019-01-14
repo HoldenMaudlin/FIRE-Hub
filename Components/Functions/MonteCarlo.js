@@ -84,9 +84,9 @@ export function _createMonteCarloData( assets, income, spend, returns, sims, len
     sims = parseInt(sims) > 10000 ? 10000 : parseInt(sims)
     length = parseInt(length) > 50 ? 50 : parseInt(length)
     
-    // S&P 500 aerages
+    // S&P 500 averages
     const vol = .144
-    const ret = 0.072
+    const ret = returns / 100
 
     // Iterate by month
     const steps = 12 * length
@@ -99,7 +99,6 @@ export function _createMonteCarloData( assets, income, spend, returns, sims, len
 
     var savings = assets + (income - spend);
     var data = []
-
     // Create & Populate the 2D array
     for (var i = 0; i < sims; i++) {
         data[i] = []

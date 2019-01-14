@@ -60,7 +60,7 @@ class ContentBox extends Component {
                                 {this.props.desc}
                             </Text>
                             <Text style={styles.viewMoreText}>
-                                Tap to view more in {this.props.linkName}!
+                                Tap to view in {this.props.linkName}!
                             </Text>
                         </View>
                     </View>

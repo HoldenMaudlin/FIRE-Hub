@@ -32,14 +32,15 @@ class AboutFIREScreen extends Component {
                         <Text style={styles.header}>FIRE Principles</Text>
                         <Text style={styles.body}>The basic principle of FIRE is maximizing your savings to achieve in order to achieve your goal sooner. This is comprised of two main components: Income and Spending.</Text>
                         <Text style={[styles.body, {marginBottom: 10}]}>To decrease the time to retirement, you can increase your earning potential or decrease the amount you spend. Or, better yet, you can do both!</Text>
-                        <Text style={styles.header}>Necessity for FIRE</Text>
-                        <Text style={styles.body}>As this app does not transmit data, the main security concern is someone acessing this app without your consent. Because of this, a PIN Code feature, Touch ID, and Face ID support is coming soon!</Text>
                         <Text style={styles.header}>Resources for FIRE</Text>
                         <Text style={styles.body}>This app has a wide collection financial books and podcasts. Not all of these resources will be perfect for every person. I encourage you to browse the resources and listen or read to what you feel will help on your FIRE path.</Text>
-                        <Text>
-                            <Text style={[styles.body, {marginBottom: 10}]}>There are also many great blogs that can serve as great resources including</Text><Text style={styles.link} onPress={()=> this._onPressLink('http://www.mrmoneymustache.com')}> Mr. Money Mustache</Text>
+                        <Text style={styles.body}>
+                            <Text style={[styles.body, {marginBottom: 10}]}>There are also many great blogs that can serve as great resources including </Text>
+                            <Text style={styles.link} onPress={()=> this._onPressLink('http://www.mrmoneymustache.com')}>Mr. Money Mustache</Text>
+                            <Text> and </Text>
+                            <Text style={styles.link} onPress={()=> this._onPressLink('http://www.madfientist.com')}>Mad Fientist</Text>
                         </Text>
-                        <Text style={{textAlign: 'center', marginTop: 20}}>
+                        <Text style={{textAlign: 'center', margin: 20}}>
                             <Text style={{color: mainAccentColor}}>Have a suggestion? Email me at </Text><Text onPress={() => this._onPressLink('mailto:FIREHubMobileApp@gmail.com?subject=Fire Hub Suggestion')} style={styles.link}>FIREHubMobileApp@gmail.com</Text>
                         </Text>
                     </View>

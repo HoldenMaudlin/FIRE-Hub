@@ -48,7 +48,8 @@ class WelcomeScreen extends Component {
       await AsyncStorage.setItem('hasAcceptedTerms', 'true')
       this.props.navigation.navigate('App')
     } else {
-      this.setState({warningTextColor: mainColor})
+      this.props.navigation.navigate('Terms')
+      this.setState({termsViewed: true})
     }
   }
 
@@ -77,7 +78,9 @@ class WelcomeScreen extends Component {
 
   render() {
     // Informs user to view T&C
-    const warningText = "Please view the Terms & Conditions before advancing!"
+    const warningText1 = "Please view the "
+    const termsText = "Terms & Conditions" 
+    const warningText2 = " before advancing!"
     
     // Interpolation for underline animation
     const underline = this.state.welcomeUnderline.interpolate({
@@ -97,13 +100,15 @@ class WelcomeScreen extends Component {
             </Animated.View>
           </View>
           <View style={styles.bottomContainer}>
-            <Text style={[styles.warningText, {color: this.state.warningTextColor}]}>{warningText}</Text>
+            <Text style={styles.warningText}>
+              <Text>{warningText1}</Text>
+              <Text style={styles.termsText} onPress={() => this._pressTerms()}>{termsText}</Text>
+              <Text>{warningText2}</Text>
+            </Text>
             <TouchableOpacity style={styles.button} onPress={() => this._pressAgree() }>
               <Text style={styles.buttonText}>I Agree</Text>
             </TouchableOpacity>
-            <Text style={styles.termsText} onPress={() => this._pressTerms()}>Terms & Conditions</Text>
           </View>
-
           {/* Code for Add Passcode when feature is available}
           <View style={styles.bottomContainer}>
             <TouchableOpacity style={styles.button} onPress={() => this._pressCreatePasscode() }>
@@ -199,6 +204,8 @@ const styles = StyleSheet.create({
   warningText: {
     marginLeft: 20,
     marginRight: 20,
+    fontSize: 16,
+    color: mainAccentColor,
     textAlign: 'center'
   },
 })  
