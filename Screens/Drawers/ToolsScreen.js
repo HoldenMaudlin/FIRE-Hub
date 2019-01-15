@@ -22,17 +22,6 @@ import ToolButton from '../../Components/ToolButton'
 import { mainColor, mainFillColor, mainAccentColor } from '../../Styles/ColorConstants'
 
 class ToolsScreen extends Component {
-  
-    constructor() {
-        super()
-        // Tracks which view of button to show
-        this.state = {
-            desc1Vis: false,
-            desc2Vis: false,
-            desc3Vis: false,
-            desc4Vis: false,
-        }
-    }
 
     // Prevents default header
     static navigationOptions = {
@@ -64,70 +53,6 @@ class ToolsScreen extends Component {
         ]
         var helpView = <HelpView helpLines={helpLines}/>
 
-        // Load views based on state of tool
-        // Default will display tool name
-        // User can switch view by long pressing
-        if (!this.state.desc1Vis) {
-            var BFButton  =                
-            <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'Tool1Main')} onLongPress={this._onLongPressButton.bind(this, 'desc1Vis')}>
-                <View style={styles.iconContainer}>
-                    <Icon containerStyle={{paddingTop: 5,}} flex={1} color={'white'} name= 'area-graph' type='entypo' size={50} />
-                </View>
-                <Text style={styles.textStyle}>FIRE Basic </Text>
-            </TouchableOpacity>
-
-        } else {
-            var BFButton = 
-            <TouchableOpacity style ={styles.mainTabDesc} onPress={this._onPressButton.bind(this, 'Tool1Main')} onLongPress={this._onLongPressButton.bind(this, 'desc1Vis')} >
-                <Text style={styles.toolDescText}>{BFDescription}</Text>
-            </TouchableOpacity>
-        }
-        
-        if (!this.state.desc2Vis) {
-            var BEButton = 
-            <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'Tool2Main')} onLongPress={this._onLongPressButton.bind(this, 'desc2Vis')}>
-                <View style={styles.iconContainer}>
-                    <Icon containerStyle={{paddingTop: 5,}} flex={1} color={'white'} name= 'line-graph' type='entypo' size={50} />
-                </View>
-                <Text style={styles.textStyle}>Break Even </Text>
-            </TouchableOpacity>
-        } else {
-            var BEButton = 
-            <TouchableOpacity style ={styles.mainTabDesc} onPress={this._onPressButton.bind(this, 'Tool2Main')} onLongPress={this._onLongPressButton.bind(this, 'desc2Vis')} >
-                <Text style={styles.toolDescText}>{BEDescription} </Text>
-            </TouchableOpacity>
-        }
-
-        if(!this.state.desc3Vis) {
-            var AFButton=
-            <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'AdvancedFireMain')} onLongPress={this._onLongPressButton.bind(this, 'desc3Vis')}>
-                <View style={styles.iconContainer}>
-                    <Icon containerStyle={{paddingTop: 5,}} flex={1} color={'white'} name ='graph' type='simple-line-icon' size={50} />
-                </View>
-                <Text style={styles.textStyle}>FIRE Advanced</Text>
-            </TouchableOpacity>
-        } else {
-            var AFButton = 
-            <TouchableOpacity style ={styles.mainTabDesc} onPress={this._onPressButton.bind(this,'AdvancedFireMain')} onLongPress={this._onLongPressButton.bind(this, 'desc3Vis')} >
-                <Text style={styles.toolDescText}>{AFDescription}</Text>
-            </TouchableOpacity>
-        }
-
-        if(!this.state.desc4Vis) {
-            var MCButton=
-            <TouchableOpacity style={styles.mainTabName} onPress={this._onPressButton.bind(this, 'MonteCarloMain')} onLongPress={this._onLongPressButton.bind(this, 'desc4Vis')}>
-                <View style={styles.iconContainer}>
-                    <Icon containerStyle={{paddingTop: 5,}} flex={1} color={'white'} name= 'dice-5' type='material-community' size={50} />
-                </View>
-                <Text style={styles.textStyle}>Monte Carlo </Text>
-            </TouchableOpacity>
-        } else {
-            var MCButton = 
-            <TouchableOpacity style ={styles.mainTabDesc} onPress={this._onPressButton.bind(this,'MonteCarloMain')} onLongPress={this._onLongPressButton.bind(this, 'desc4Vis')} >
-                <Text style={styles.toolDescText}>{MCDescription}</Text>
-            </TouchableOpacity>
-        }
-
     return(
         <View style= {{flex: 1, backgroundColor: mainColor}} >
             <MainDrawerHeader title = 'Tools' navigation = {this.props.navigation} helpView={helpView}/>
@@ -137,7 +62,7 @@ class ToolsScreen extends Component {
                     <ToolButton title='FIRE Basic' icon='area-graph' iconType='entypo' desc={BFDescription} nextScreen='Tool1Main' navigation={this.props.navigation}/>
                     <ToolButton title='FIRE Advanced' icon='graph' iconType='simple-line-icon' desc={AFDescription} nextScreen='AdvancedFireMain' navigation={this.props.navigation}/>
                     <ToolButton title='Monte Carlo' icon='dice-5' iconType='material-community' desc={MCDescription} nextScreen='MonteCarloMain' navigation={this.props.navigation}/>
-                    <ToolButton title='Break Even' icon='line-graph' iconType='entypo' desc={MCDescription} nextScreen='Tool2Main' navigation={this.props.navigation}/>
+                    <ToolButton title='Break Even' icon='line-graph' iconType='entypo' desc={BEDescription} nextScreen='Tool2Main' navigation={this.props.navigation}/>
                     <Text style={styles.suggestionText}>
                         <Text style={{color: mainAccentColor}}>Have a suggestion? Email me at </Text><Text onPress={() => this._onPressEmail()} style={{color: mainColor, textDecorationLine: 'underline'}}>FIREHubMobileApp@gmail.com</Text>
                     </Text>

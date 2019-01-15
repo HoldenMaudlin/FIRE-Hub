@@ -227,7 +227,7 @@ class AdvancedFireGraph extends Component {
                         <View>
                             <Text style={styles.goalText}>You are on track to reach your retirement goal in {data1.length} years! </Text>
                             <Table borderStyle={{borderWidth: 0.01, }}>
-                                <Row textStyle={styles.headText} style={styles.headStyle} flexArr={[1, 2, 2, 2]} data={['Year', 'Savings', 'Principal', 'Growth']}/>
+                                <Row textStyle={styles.headText} style={styles.headStyle} flexArr={[1, 2, 2, 2]} data={['Age', 'Savings', 'Principal', 'Growth']}/>
                                 <Row textStyle={styles.columnText} flexArr={[1, 2, 2, 2]} data={[this.state.lineXindex + 1 + parseInt(this.state.age), activeSav, activePrin, activeGrowth]}/>
                             </Table>      
                             <View style={styles.buttonContainer}>

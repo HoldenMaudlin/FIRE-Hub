@@ -97,10 +97,8 @@ class MonteCarloGraph extends Component {
     getAsyncData= async() => {
         var promises = {}
         for (var i = 0; i < MCstateKeys.length; i++) {
-            console.log(MCstateKeys[i].asyncKey)
             await AsyncStorage.getItem(MCstateKeys[i].asyncKey).then((val) => {
                 promises[MCstateKeys[i].stateKey] = val
-                console.log(promises[MCstateKeys[i].stateKey])
             })
         }
         var tem = []
