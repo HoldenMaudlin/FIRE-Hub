@@ -1,3 +1,13 @@
+/*
+ * Summary.
+ * Loading screen that handles auth logic
+ *
+ * Return.
+ * Navigates to Auth if user HAS NOT accepted Terms
+ * Navigates to App  if user HAS accepted Terms
+ * 
+ */
+
 // Package imports
 import React, {Component} from "react"
 import {
@@ -7,8 +17,6 @@ import {
   AsyncStorage,
 } from "react-native";
 
-// DESC:
-// First screen loaded: shown until app loads and navigates to different screen 
 class AuthLoadingScreen extends Component {
   
   constructor() {

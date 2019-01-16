@@ -1,3 +1,12 @@
+/*
+ * Summary.
+ * Navigation flow for Main Drawer Navigator
+ *
+ * Return.
+ * Displays terms and conditions to user. Basic markdown style
+ * 
+ */
+
 // Package imports
 import React, {Component} from "react"
 import {
@@ -14,8 +23,6 @@ import Disclaimer from "../../Components/Disclaimer";
 // Style imports
 import { mainColor, mainFillColor } from '../../Styles/ColorConstants'
 
-// DESC:
-// Displays Terms & Conditions of app to user
 class TermsScreen extends Component {
   
   constructor() {

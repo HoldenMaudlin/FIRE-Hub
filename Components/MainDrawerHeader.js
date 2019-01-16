@@ -1,3 +1,17 @@
+/*
+ * Summary.
+ * Standard menu bar for all parent screens
+ * 
+ * Description.
+ * Receives screen props and displays menu bar with menu button
+ *
+ * PROP   TYPE       NAME               REQ.    DESC
+ * @prop  Object     navigation         Yes     Navigation props of parent screen
+ * @prop  string     title              Yes     Title to show on top menu bar
+ * @prop  Component  helpView           No      Help overlay component to be shown on press help
+ *  
+ */
+
 // Package imports
 import React, {Component} from 'react'
 import Overlay from 'react-native-modal-overlay';
@@ -8,8 +22,6 @@ import { Header, Left, Button, Body, Right, Title } from 'native-base'
 // Style imports
 import { mainColor, mainHeaderText } from '../Styles/ColorConstants';
 
-// DESC:
-// Header for screens with direct access to open main drawer
 class MainDrawerHeader extends Component {
     constructor(props) {
         super(props)

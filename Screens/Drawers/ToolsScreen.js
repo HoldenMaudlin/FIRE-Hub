@@ -1,3 +1,12 @@
+/*
+ * Summary.
+ * Main tool screen page. Allows user to navigate to other pages.
+ * 
+ * Return.
+ * UI complete with icons, titles, and descriptions for tools.
+ * 
+ */
+
 // Package Imports
 import React, {Component} from "react"
 import {

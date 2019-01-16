@@ -1,3 +1,16 @@
+/*
+ * Summary.
+ * Standard header for input box categories
+ * 
+ * Description.
+ * Receives title text and displays it cleanly to screen
+ *
+ * @prop  string   title    Text to be displayed
+ * 
+ * @return   Basic view with text to screen
+ */
+
+
 // Package imports
 import React, { Component } from 'react'
 import {
@@ -9,8 +22,6 @@ import {
 // Style imports
 import { mainColor } from '../Styles/ColorConstants';
 
-// DESC:
-// Header for a category on input screen
 export default class InputBoxHeader extends Component {
     render() {
         return(

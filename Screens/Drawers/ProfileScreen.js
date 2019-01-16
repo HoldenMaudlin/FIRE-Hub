@@ -1,4 +1,9 @@
-// Screen NOT used in current build
+/*
+ *
+ * SCREEN NOT IN USE AS OF v1.0.2
+ *  
+ */
+
 
 // Package Imports
 import React, {Component} from "react"

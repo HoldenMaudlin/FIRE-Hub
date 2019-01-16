@@ -1,3 +1,17 @@
+/*
+ * Summary.
+ * Display Data iterated every year to user below graph on graph screens.
+ *
+ * Description.
+ * Takes raw data and formats it using 'react-native-table-component'
+ *
+ * @prop  array      tableHead       Array of strings to use as header for columns
+ * @prop  array      tableData       Array of values to be displayed in the table
+ * 
+ * @return Component  Data table to screen
+ */
+
+
 // Package imports
 import React, { Component } from 'react'
 import {

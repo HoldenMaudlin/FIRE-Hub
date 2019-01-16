@@ -1,3 +1,9 @@
+/*
+ * Summary.
+ * Handles user input and navigation to graph screen 
+ * 
+ */
+
 // Package imports
 import React, {Component} from "react"
 import {

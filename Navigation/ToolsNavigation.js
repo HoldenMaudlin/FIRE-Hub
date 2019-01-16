@@ -1,3 +1,13 @@
+/*
+ * Summary.
+ * Navigation flow for Main Drawer Navigator
+ *
+ * PROP   TYPE        NAME                     REQ.     DESC
+ * @prop  Screens     All screens in stack     Yes      Hi :)
+ * 
+ */
+
+
 // Package imports
 import { createStackNavigator } from 'react-navigation'
 import { Icon } from 'react-native-elements'
@@ -13,8 +23,7 @@ import AdvancedFireGraph from '../Screens/Tools/AdvancedFireGraph'
 import MonteCarloMain from '../Screens/Tools/MonteCarloMain'
 import MonteCarloGraph from '../Screens/Tools/MonteCarloGraph'
 
-// DESC:
-// Stack navigator for tools drawer element
+
 const ToolsNavigator = createStackNavigator({
     // Main tool screen
     ToolsHome: ToolsScreen,

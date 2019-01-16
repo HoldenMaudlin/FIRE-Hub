@@ -1,3 +1,20 @@
+/*
+ * Summary.
+ * Display of Reddit Post data
+ * 
+ * Description.
+ * Receives parsed data from Reddit Screen and displays it back to user.
+ *
+ * PROP   TYPE       NAME          REQ.     DESC
+ * @prop  Object     title         Yes      Title of Reddit post
+ * @prop  string     ups           Yes      Number of upvotes of Reddit Post
+ * @prop  string     url           Yes      URL of specific post
+ * @prop  string     body          Yes      Content of post
+ * @prop  int        delay         Yes      The number of the post shown. Used to set delay of animation
+ *  
+ */
+
+
 // Package imports
 import React, {Component} from 'react'
 import {
@@ -19,8 +36,6 @@ import { mainAccentColor, mainColor, mainFillColor } from '../Styles/ColorConsta
 
 var {height, width} = Dimensions.get('window')
 
-// DESC:
-// Receives props from Reddit Screen and displays content box back to user
 class RedditBox extends Component {
     constructor(props) {
         super(props)

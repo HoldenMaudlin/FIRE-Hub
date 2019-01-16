@@ -1,3 +1,16 @@
+/*
+ * Summary.
+ * Navigation flow for Main Drawer Navigator
+ *
+ * Props.
+ * NONE
+ * 
+ * Return.
+ * Displays brief description of FIRE to user. Basic markdown style
+ * 
+ */
+
+
 // Package Imports
 import React, {Component} from "react"
 import {
@@ -11,8 +24,6 @@ import {
 import { mainFillColor, mainColor, mainAccentColor } from "../../Styles/ColorConstants";
 import MainDrawerHeader from '../../Components/MainDrawerHeader'
 
-// DESC:
-// Simple text based screen to display information about FIRE to user
 class AboutFIREScreen extends Component {
 
     _onPressLink(link) {
@@ -30,7 +41,7 @@ class AboutFIREScreen extends Component {
                         <Text style={styles.body}>Financial Independence is the idea of not having to work for money.</Text>
                         <Text style={[styles.body, {marginBottom: 10,}]}>Retiring Early is the concept of leaving your job or career to do other things or pursue other interests.</Text>
                         <Text style={styles.header}>FIRE Principles</Text>
-                        <Text style={styles.body}>The basic principle of FIRE is maximizing your savings to achieve in order to achieve your goal sooner. This is comprised of two main components: Income and Spending.</Text>
+                        <Text style={styles.body}>The basic principle of FIRE is maximizing your savings to achieve your goal sooner. This is comprised of two main components: Income and Spending.</Text>
                         <Text style={[styles.body, {marginBottom: 10}]}>To decrease the time to retirement, you can increase your earning potential or decrease the amount you spend. Or, better yet, you can do both!</Text>
                         <Text style={styles.header}>Resources for FIRE</Text>
                         <Text style={styles.body}>This app has a wide collection financial books and podcasts. Not all of these resources will be perfect for every person. I encourage you to browse the resources and listen or read to what you feel will help on your FIRE path.</Text>

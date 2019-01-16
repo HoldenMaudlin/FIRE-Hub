@@ -1,3 +1,13 @@
+/*
+ * Summary.
+ * Navigation flow for Main Drawer Navigator
+ *
+ * Return.
+ * Displays terms and conditions to user. Basic markdown style
+ * 
+ */
+
+
 import React, {Component} from "react"
 import {
   View,

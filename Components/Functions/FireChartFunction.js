@@ -1,3 +1,19 @@
+/*
+ * Summary.
+ * 3 Simple functions to run calculations for tool screens
+ *
+ * Description.
+ * 1. Use 5 basic inputs to create array of portfolio growth
+ *    Return: Array of Principal and Savings values
+ * 
+ * 2. Use 11 inputs to generate a more accurate depiction of portfolio growth
+ *    Return: Array of Principal and Savings values
+ * 
+ * 3. Use 5 inputs to determine future value prices of two assets
+ *    Return: Array of two stocks price paths
+ * 
+ */
+
 import { _stringToInt } from './ParseNumber'
 
 // Basic Fire Function

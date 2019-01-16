@@ -1,3 +1,17 @@
+/*
+ * Summary.
+ * Icon component for bottom tool bar
+ * 
+ * Description.
+ * Displays tool tabs and responds to active presses.
+ *
+ * PROP   TYPE       NAME          REQ.     DESC
+ * @prop  bool       focused       Yes      Change tab color based on if it is active
+ * @prop  string     name          Yes      Name of the icon to be shown
+ * @prop  string     type          Yes      Font type of icon to be shown
+ *  
+ */
+
 // Pacakge imports
 import React, {Component} from 'react'
 import { 
@@ -9,8 +23,6 @@ import { Icon } from 'react-native-elements'
 // Style imports
 import { mainColor, mainAccentColor } from '../Styles/ColorConstants';
 
-// DESC:
-// Icon component for Link Bottom Tab Navigator
 class BottomTabIcon extends Component {
     constructor(props) {
         super(props)

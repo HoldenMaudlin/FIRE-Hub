@@ -1,3 +1,12 @@
+/*
+ * Summary.
+ * Small wrapper to dismiss keyboard when user taps outside
+ *
+ * @param    children    Other views to render and return. Must take keyboard to have effect
+ * 
+ */
+
+
 // Package imports
 import React from 'react';
 import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';

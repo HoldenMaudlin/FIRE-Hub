@@ -1,3 +1,12 @@
+/*
+ * Summary.
+ * Main Podcasts Screen page.
+ * 
+ * Return.
+ * Fetches podcasts JSON data from iTunes then displays it using Content Box component
+ * 
+ */
+
 // Package Imports
 import React, {Component} from "react"
 import {

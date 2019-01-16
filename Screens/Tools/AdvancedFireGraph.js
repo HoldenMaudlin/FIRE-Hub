@@ -1,3 +1,13 @@
+/*
+ * Summary.
+ * Advanced FIRE graph page
+ * 
+ * Return.
+ * Fetches user input data from storage and displays it as graph
+ * 
+ */
+
+
 // Package imports
 import React, {Component} from 'react'
 import { 

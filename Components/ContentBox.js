@@ -1,3 +1,22 @@
+/*
+ * Summary.
+ * Display book or podcast in tile to user.
+ *
+ * Description.
+ * Receives props from the parent screen and is called for however many books or podcast
+ * the user is requesting
+ *
+ * @prop  string     name            Name of the book or podcast
+ * @prop  string     author          Author of the book or podcast
+ * @prop  string     desc            Brief description of the content
+ * @prop  string     URL             Link to the conent
+ * @prop  string     linkName        Type of conent to open (book or podcast)
+ * @prop  string     sims            Number of asset paths user wants to generate
+ * @prop  string     image           URL to image to display
+ * 
+ * @return Component  Tile displaying requested book/author
+ */
+
 // Package imports
 import React, { Component } from 'react'
 import {
@@ -15,9 +34,6 @@ import { mainAccentColor, mainFillColor, mainColor } from '../Styles/ColorConsta
 
 var {height, width} = Dimensions.get('window')
 
-
-// DESC:
-// Content box to be used by Books and Podcasts
 class ContentBox extends Component {
     constructor(props) {
         super(props)

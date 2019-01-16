@@ -1,5 +1,9 @@
-// Screen NOT IN USE
-// Screen will be added in next version of App
+/*
+ * 
+ * SCREEN NOT IN USE BUILD v1.0.2
+ * 
+ */
+
 
 import React, {Component} from "react"
 import {

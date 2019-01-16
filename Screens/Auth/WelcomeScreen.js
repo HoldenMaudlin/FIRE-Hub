@@ -1,3 +1,15 @@
+/*
+ * Summary.
+ * Navigation flow for Main Drawer Navigator
+ *
+ * PROP   TYPE          NAME          REQ.     DESC
+ * @prop  Object        navigation    Yes      Navigation props from parent.
+ * 
+ * @Return.
+ * Aesthetic welcome screen that forces user to view then agree to Terms.
+ * 
+ */
+
 // Package imports
 import React, {Component} from "react"
 import {

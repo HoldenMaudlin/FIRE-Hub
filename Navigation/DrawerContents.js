@@ -1,3 +1,14 @@
+/*
+ * Summary.
+ * Component for contents in Drawer
+ *
+ * PROP   TYPE       NAME             REQ.     DESC
+ * @prop  Object     Navigation       Yes      Navigation props from parent component
+ * 
+ * @Return  Interactive view to user with available navigation drawers.
+ * 
+ */
+
 // Package imports
 import React, { Component } from 'react'
 import {
@@ -14,9 +25,6 @@ import { Icon } from 'react-native-elements'
 // Style imports
 import { mainColor, mainAccentColor } from '../Styles/ColorConstants';
 
-
-// DESC:
-// This component is the UI for the drawer navigation
 class DrawerContents extends Component {
     constructor(props) {
         super(props)   

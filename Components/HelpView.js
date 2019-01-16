@@ -1,3 +1,16 @@
+/*
+ * Summary.
+ * Main help view for every page.
+ *
+ * Description.
+ * Receives props from the parent screen and is called for however many help lines
+ * in array. Displays dark overlay over entire screen.
+ *
+ * @prop  array      helpLines      Array of strings and icon names to be displayed
+ * 
+ * @return Component    Opaque overlay showing requested help lines
+ */
+
 // Package imports
 import React, {Component} from 'react'
 import {
@@ -10,9 +23,6 @@ import { Icon } from 'react-native-elements'
 
 var { height, width } = Dimensions.get('window')
 
-// DESC:
-// Help overlay creator used on every screen
-// Renders and displays Header lines when question mark button on top header is pressed
 class HelpView extends Component {
     constructor(props) {
         super(props)

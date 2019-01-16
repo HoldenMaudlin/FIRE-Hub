@@ -1,8 +1,24 @@
 /*
-Monte Carlo Simulation:
+ * Summary.
+ * Generate user selected number of simulations of potential asset prices
+ * for user selected number of years.
+ *
+ * Description.
+ * Uses Geometric Brownian Motion to calcute drift and shock on asset prices,
+ * incrementing them every month. This function has several helper functions to
+ * generate random gaussian variables.
+ *
+ * @param int     assets          User's current net worth
+ * @param int     income          User's current post tax income
+ * @param int     spend           User's current yearly spend
+ * @param float   returns         Returns user expects
+ * @param int     sims            Number of asset paths user wants to generate
+ * @param int     length          How many years the simulation will run
+ * 
+ * @return array  Data points from the 10%, 50%, and 90% outcomes from the simulations
+ */
 
-*/
-
+// Parse money strings into integers
 import { _stringToInt } from '../Functions/ParseNumber'
 
 
@@ -50,6 +66,7 @@ function _descriptives(list) {
     };
 }
 
+// Turn list into gaussian distribution
 function _distributedList(list, mean, sd) {
     var oldDescriptives = _descriptives(list),
     oldMean = oldDescriptives.mean,

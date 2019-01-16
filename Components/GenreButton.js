@@ -1,3 +1,17 @@
+/*
+ * Summary.
+ * Display button with genre name to user.
+ *
+ * Description.
+ * Button recives props and active key from parent screen. On active
+ * Button will change color to distinguish itself
+ *
+ * @prop  bool       active          Change color of component when user presses it
+ * @prop  string     name            Text to display on button
+ * 
+ * @return Component  Touchable dynamic button with name
+ */
+
 // Package imports
 import React, {Component} from 'react'
 import {
@@ -9,9 +23,7 @@ import {
 // Style imports
 import { mainColor, mainFillColor } from '../Styles/ColorConstants';
 
-// DESC:
-// Buttons to switch genre of content on podcast and books screens
-// Adjusts color based on active status
+
 class GenreButton extends Component {
     constructor(props) {
         super(props)

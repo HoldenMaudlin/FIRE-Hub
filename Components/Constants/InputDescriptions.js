@@ -1,3 +1,4 @@
+// Input descriptions
 export const ageDescription = 'Your current age!'
 export const incomeDescription = 'Your total after tax income on your path to retirement!'
 export const totalSpendingDescription = 'This field should be your total annual spending while you are saving for retirement.'
@@ -19,6 +20,7 @@ export const curInvFeesDescription = 'The fees of the current investment.'
 export const potInvFeesDescription = 'The fees of the potential investment.'
 export const expectedTaxesDescription = 'The expected taxes if the current investment is sold. Value is a percent.'
 
+// Tool descriptions
 export const BFDescription = 'FIRE Basic uses several key inputs including Income, Assets, and Spending as well as the historical returns of the S&P 500 to estimate your time to retirement.'
 export const AFDescription = 'FIRE Advanced allows for customization of income growth, portfolio allocation, and portfolio returns to estimate your time to retirment!'
 export const BEDescription = 'The Break Even tool allows visualization of the time it takes for a new investment to outpace an old investment after taxes are applied!'

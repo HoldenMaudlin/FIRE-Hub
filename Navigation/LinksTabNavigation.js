@@ -1,3 +1,16 @@
+/*
+ * Summary.
+ * Navigation flow for Main Drawer Navigator
+ *
+ * PROP   TYPE       NAME                REQ.     DESC
+ * @prop  Screen     BooksScreen         Yes      Books screen. No further screens
+ * @prop  Screen     RedditScreen        Yes      Reddit screen. No further screens
+ * @prop  Screen     PodcastScreen       Yes      Podcast screen. No furhter screens
+ * @prop  Component  BotomTabIcon        Yes      Touchable icon for bottom tab nav
+ * 
+ */
+
+
 // Package imports
 import React from 'react'
 import { createBottomTabNavigator } from 'react-navigation'
@@ -10,9 +23,7 @@ import PodcastsScreen from '../Screens/Links/PodcastsScreen'
 
 // Style imports
 import { mainColor, mainAccentColor } from '../Styles/ColorConstants';
- 
-// DESC:
-// Bottom Tab Navigator for the Links Tool
+
 const LinksTabNavigator = createBottomTabNavigator ({
       Reddit:{
         screen: RedditScreen,

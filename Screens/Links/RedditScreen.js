@@ -1,3 +1,13 @@
+/*
+ * Summary.
+ * Main Reddit Screen page.
+ * 
+ * Return.
+ * Fetches Reddit JSON data from reddit.com/r/financialindependence.json then 
+ * displays it using Reddit Box component
+ * 
+ */
+
 import React, {Component} from "react"
 import {
   View,

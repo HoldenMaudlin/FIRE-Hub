@@ -1,3 +1,27 @@
+/*
+ * Summary.
+ * Customizable Input Box
+ * 
+ * Description.
+ * Receives various props and displays interactive input box to user & sets state 
+ * of parent component ( main input screens ).
+ *
+ * PROP   TYPE       NAME         REQ.    DESC
+ * @prop  string     name         Yes     Name input title
+ * @prop  string     iconName     Yes     Icon Name for the input box
+ * @prop  string     iconType     No      Font library of the icon
+ * @prop  function   _setState    Yes     Function to bind input to parent state
+ * @prop  string     storageKey   Yes     Async Key to set input value to User's deivce
+ * @prop  string     stateKey     Yes     State key to set state of parent in callback
+ * @prop  string     mask         Yes     Type of text mask 
+ * @prop  int        precision    No      How many decimal places to display
+ * @prop  bool       percent      No      Is the value a in percentile form
+ * @prop  string     description  yes     Description of input to be shown in collapsed box
+ * 
+ * @callback   callback    Callback function runs when text input is changed
+ * @return     Component   
+ */
+
 // Package Imports
 import React, {Component} from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, AsyncStorage, Dimensions } from 'react-native'
@@ -11,10 +35,6 @@ import { TextInputMask } from 'react-native-masked-text'
 import { mainAccentColor, mainColor, mainFillColor } from '../Styles/ColorConstants'
 var {height, width} = Dimensions.get('window')
 
-// DESC:
-// Input box component used on all main tool screens
-// Allows user input of variables
-// Adjustable mask, precision, and maxiumum value
 class InputBox extends Component {
     constructor(props) {
       super(props)

@@ -1,3 +1,18 @@
+/*
+ * Summary.
+ * Standard menu bar for all screens more than 1 level deep in stack
+ * 
+ * Description.
+ * Receives screen props and displays menu bar with back button
+ *
+ * PROP   TYPE       NAME               REQ.    DESC
+ * @prop  Object     navigation         Yes     Navigation props of parent screen
+ * @prop  string     title              Yes     Title to show on top menu bar
+ * @prop  Component  helpView           No      Help overlay component to be shown on press help
+ * @prop  string     backButtonName     Yes     Title for back button
+ *  
+ */
+
 // Package imports
 import React, {Component} from 'react'
 import { Text, StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
@@ -8,8 +23,6 @@ import Overlay from 'react-native-modal-overlay';
 // Style Imports
 import { mainColor, mainHeaderText } from '../Styles/ColorConstants';
 
-// DESC:
-// Header for screens more than one deep in a stack
 class MainBackHeader extends Component {
     constructor(props) {
         super(props)

@@ -1,3 +1,12 @@
+/*
+ * Summary.
+ * Main Books Screen page.
+ * 
+ * Return.
+ * Fetches Book JSON data from iTunes then displays it using Content Box component
+ * 
+ */
+
 // Package imports
 import React, {Component} from "react"
 import {

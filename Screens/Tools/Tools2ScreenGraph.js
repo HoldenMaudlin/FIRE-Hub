@@ -1,3 +1,12 @@
+/*
+ * Summary.
+ * Break Even graph page
+ * 
+ * Return.
+ * Fetches user input data from storage and displays it as graph
+ * 
+ */
+
 // Package Imports
 import React from 'react'
 import { 

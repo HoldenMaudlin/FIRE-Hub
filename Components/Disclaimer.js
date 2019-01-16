@@ -1,3 +1,12 @@
+/*
+ * Summary.
+ * Reusebale text component with the Disclaimer for this app
+ *
+ * @return   Component   Text disclaimer: slightly formatted.
+ */
+
+
+
 import React, { Component } from 'react'
 import {
     View,

@@ -1,3 +1,21 @@
+/*
+ * Summary.
+ * Component to display available tools on tools screen
+ * 
+ * Description.
+ * Receives data from tools screen and displays clickable tool buttons
+ * and handles navigation to tool screens.
+ *
+ * PROP   TYPE       NAME          REQ.     DESC
+ * @prop  Object     navigation    Yes      Navigation props of parent screen
+ * @prop  string     nextScreen    Yes      Screen to navigate to
+ * @prop  string     title         Yes      Title of tool
+ * @prop  string     desc          Yes      Description of the tool
+ * @prop  string     icon          Yes      Name of icon 
+ * @prop  string     iconType      Yes      Font type of icon
+ * 
+ */
+
 // Package imports
 import React, { Component } from 'react'
 import {
