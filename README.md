@@ -1,6 +1,6 @@
 # FIRE Hub
 
-### Current Status: Submitted to App Store - Awaiting Approval
+### [Download on the App Store](https://itunes.apple.com/us/app/fire-hub/id1448963860?ls=1&mt=8)
 
 ## Visualize your path to retirement.
 
