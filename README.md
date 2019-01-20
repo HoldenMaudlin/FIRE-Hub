@@ -1,6 +1,6 @@
 # FIRE Hub
 
-### [Download on the App Store](https://itunes.apple.com/us/app/fire-hub/id1448963860?ls=1&mt=8)
+### [App Store](https://itunes.apple.com/us/app/fire-hub/id1448963860?ls=1&mt=8) [Google Play](https://play.google.com/store/apps/details?id=com.holdenmaudlin.firehub)
 
 ## Visualize your path to retirement.
 
