@@ -26,7 +26,8 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    Platform
 } from 'react-native'
 
 // Style imports
@@ -56,12 +57,13 @@ class ContentBox extends Component {
         // Trim the author and title
         var name = this._trimString(this.props.name)
         var author = this._trimString(this.props.author)
+        const imageSize = Platform.OS === 'android' ? 160 : 200
         return(
             <View style ={styles.boxContainer}>
                 <TouchableOpacity style={{flex:1}} onPress={() => this._onPressContent(this.props.URL)}>        
                     <View style={styles.tileContainer}>
                         <View style={styles.imageContainer}> 
-                            <Image style={{width: 200, height: 200, borderRadius: 10,}} source={{uri: this.props.image}}/>
+                            <Image style={{width: imageSize, height: imageSize, borderRadius: 10,}} source={{uri: this.props.image}}/>
                         </View>
                         <View style={styles.titleContainer}> 
                             <Text style={styles.nameText} numberOfLines={2} >
@@ -72,7 +74,7 @@ class ContentBox extends Component {
                             </Text>
                         </View>
                         <View style={styles.descContainer}>
-                            <Text numberOfLines={7}>
+                            <Text numberOfLines={Platform.OS === 'android' ? 5 : 7}>
                                 {this.props.desc}
                             </Text>
                             <Text style={styles.viewMoreText}>
@@ -96,6 +98,10 @@ const styles = StyleSheet.create({
         flex: 1,
         width: width,
         padding: 20,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+        elevation: 5,
     },
     // Main tile
     tileContainer: {
@@ -106,6 +112,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 10,
+        elevation: 5,
     },
     // Image holder
     imageContainer: {

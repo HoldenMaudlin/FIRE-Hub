@@ -15,7 +15,7 @@
 // Package imports
 import React, {Component} from 'react'
 import Overlay from 'react-native-modal-overlay';
-import { Text, View, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+import { Text, View, TouchableWithoutFeedback, StyleSheet, Platform } from 'react-native'
 import { Icon }  from 'react-native-elements'
 import { Header, Left, Button, Body, Right, Title } from 'native-base'
 
@@ -37,17 +37,17 @@ class MainDrawerHeader extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{paddingTop: Platform.OS == 'android' ? 24 : 0}}>
                 <Header iosBarStyle='light-content' style={{ backgroundColor: mainColor, borderBottomWidth: 0 }}>
-                    <Left>
+                    <Left style={{flex: 1,}}>
                         <Button onPress = {() => this.props.navigation.openDrawer()} transparent >
                             <Icon color = {mainHeaderText} size = {30} name = 'menu'/>                       
                         </Button>
                     </Left>
-                    <Body>
+                    <Body style={{flex: 1, alignItems: 'center'}}>
                         <Title style={styles.titleText}>{this.props.title}</Title>
                     </Body>
-                    <Right>  
+                    <Right style={{flex: 1}}>  
                         <Button transparent style={{paddingLeft: 5}} onPress = {() => this.setState({helpVisible: true})}  >
                             <Icon color = {mainHeaderText} size = {20} name = 'help' type = 'material-community' />
                         </Button>

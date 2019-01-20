@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
         shadowOpacity: .2,
         shadowOffset: {width: 6, height: 5},
         shadowRadius: 3,
+        elevation: 2,
     }, 
     // Holds view post and reddit icon
     viewPostContainer: {

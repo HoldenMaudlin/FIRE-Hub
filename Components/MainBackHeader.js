@@ -15,7 +15,7 @@
 
 // Package imports
 import React, {Component} from 'react'
-import { Text, StyleSheet, View, TouchableWithoutFeedback } from 'react-native'
+import { Text, StyleSheet, View, TouchableWithoutFeedback, Platform } from 'react-native'
 import { Icon }  from 'react-native-elements'
 import { Header, Left, Button, Body, Right, Title } from 'native-base'
 import Overlay from 'react-native-modal-overlay';
@@ -38,18 +38,18 @@ class MainBackHeader extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{paddingTop: Platform.OS == 'android' ? 24 : 0}}>
                 <Header iosBarStyle='light-content' style={{ backgroundColor: mainColor }}>
-                    <Left>
+                    <Left style={{flex: 1}}>
                         <Button onPress = {() => this.props.navigation.goBack()} transparent >
-                            <Icon color = {mainHeaderText} size = {30} name = 'ios-arrow-back' type = 'ionicon'/>
+                            <Icon color = {mainHeaderText} size = {30} name ={Platform.OS === 'android' ? 'md-arrow-back' : 'ios-arrow-back'} type = 'ionicon'/>
                             <Text style = {{ fontSize: 17, color: mainHeaderText }}>  {this.props.backButtonName}</Text>
                         </Button>
                     </Left>
-                    <Body>
-                        <Title style={{ color: mainHeaderText, fontSize: 20, fontWeight: 'normal' }}>{this.props.title}</Title>
+                    <Body style={{flex: 1, alignItems: 'center'}}>
+                        <Title style={styles.titleText}>{this.props.title}</Title>
                     </Body>
-                    <Right>
+                    <Right style={{flex: 1,}}>
                         <Button transparent style={{paddingLeft: 5}} onPress = {() => this.setState({helpVisible: true})}  >
                             <Icon color = {mainHeaderText} size = {20} name = 'help' type = 'material-community' />
                         </Button>
@@ -93,4 +93,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    titleText: { 
+        color: mainHeaderText, 
+        fontSize: 20, 
+        fontWeight: 'normal'
+    }
 })

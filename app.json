@@ -27,6 +27,9 @@
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["reddit"]
       }
+    },
+    "android": {
+      "package": "com.holdenmaudlin.firehub"
     }
   }
 }

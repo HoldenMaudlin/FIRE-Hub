@@ -16,12 +16,16 @@ import {
   ActivityIndicator,
   AsyncStorage,
 } from "react-native";
+import { Font } from 'expo'
 
 class AuthLoadingScreen extends Component {
   
   constructor() {
     super()
-    this._loadApp();
+    this.state = {
+      loading: false,
+    }
+    this._loadApp()
   }
 
   // Function to route app to correct path
@@ -32,6 +36,7 @@ class AuthLoadingScreen extends Component {
 
   // Display loading screen until completed
   render() {
+
     return (
       <View style = {styles.container}>
         <ActivityIndicator />

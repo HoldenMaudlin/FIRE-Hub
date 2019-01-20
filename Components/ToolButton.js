@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
         shadowOpacity: .25,
         shadowRadius: 5,
         borderRadius: 5,
+        elevation: 2,
     },
     // Top name styles
     nameContainer: {
