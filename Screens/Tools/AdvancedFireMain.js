@@ -41,6 +41,8 @@ import InputBox from '../../Components/InputBox'
 import HelpView from '../../Components/HelpView'
 import { _stringToInt } from '../../Components/Functions/ParseNumber'
 import { ageDescription, assetsDescription, incomeDescription, incomeGrowthDescription, totalSpendingDescription, targetDescription, stockAllocDescription, bondAllocDescription, cashAllocDescription, stockReturnsDescription, bondReturnsDescription } from '../../Components/Constants/InputDescriptions';
+import { UserKeys, User } from '../../Components/Profile'
+import LoadDataButton from '../../Components/LoadDataButton'
 
 var { height, width } = Dimensions.get('window')
 
@@ -85,7 +87,7 @@ export default class AdvancedFireMain extends Component {
     // Store all values from the text input field   
     _updateAsyncValues() {
         AFstateKeys.forEach((item) => {
-        AsyncStorage.setItem(item.asyncKey, this.state[item.stateKey] + '')
+            AsyncStorage.setItem(item.asyncKey, this.state[item.stateKey] + '')
         })
     }
 
@@ -105,9 +107,19 @@ export default class AdvancedFireMain extends Component {
         })
     }
 
+    _onPressLoadData = async()=> {
+        for (var item in UserKeys) {
+            if (UserKeys.hasOwnProperty(item)) {
+                await AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
+                    this._setState(value, UserKeys[item]['stateKey'])
+                })
+            }
+        }
+        this._updateAsyncValues()
+    }
+
     // Regulate navigation after pressing button
-    _onPressButton(){ 
-        this._updateStateValues()
+    _onPressButton() { 
         this._updateAsyncValues()
         if(!this._checkIfEmpty()) {
             if(this._checkInputLogic()) {
@@ -178,17 +190,17 @@ export default class AdvancedFireMain extends Component {
             <View style={styles.mainBackdrop}>
                 <MainBackHeader navigation = {this.props.navigation} backButtonName = 'Tools' title = 'Advanced' helpView={helpView}/>
                 <ScrollView style={styles.mainScroll}>
-                    <InputBoxHeader text="Personal Information"/>
-                    <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T3AgeKey} {...this.state}/>
-                    <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' precision={0} description={assetsDescription} _setState={this._setState.bind(this)} storageKey={T3AssetKey} {...this.state}/>
-                    <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money' mask='money' precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={T3IncomeKey} {...this.state}/>
-                    <InputBox name = 'Income Growth' placeholder='Growth %' stateKey = 'incomeGrowth' percent={true} iconName = 'mood' mask='only-numbers' precision={2} description={incomeGrowthDescription} _setState={this._setState.bind(this)} storageKey={T3IncomeGrowthKey} {...this.state}/>
-                    <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={T3SpendKey} {...this.state}/>
-                    <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' precision={0} iconType='font-awesome' description={targetDescription} _setState={this._setState.bind(this)} storageKey={T3TargetKey} {...this.state}/>
+                    <LoadDataButton text="Load Profile" onPressLoadData={this._onPressLoadData.bind(this)}/>   
+                    <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' input={this.state.age} precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T3AgeKey} {...this.state}/>
+                    <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' input={this.state.assets} precision={0} description={assetsDescription} _setState={this._setState.bind(this)} storageKey={T3AssetKey} {...this.state}/>
+                    <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money' mask='money' input={this.state.income} precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={T3IncomeKey} {...this.state}/>
+                    <InputBox name = 'Income Growth' placeholder='Growth %' stateKey = 'incomeGrowth' input={this.state.incomeGrowth} percent={true} iconName = 'mood' mask='only-numbers' precision={2} description={incomeGrowthDescription} _setState={this._setState.bind(this)} storageKey={T3IncomeGrowthKey} {...this.state}/>
+                    <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' input={this.state.spend} precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={T3SpendKey} {...this.state}/>
+                    <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' input={this.state.target} precision={0} iconType='font-awesome' description={targetDescription} _setState={this._setState.bind(this)} storageKey={T3TargetKey} {...this.state}/>
                     <InputBoxHeader text="Portfolio Allocation"/>
-                    <InputBox name = 'Stocks' placeholder='Stocks %' stateKey = 'stocks' iconName ='graph' iconType='simple-line-icon' mask='only-numbers' precision={0} description={stockAllocDescription} _setState={this._setState.bind(this)} storageKey={T3StockAllocKey} {...this.state}/>
-                    <InputBox name = 'Bonds' placeholder='Bonds %' stateKey = 'bonds' iconName = 'page' iconType='foundation' mask='only-numbers' precision={0} description={bondAllocDescription} _setState={this._setState.bind(this)} storageKey={T3BondAllocKey} {...this.state}/>
-                    <InputBox name = 'Cash' placeholder='Cash %' stateKey = 'cash' iconName = 'coin' iconType='material-community' mask='only-numbers' precision={0} description={cashAllocDescription} _setState={this._setState.bind(this)} storageKey={T3CashAllocKey} {...this.state}/>
+                    <InputBox name = 'Stocks' placeholder='Stocks %' stateKey = 'stocks' iconName ='graph' input={this.state.stocks} iconType='simple-line-icon' mask='only-numbers' precision={0} description={stockAllocDescription} _setState={this._setState.bind(this)} storageKey={T3StockAllocKey} {...this.state}/>
+                    <InputBox name = 'Bonds' placeholder='Bonds %' stateKey = 'bonds' iconName = 'page' input={this.state.bonds} iconType='foundation' mask='only-numbers' precision={0} description={bondAllocDescription} _setState={this._setState.bind(this)} storageKey={T3BondAllocKey} {...this.state}/>
+                    <InputBox name = 'Cash' placeholder='Cash %' stateKey = 'cash' iconName = 'coin' input={this.state.cash} iconType='material-community' mask='only-numbers' precision={0} description={cashAllocDescription} _setState={this._setState.bind(this)} storageKey={T3CashAllocKey} {...this.state}/>
                     <InputBoxHeader text = "Portfolio Returns"/>
                     <InputBox name = 'Stock Returns' placeholder='Returns %' stateKey = 'stockReturns' percent={true} iconName = 'chevrons-up' iconType='feather' mask='only-numbers' precision={2} description={stockReturnsDescription} _setState={this._setState.bind(this)} storageKey={T3StockReturnKey} {...this.state}/>
                     <InputBox name = 'Bond Returns' placeholder='Returns %' stateKey = 'bondReturns' percent={true} iconName = 'chevron-up' mask='only-numbers' precision={2} iconType='feather' description={bondReturnsDescription} _setState={this._setState.bind(this)} storageKey={T3BondReturnKey} {...this.state}/>

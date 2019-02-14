@@ -22,7 +22,8 @@ import InputBox from '../../Components/InputBox'
 import HelpView from '../../Components/HelpView'
 import MainBackHeader from '../../Components/MainBackHeader';
 import { _stringToInt } from '../../Components/Functions/ParseNumber'
-
+import {UserKeys} from '../../Components/Profile'
+import LoadDataButton from '../../Components/LoadDataButton';
 
 var { height, width } = Dimensions.get('window')
 
@@ -58,6 +59,19 @@ class Tool1ScreenMain extends Component {
     })
     this.setState({didMount: true})
   }
+
+_onPressLoadData = async()=> {
+  for (var item in UserKeys) {
+    if (UserKeys.hasOwnProperty(item)) {
+      await AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
+        if (value != null) {
+          this._setState(value, UserKeys[item]['stateKey'])
+        }
+      })
+    }
+  }
+  this._updateAsyncValues()
+}
 
   _updateAsyncValues() {
     BFstateKeys.forEach((item) => {
@@ -131,12 +145,13 @@ class Tool1ScreenMain extends Component {
     return(    
         <View style={styles.mainBackdrop}>
           <MainBackHeader title = "FIRE Basic" backButtonName = "Tools" navigation = {this.props.navigation} helpView={helpView}/>
-          <ScrollView style={styles.mainScroll}>                            
-            <InputBox name = 'Age' stateKey = 'age' iconName = 'person' mask='only-numbers' percent={false} precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T1AgeKey} {...this.state}/>
-            <InputBox name = 'Assets' stateKey = 'assets' iconName ='home' mask='money' percent={false} precision={0} description={assetsDescription} _setState={this._setState.bind(this)} storageKey={assetKey} {...this.state}/>
-            <InputBox name = 'Income' stateKey = 'income' iconName = 'attach-money'  mask='money' percent={false} precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={incomeKey} {...this.state}/>
-            <InputBox name = 'Spending' stateKey = 'spend' iconName = 'credit-card' mask='money' percent={false} precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={spendKey} {...this.state}/>
-            <InputBox name = 'Target' stateKey = 'target' iconName = 'trophy' mask='money' percent={false} precision={0} iconType='font-awesome' description={targetDescription} _setState={this._setState.bind(this)} storageKey={targetKey} {...this.state}/>
+          <ScrollView style={styles.mainScroll}>    
+            <LoadDataButton text="Load Profile" onPressLoadData={this._onPressLoadData.bind(this)}/>           
+            <InputBox name = 'Age' stateKey = 'age' input={this.state.age} iconName = 'person' mask='only-numbers' percent={false} precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T1AgeKey} {...this.state}/>
+            <InputBox name = 'Assets' stateKey = 'assets' input={this.state.assets} iconName ='home' mask='money' percent={false} precision={0} description={assetsDescription} _setState={this._setState.bind(this)} storageKey={assetKey} {...this.state}/>
+            <InputBox name = 'Income' stateKey = 'income' input={this.state.income} iconName = 'attach-money'  mask='money' percent={false} precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={incomeKey} {...this.state}/>
+            <InputBox name = 'Spending' stateKey = 'spend' input={this.state.spend} iconName = 'credit-card' mask='money' percent={false} precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={spendKey} {...this.state}/>
+            <InputBox name = 'Target' stateKey = 'target' input={this.state.target} iconName = 'trophy' mask='money' percent={false} precision={0} iconType='font-awesome' description={targetDescription} _setState={this._setState.bind(this)} storageKey={targetKey} {...this.state}/>
             <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
             <View style={styles.warningTextContainer}>
               <Text style={styles.warningText}>{this.state.warningText}</Text>

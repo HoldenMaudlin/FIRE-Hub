@@ -15,4 +15,5 @@ Exponent-2.9.0.tar.gz
 package-lock.json
 Builds/*
 Policies/*
+.idea/*
 

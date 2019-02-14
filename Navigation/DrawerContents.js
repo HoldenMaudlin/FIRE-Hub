@@ -33,6 +33,7 @@ class DrawerContents extends Component {
             // Track active tab to highlight tab on ress 
             toolsActive: true,
             linksActive: false,
+            profileActive: false,
             aboutFIREActive: false,
             settingsActive: false,
         }
@@ -67,6 +68,10 @@ class DrawerContents extends Component {
                     <TouchableOpacity onPress={() => this.navigateToScreen('Links', 'linksActive')} style={styles.linkContainer}>
                         <Icon color={this.state.linksActive ? mainColor : 'black'} name='link' type='entypo'/>
                         <Text style={[styles.linkText, {color: this.state.linksActive ? mainColor : 'black'}]}>Links</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.navigateToScreen('Profile', 'profileActive')} style={styles.linkContainer}>
+                        <Icon color={this.state.profileActive ? mainColor : 'black'} name='person' type='material'/>
+                        <Text style={[styles.linkText, {color: this.state.profileActive ? mainColor : 'black'}]}>Profile</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.navigateToScreen('AboutFIRE', 'aboutFIREActive')} style={styles.linkContainer}>
                         <Icon color={this.state.aboutFIREActive ? mainColor : 'black'} name='information-outline' type='material-community'/>

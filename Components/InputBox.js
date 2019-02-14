@@ -41,24 +41,39 @@ class InputBox extends Component {
       this.state = {
         collapsed: true,
         inputted: false,
-        input: ''
+        input: this.props.input
       }
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+      
+    demo = async() => {
+        await this.sleep(20);
+    }
+      
+    componentWillReceiveProps(props){
+        //this.demo()
+        if(props.input != undefined) {
+            this.setState({input: props.input})
+        }
     }
 
     _updateInput(input){
         if (input === '0' || input === '$0') {
             if (this.state.input === '') {
                 this.setState({input: input})
-                AsyncStorage.setItem(this.props.stateKey, input + '')
+                AsyncStorage.setItem(this.props.storageKey, input + '')
                 this.props._setState(input, this.props.stateKey)
             } else {
                 this.setState({input: ''})
-                AsyncStorage.removeItem(this.props.stateKey)
+                AsyncStorage.removeItem(this.props.storageKey)
                 this.props._setState('', this.props.stateKey)
             }
         } else {
             this.setState({input: input})
-            AsyncStorage.setItem(this.props.stateKey, input + '')
+            AsyncStorage.setItem(this.props.storageKey, input + '')
             this.props._setState(input, this.props.stateKey)
         }
     }

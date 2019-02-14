@@ -17,6 +17,7 @@ import { createDrawerNavigator  } from 'react-navigation'
 // Screen imports
 import DisclaimerScreen from '../Screens/Drawers/DisclaimerScreen'
 import AboutFIREScreen from '../Screens/Drawers/AboutFIREScreen'
+import ProfileScreen from '../Screens/Drawers/ProfileScreen'
 import ToolsNavigator from '../Navigation/ToolsNavigation'
 import LinksTabNavigator from '../Navigation/LinksTabNavigation'
 import DrawerContents from '../Navigation/DrawerContents'
@@ -27,6 +28,7 @@ const MainDrawerNavigator = createDrawerNavigator({
         screen: ToolsNavigator,
     },
     Links: LinksTabNavigator,
+    Profile: ProfileScreen,
     AboutFIRE: AboutFIREScreen,
     Disclaimer: DisclaimerScreen,
 },{

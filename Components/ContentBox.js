@@ -57,7 +57,7 @@ class ContentBox extends Component {
         // Trim the author and title
         var name = this._trimString(this.props.name)
         var author = this._trimString(this.props.author)
-        const imageSize = Platform.OS === 'android' ? 160 : 200
+        const imageSize = width * .43
         return(
             <View style ={styles.boxContainer}>
                 <TouchableOpacity style={{flex:1}} onPress={() => this._onPressContent(this.props.URL)}>        
@@ -74,7 +74,7 @@ class ContentBox extends Component {
                             </Text>
                         </View>
                         <View style={styles.descContainer}>
-                            <Text numberOfLines={Platform.OS === 'android' ? 5 : 7}>
+                            <Text numberOfLines={5}>
                                 {this.props.desc}
                             </Text>
                             <Text style={styles.viewMoreText}>
