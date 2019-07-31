@@ -25,7 +25,10 @@
       "buildNumber": "1",
       "supportsTablet": false,
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["reddit"]
+        "LSApplicationQueriesSchemes": ["reddit"],
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
       }
     },
     "android": {
