@@ -64,17 +64,22 @@ class InputBox extends Component {
         if (input === '0' || input === '$0') {
             if (this.state.input === '') {
                 this.setState({input: input})
-                AsyncStorage.setItem(this.props.storageKey, input + '')
                 this.props._setState(input, this.props.stateKey)
             } else {
                 this.setState({input: ''})
-                AsyncStorage.removeItem(this.props.storageKey)
                 this.props._setState('', this.props.stateKey)
             }
         } else {
             this.setState({input: input})
-            AsyncStorage.setItem(this.props.storageKey, input + '')
             this.props._setState(input, this.props.stateKey)
+        }
+    }
+
+    componentWillUnmount(){
+        if (this.state.input) {
+            AsyncStorage.setItem(this.props.storageKey, this.state.input + '');
+        } else {
+            AsyncStorage.removeItem(this.props.storageKey);
         }
     }
 
@@ -104,7 +109,7 @@ class InputBox extends Component {
                 placeholder = {this.props.placeholder ? this.props.placeholder : this.props.name}
                 placeholderTextColor = {mainAccentColor}
                 keyboardType='numeric'
-                style={{alignItems: 'stretch', fontSize: 16, color: 'black', fontWeight: 'bold', textAlign: 'right', marginRight: 5, marginTop: 17,}}
+                style={{alignItems: 'stretch', fontSize: 16, color: 'black', textAlign: 'right', marginRight: 5, marginTop: 17,}}
             />
         } else {
             input = 
@@ -112,7 +117,7 @@ class InputBox extends Component {
                 /* Takes input, updates own state, parent's state, and Async state */
                 onChangeText = {(input) => { this._updateInput(input); this.setState({inputted: true})}}
                 value = {value}
-                style={{alignItems: 'stretch', fontSize: 16, color: 'black', fontWeight: 'bold', textAlign: 'right', marginRight: 5, marginTop: 17,}}
+                style={{alignItems: 'stretch', fontSize: 16, color: 'black', textAlign: 'right', marginRight: 5, marginTop: 17,}}
                 keyboardType='numeric'
                 type={this.props.mask}
                 options={{
@@ -179,7 +184,7 @@ styles = StyleSheet.create({
     // Main Wrapper
     container: {
         alignItems: 'stretch', 
-        borderBottomWidth: 1,
+        borderBottomWidth: .5,
         borderBottomColor: mainAccentColor,
         }, 
     // Main Container
@@ -212,7 +217,6 @@ styles = StyleSheet.create({
         justifyContent: 'flex-end' 
     },
     titleText: {
-        fontWeight: 'bold', 
         fontSize: 20, 
         color: 'black', 
         paddingLeft: 6,
@@ -241,7 +245,7 @@ styles = StyleSheet.create({
         width: width, 
         backgroundColor: mainFillColor, 
         padding: 6, 
-        borderTopWidth: 1, 
+        borderTopWidth: 0.25, 
         borderTopColor: mainAccentColor
     }
 })

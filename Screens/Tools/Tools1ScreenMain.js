@@ -101,7 +101,14 @@ _onPressLoadData = async()=> {
       if(this._checkInputLogic()) {
         this.setState({warningText: 'Your assets already exceed your retirement goal! Congratulations!!!!'})
       } else {
-        this.props.navigation.navigate('Tool1Graph')
+        const data = {
+          age: this.state.age,
+          assets: this.state.assets,
+          income: this.state.income,
+          spend: this.state.spend,
+          target: this.state.target
+        }
+        this.props.navigation.navigate('Tool1Graph', {'data': data})
         this.setState({warningText: ''})
       }
     } else {
@@ -259,7 +266,6 @@ const styles = StyleSheet.create({
     textAlign: 'center', 
     color: mainColor, 
     fontSize: 14, 
-    fontWeight: 'bold'
   },
   warningTextContainer: {
     height: 60,

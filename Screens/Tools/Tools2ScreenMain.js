@@ -76,24 +76,23 @@ class Tool2ScreenMain extends Component {
    this._updateAsyncValues()
   }
 
-  _updateStateValues() {
-    BEstateKeys.forEach((item) => {
-      AsyncStorage.getItem(item.asyncKey).then((value) => {
-        value = parseFloat(value, 10)
-        if (!isNaN(value)) {
-          this.setState({[item.stateKey]: value})
-        }
-      })
-    })
-  }
-
    // Regulate navigation logic on user press butotn
    _onPressButton(){ 
-    this._updateAsyncValues()
-    this._updateStateValues()
     if(!this._checkIfEmpty()) {
       if (this._checkInputLogic()) {
-        this.props.navigation.navigate('Tool2Graph')
+        const data = {
+          amount: this.state.amount,
+          cur: {
+            fees: this.state.fees1,
+            ret: this.state.returns1
+          },
+          pot: {
+            fees: this.state.fees2,
+            ret: this.state.returns2
+          },
+          taxes: this.state.taxes
+        }
+        this.props.navigation.navigate('Tool2Graph', {'data': data});
         this.setState({warningText: ''})
       } else {
         this.setState({warningText: 'Based on the given inputs, the potential investment will never exceed the current investment.'})
@@ -256,7 +255,6 @@ const styles = StyleSheet.create({
     textAlign: 'center', 
     color: mainColor, 
     fontSize: 14, 
-    fontWeight: 'bold'
   },
   warningTextContainer: {
     height: 60,

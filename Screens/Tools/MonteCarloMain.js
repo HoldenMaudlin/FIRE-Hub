@@ -74,21 +74,10 @@ class MonteCarloMain extends Component {
         this._updateAsyncValues()
     }
 
-    _updateStateValues() {
-        MCstateKeys.forEach((item) => {
-            AsyncStorage.getItem(item.asyncKey).then((value) => {
-                value = parseInt(value, 10)
-                if (!isNaN(value)) {
-                    this.setState({[item.stateKey]: value})
-                }
-            })
-        })
-    }
-
     _onPressLoadData = async()=> {
         for (var item in UserKeys) {
             if (UserKeys.hasOwnProperty(item)) {
-                await AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
+                AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
                     this._setState(value, UserKeys[item]['stateKey'])
                 })
             }
@@ -97,11 +86,17 @@ class MonteCarloMain extends Component {
     }
 
     _onPressButton(){ 
-        this._updateStateValues()
-        this._updateAsyncValues()
         if(!this._checkIfEmpty()) {
-            this.props.navigation.navigate('MonteCarloGraph')
-            this.setState({warningText: ''})
+            const data = {
+                assets: this.state.assets,
+                income: this.state.income,
+                spend: this.state.spend,
+                returns: this.state.returns,
+                sims: this.state.sims,
+                length: this.state.length
+            }
+            this.props.navigation.navigate('MonteCarloGraph', {'data': data});
+            this.setState({warningText: ''});
         } else {
             this.setState({warningText: 'Please Enter All Fields!'})
         }
@@ -253,7 +248,6 @@ const styles = StyleSheet.create({
         textAlign: 'center', 
         color: mainColor, 
         fontSize: 14, 
-        fontWeight: 'bold'
     },
     warningTextContainer: {
         height: 60,

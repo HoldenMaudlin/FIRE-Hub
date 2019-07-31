@@ -21,7 +21,7 @@ class Disclaimer extends Component {
         return(
             <View style={styles.contentContainer}>
                 <Text style={styles.header}>Disclaimer</Text>
-                <Text style={styles.body}>This app provides estimates based on historical market data to give you a sense of how long it might take you to achieve your retirement goal. The graphs and data displayed in this app are not garunteed to be accurate predictors of future financial performance and should NOT be used as the basis of financial decisions.</Text>
+                <Text style={styles.body}>This app provides estimates based on historical market data to give you a sense of how long it might take you to achieve your retirement goal. The graphs and data displayed in this app are not guaranteed to be accurate predictors of future financial performance and should NOT be used as the basis of financial decisions.</Text>
                 <Text style={styles.body}>By using this app, you have agreed that you understand that the information displayed should NOT be used to make financial decisions.</Text>
                 <Text style={styles.body}>I do not accept the liability, direct or indirect, arising from any person relying on the information provided by this application.</Text>
                 <Text style={[styles.body, {marginBottom: 10}]}>Under no circumstances will I be liable for any loss or damage caused by your reliance on information obtained in this application.</Text>

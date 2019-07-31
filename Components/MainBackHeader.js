@@ -21,7 +21,7 @@ import { Header, Left, Button, Body, Right, Title } from 'native-base'
 import Overlay from 'react-native-modal-overlay';
 
 // Style Imports
-import { mainColor, mainHeaderText } from '../Styles/ColorConstants';
+import { mainHeaderColor, mainHeaderText } from '../Styles/ColorConstants';
 
 class MainBackHeader extends Component {
     constructor(props) {
@@ -39,7 +39,7 @@ class MainBackHeader extends Component {
     render() {
         return (
             <View style={{paddingTop: Platform.OS == 'android' ? 24 : 0}}>
-                <Header iosBarStyle='light-content' style={{ backgroundColor: mainColor }}>
+                <Header iosBarStyle='light-content' style={{ backgroundColor: mainHeaderColor }}>
                     <Left style={{flex: 1}}>
                         <Button onPress = {() => this.props.navigation.goBack()} transparent >
                             <Icon color = {mainHeaderText} size = {30} name ={Platform.OS === 'android' ? 'md-arrow-back' : 'ios-arrow-back'} type = 'ionicon'/>

@@ -35,7 +35,9 @@ import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorCon
 import MainBackHeader from '../../Components/MainBackHeader'
 import { _createMonteCarloData } from '../../Components/Functions/MonteCarlo'
 import { MaskService } from 'react-native-masked-text'
+import { encode } from 'base-64';
 
+const mcEndpoint = 'http://firehub-backend-dev.5jds93y2cg.us-west-2.elasticbeanstalk.com/formulas/montecarlo';
 
 class MonteCarloGraph extends Component {
 
@@ -74,46 +76,56 @@ class MonteCarloGraph extends Component {
     
     static navigationOptions = {
         header: null
-    }       
+    }
 
-    // Loads the data on mount
-    componentDidMount() {
-        this.getAsyncData().then((values) => {
-            // run simulation
-            var data = _createMonteCarloData(values[0]['assets'], values[0]['income'], values[0]['spend'], values[0]['returns'], values[0]['sims'], values[0]['length'])
-            this.setState({sims: values[4], length: values[5]})
-            this.setState({data: data, graphData1: data[0], graphData2: data[1], graphData3: data[2]})
+    componentWillMount() {
+        const data = {'mc': this.props.navigation.getParam('data', {})};
+        this.setState({
+            didMount: false,
+            sims: data.mc.sims,
+            length: data.mc.length,
+        });
+        const requestObject = {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic '+encode('13po78903yjksjfkhhgt8730jklq'), 
+            },
+            body: JSON.stringify(data)
+        }
+        fetch(mcEndpoint, requestObject)
+        .then((res) => {
+            console.log(res);
+            return res.json();
+        })
+        .then((data) => {
             var tableData1 = []
             var tableData2 = []
             var tableData3 = []
             var dataTableYears = []
            
             // Populate table data
-            for (var i = 11; i < this.state.graphData1.length + 11; i += 12) {
-                tableData1.push(MaskService.toMask('money', this.state.graphData1[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                tableData2.push(MaskService.toMask('money', this.state.graphData2[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                tableData3.push(MaskService.toMask('money', this.state.graphData3[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
+            for (var i = 11; i < data.low + 11; i += 12) {
+                tableData1.push(MaskService.toMask('money', data.low[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
+                tableData2.push(MaskService.toMask('money', data.mid[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
+                tableData3.push(MaskService.toMask('money', data.high[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
                 dataTableYears.push((i - 11)/12 + 1)  
             }
-            // Set all relevant state
-            this.setState({tableData1: tableData1, tableData2: tableData2, tableData3: tableData3, dataTableYears: dataTableYears})
-            this.setState({graphMin: Math.min.apply(Math, this.state.graphData1)})
-            this.setState({graphMax: Math.max.apply(Math, this.state.graphData3)})
-            this.setState({dataLoaded: true})
-        })
-    }
-
-    // Function to away retrieval of all async data by returning promise
-    getAsyncData= async() => {
-        var promises = {}
-        for (var i = 0; i < MCstateKeys.length; i++) {
-            await AsyncStorage.getItem(MCstateKeys[i].asyncKey).then((val) => {
-                promises[MCstateKeys[i].stateKey] = val
+            this.setState({
+                graphData1: data.low,
+                graphData2: data.mid,
+                graphData3: data.high,
+                tableData1: tableData1,
+                tableData2: tableData2,
+                tableData3: tableData3,
+                dataTableYears: dataTableYears,
+                graphMin: Math.min.apply(Math, data.low),
+                graphMax: Math.max.apply(Math, data.high),
+                dataLoaded: true,
             })
-        }
-        var tem = []
-        tem.push(promises)
-        return Promise.all(tem)
+        })
+        .done();
     }
 
     // Math to interpolate user press and find closest index
@@ -125,14 +137,33 @@ class MonteCarloGraph extends Component {
         return true
     }
 
+    helpLines = [
+        { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
+        { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
+        { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
+    ]
+    // Invisible rectangle to capture user touch and set state of Line
+    LineCreator = ({x, width, data}) => {
+        return(
+            <Rect
+                x = '0'
+                y = '0'
+                width = {width}
+                height = '400'
+                fill = 'rgba(0,0,0,0)'
+                onStartShouldSetResponder={(evt) => this.handlePress(evt, data, x)}
+                //onMoveShouldSetResponder = {(evt) => this.onMoveShouldSetResponder(evt)}
+                //onResponderMove={(evt) => this.handleResponderMove(evt)}
+                //handleResponderGrant={(evt) => this.handleResponderGrant(evt)}
+            />
+        )
+    }
+
+    helpView = <HelpView helpLines={this.helpLines}/>
+
     render() { 
         // Information to be passed to the Monte Carlo Help Screen
-        const helpLines = [
-            { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
-            { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
-            { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
-        ]
-        var helpView = <HelpView helpLines={helpLines}/>
+
         if(this.state.dataLoaded === true) {
             // Masks for active selected node
             var active1 = ''
@@ -143,37 +174,19 @@ class MonteCarloGraph extends Component {
             if (this.state.graphData3[this.state.lineXindex] !== undefined) { active3 = MaskService.toMask('money', this.state.graphData3[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
         }
 
-        // Invisible rectangle to capture user touch and set state of Line
-        var LineCreator = ({x, width, data}) => {
-            return(
-                <Rect
-                    x = '0'
-                    y = '0'
-                    width = {width}
-                    height = '400'
-                    fill = 'rgba(0,0,0,0)'
-                    onStartShouldSetResponder={(evt) => this.handlePress(evt, data, x)}
-                    //onMoveShouldSetResponder = {(evt) => this.onMoveShouldSetResponder(evt)}
-                    //onResponderMove={(evt) => this.handleResponderMove(evt)}
-                    //handleResponderGrant={(evt) => this.handleResponderGrant(evt)}
-                />
-            )
-        }
-
         if (this.state.dataLoaded !== true) {
             return (
             <View style={styles.container}>
-                <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={helpView}/>
+                <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={this.helpView}/>
                 <View style={styles.activityContainer}>
                     <ActivityIndicator/>
-                    <Text style={{color: mainAccentColor, marginTop: 10,}}>For large inputs, allow up to 10 seconds!</Text>
                 </View>
             </View>
             )
         } else {
             return (
                 <View style={styles.container}>
-                    <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={helpView}/>
+                    <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={this.helpView}/>
                     <ScrollView>
                         <View style={styles.graphContainer}>
                             <YAxis
@@ -222,7 +235,7 @@ class MonteCarloGraph extends Component {
                                     gridMin={this.state.graphMin}
                                     gridMax={this.state.graphMax}
                                     >
-                                    <LineCreator/>
+                                    <this.LineCreator/>
                                 </LineChart>
                             </View>
                         </View>

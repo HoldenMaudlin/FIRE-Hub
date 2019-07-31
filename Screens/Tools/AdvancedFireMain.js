@@ -65,6 +65,7 @@ export default class AdvancedFireMain extends Component {
             cash: '',
             stockReturns: '',
             bondReturns: '',
+            warningText: 'For more information about a field, tap the name or icon!'
         }
     }
 
@@ -87,21 +88,21 @@ export default class AdvancedFireMain extends Component {
     // Store all values from the text input field   
     _updateAsyncValues() {
         AFstateKeys.forEach((item) => {
-            AsyncStorage.setItem(item.asyncKey, this.state[item.stateKey] + '')
+            AsyncStorage.setItem(item.asyncKey, this.state[item.stateKey] + '');
         })
     }
 
     componentWillUnmount(){
-        this._updateAsyncValues()
+        this._updateAsyncValues();
     }
 
     // Update components state values
     _updateStateValues() {
         AFstateKeys.forEach((item) => {
             AsyncStorage.getItem(item.asyncKey).then((value) => {
-                value = parseInt(value, 10)
+                value = parseInt(value, 10);
                 if (!isNaN(value)) {
-                    this.setState({[item.stateKey]: value})
+                    this.setState({[item.stateKey]: value});
                 }
             })
         })
@@ -110,12 +111,12 @@ export default class AdvancedFireMain extends Component {
     _onPressLoadData = async()=> {
         for (var item in UserKeys) {
             if (UserKeys.hasOwnProperty(item)) {
-                await AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
-                    this._setState(value, UserKeys[item]['stateKey'])
+                AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
+                    this._setState(value, UserKeys[item]['stateKey']);
                 })
             }
         }
-        this._updateAsyncValues()
+        this._updateAsyncValues();
     }
 
     // Regulate navigation after pressing button
@@ -123,50 +124,69 @@ export default class AdvancedFireMain extends Component {
         this._updateAsyncValues()
         if(!this._checkIfEmpty()) {
             if(this._checkInputLogic()) {
-                this.setState({warningText: 'Your assets already exceed your retirement goal! Congratulations!!!!'})
-                return
+                this.setState({warningText: 'Your assets already exceed your retirement goal! Congratulations!!!!'});
+                return;
             }
             if(this._checkPortfolioAlloc()) {
-                this.setState({warningText: 'Whoops! Make sure your portfoio allocation adds up to 100%!'})
-                return
+                this.setState({warningText: 'Whoops! Make sure your portfoio allocation adds up to 100%!'});
+                return;
             }
-            this.props.navigation.navigate('AdvancedFireGraph')
-            this.setState({warningText: ''})
+            const data = {
+                basic: {
+                    age: this.state.age,
+                    assets: this.state.assets,
+                    income: this.state.income,
+                    spend: this.state.spend,
+                    target: this.state.target
+                },
+                alloc: {
+                    stocks: this.state.stocks,
+                    bonds: this.state.bonds,
+                    cash: this.state.cash
+                },
+                returns: {
+                    stocks: this.state.stockReturns,
+                    bonds: this.state.bondReturns,
+                    income: this.state.incomeGrowth,
+                }
+              }
+            this.props.navigation.navigate('AdvancedFireGraph', {'data': data});
+            this.setState({warningText: ''});
         } else {
-            this.setState({warningText: 'Please Enter All Fields!'})
+            this.setState({warningText: 'Please Enter All Fields!'});
         }
     } 
 
     // updates state callback function
     _setState = (value, stateKey) => {
-        this.setState({[stateKey]: value})
+        this.setState({[stateKey]: value});
     }    
 
     // Navigation Logic
     _checkIfEmpty () {
         if (this.state.age === '' || this.state.assets === '' || this.state.income === '' || this.state.spend === '' || this.state.target === '' || this.state.incomeGrowth === '' 
         || this.state.stocks ===  '' || this.state.bonds === '' || this.state.cash === '' || this.state.stockReturns === '' || this.state.bondReturns === '') {
-            return true
+            return true;
         } else {
-            return false
+            return false;
         }
     }
 
     // Ensures user hasn't hit goal 
     _checkInputLogic() {
         if (_stringToInt(this.state.assets) > _stringToInt(this.state.target)) {
-            return true
+            return true;
         } else {
-            return false
+            return false;
         }
     }
 
     // Ensures portfoilo adds up to 100%
     _checkPortfolioAlloc() {
         if (parseInt(this.state.cash) + parseInt(this.state.stocks) + parseInt(this.state.bonds) !== 100) {
-            return true
+            return true;
         } else {
-            return false
+            return false;
         }
     }
 
@@ -181,9 +201,9 @@ export default class AdvancedFireMain extends Component {
 
         // Control button color based on state of text input
         if (this._checkIfEmpty()) {
-            var buttonColor = mainAccentColor
+            var buttonColor = mainAccentColor;
         } else {
-            var buttonColor = mainColor
+            var buttonColor = mainColor;
         }
 
         return (
@@ -204,10 +224,7 @@ export default class AdvancedFireMain extends Component {
                     <InputBoxHeader text = "Portfolio Returns"/>
                     <InputBox name = 'Stock Returns' placeholder='Returns %' stateKey = 'stockReturns' percent={true} iconName = 'chevrons-up' iconType='feather' mask='only-numbers' precision={2} description={stockReturnsDescription} _setState={this._setState.bind(this)} storageKey={T3StockReturnKey} {...this.state}/>
                     <InputBox name = 'Bond Returns' placeholder='Returns %' stateKey = 'bondReturns' percent={true} iconName = 'chevron-up' mask='only-numbers' precision={2} iconType='feather' description={bondReturnsDescription} _setState={this._setState.bind(this)} storageKey={T3BondReturnKey} {...this.state}/>
-                    <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
-                    <View style={styles.warningTextContainer}>
-                        <Text style={styles.warningText}>{this.state.warningText}</Text>
-                    </View>
+                    <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>{this.state.warningText}</Text>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={[styles.buttonStyle, {backgroundColor: buttonColor}]} onPress={() => this._onPressButton()}>
                             <Text style ={{color: mainFillColor, fontWeight: 'bold', fontSize: 20,}}> Go! </Text>
@@ -254,10 +271,8 @@ const styles = StyleSheet.create({
         textAlign: 'center', 
         color: mainColor, 
         fontSize: 14, 
-        fontWeight: 'bold'
     },
     warningTextContainer: {
-        height: 60,
         alignItems: 'center',
         justifyContent: 'center',
     },

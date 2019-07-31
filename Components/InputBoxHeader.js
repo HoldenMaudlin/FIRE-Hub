@@ -20,7 +20,7 @@ import {
 } from 'react-native'
 
 // Style imports
-import { mainColor } from '../Styles/ColorConstants';
+import { mainColor, mainHeaderColor } from '../Styles/ColorConstants';
 
 export default class InputBoxHeader extends Component {
     render() {
@@ -39,15 +39,13 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 50,
         paddingTop: 30,
-        alignItems: 'center',
-        justifyContent: 'flex-end'
+        alignItems: 'flex-start',
+        justifyContent: 'flex-end',
+        marginTop: 10,
     },
     // Title style
     textStyle: {
         fontSize: 18,
-        color: mainColor,
-        fontWeight: 'bold',
-        textDecorationLine: 'underline',
-        textDecorationColor: mainColor,
+        color: mainHeaderColor,
     },
 })
