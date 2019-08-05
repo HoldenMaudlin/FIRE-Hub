@@ -36,7 +36,8 @@ import MainBackHeader from '../../Components/MainBackHeader'
 import { _createFireGraph } from '../../Components/Functions/FireChartFunction'
 import { encode } from 'base-64';
 
-const breakEvenEndpoint = 'http://firehub-backend-dev.5jds93y2cg.us-west-2.elasticbeanstalk.com/formulas/basic';
+import { apiToken, baseEndpoint } from '../../secrets.js';
+const basicEndpoint = baseEndpoint + 'formulas/basic'
 
 // DESC: 
 // Retrieves inputs from stoage, passes them through a funciton, and displays data back to user
@@ -77,15 +78,20 @@ class Tool1ScreenGraph extends Component {
             headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
-              'Authorization': 'Basic '+encode('13po78903yjksjfkhhgt8730jklq'), 
+              'Authorization': 'Basic '+ apiToken, 
             },
             body: JSON.stringify(data)
         }
-        fetch(breakEvenEndpoint, requestObject)
-        .then((res) => {
-            return res.json();
+        fetch(basicEndpoint, requestObject)
+        .then((res) => { 
+            try {
+                return res.json();
+            } catch (e) {
+                return -1;
+            }
         })
         .then((d) => {
+            if (d == -1) return;
             const data = d.data;
             // Variables to be passed to the Table Display
             var dataTableYears = []

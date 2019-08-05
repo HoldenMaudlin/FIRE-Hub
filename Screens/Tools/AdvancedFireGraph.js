@@ -33,12 +33,13 @@ import HelpView from '../../Components/HelpView';
 import { AFstateKeys } from '../../Components/Constants/InputKeys';
 import MainBackHeader from '../../Components/MainBackHeader';
 import { _createAdvancedFireGraph } from '../../Components/Functions/FireChartFunction';
-import { encode } from 'base-64';
 
 // Style imports
 import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants';
 
-const advancedEndpoint = 'http://firehub-backend-dev.5jds93y2cg.us-west-2.elasticbeanstalk.com/formulas/advanced';
+// Backend imports
+import { apiToken, baseEndpoint } from '../../secrets.js';
+const advanced = baseEndpoint + 'formulas/advanced';
 
 // DESC: 
 // Retrieves data from Async Storage, Passes it through a function, and displays results to user
@@ -86,15 +87,20 @@ class AdvancedFireGraph extends Component {
             headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
-              'Authorization': 'Basic '+encode('13po78903yjksjfkhhgt8730jklq'), 
+              'Authorization': 'Basic '+ apiToken, 
             },
             body: JSON.stringify(data)
         }
         fetch(advancedEndpoint, requestObject)
-        .then((res) => {
-            return res.json();
+        .then((res) => { 
+            try {
+                return res.json();
+            } catch (e) {
+                return -1;
+            }
         })
         .then((d) => {
+            if (d == -1) return;
             const data = d;
             // Variables to be passed to the Table Display
             var dataTableYears = [];

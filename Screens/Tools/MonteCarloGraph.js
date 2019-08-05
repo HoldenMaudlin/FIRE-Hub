@@ -37,7 +37,8 @@ import { _createMonteCarloData } from '../../Components/Functions/MonteCarlo'
 import { MaskService } from 'react-native-masked-text'
 import { encode } from 'base-64';
 
-const mcEndpoint = 'http://firehub-backend-dev.5jds93y2cg.us-west-2.elasticbeanstalk.com/formulas/montecarlo';
+import { apiToken, baseEndpoint } from '../../secrets.js';
+const mcEndpoint = baseEndpoint + 'formulas/montecarlo';
 
 class MonteCarloGraph extends Component {
 
@@ -90,27 +91,31 @@ class MonteCarloGraph extends Component {
             headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
-              'Authorization': 'Basic '+encode('13po78903yjksjfkhhgt8730jklq'), 
+              'Authorization': 'Basic '+ apiToken, 
             },
             body: JSON.stringify(data)
         }
         fetch(mcEndpoint, requestObject)
-        .then((res) => {
-            console.log(res);
-            return res.json();
+        .then((res) => { 
+            try {
+                return res.json();
+            } catch (e) {
+                return -1;
+            }
         })
         .then((data) => {
+            if (data == -1) return;
             var tableData1 = []
             var tableData2 = []
             var tableData3 = []
             var dataTableYears = []
            
             // Populate table data
-            for (var i = 11; i < data.low + 11; i += 12) {
-                tableData1.push(MaskService.toMask('money', data.low[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                tableData2.push(MaskService.toMask('money', data.mid[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                tableData3.push(MaskService.toMask('money', data.high[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                dataTableYears.push((i - 11)/12 + 1)  
+            for (var i = 11; i < data.low.length + 11; i += 12) {
+                tableData1.push(MaskService.toMask('money', data.low[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}));
+                tableData2.push(MaskService.toMask('money', data.mid[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}));
+                tableData3.push(MaskService.toMask('money', data.high[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}));
+                dataTableYears.push((i - 11)/12 + 1);
             }
             this.setState({
                 graphData1: data.low,
@@ -124,6 +129,7 @@ class MonteCarloGraph extends Component {
                 graphMax: Math.max.apply(Math, data.high),
                 dataLoaded: true,
             })
+            console.log(this.state.tableData2);
         })
         .done();
     }

@@ -43,7 +43,8 @@ import { encode } from 'base-64';
 // Style imports
 import { mainColor, mainFillColor, mainAccentColor } from '../../Styles/ColorConstants';
 
-const breakEvenEndpoint = 'http://firehub-backend-dev.5jds93y2cg.us-west-2.elasticbeanstalk.com/formulas/breakeven';
+import { apiToken, baseEndpoint } from '../../secrets.js';
+const breakEvenEndpoint = baseEndpoint + 'formulas/breakeven';
 
 // DESC:
 // Break even graph component
@@ -85,15 +86,20 @@ class Tool2ScreenGraph extends React.PureComponent {
             headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
-              'Authorization': 'Basic '+encode('13po78903yjksjfkhhgt8730jklq'), 
+              'Authorization': 'Basic '+ apiToken, 
             },
             body: JSON.stringify(data)
         }
         fetch(breakEvenEndpoint, requestObject)
-        .then((res) => {
-            return res.json();
+        .then((res) => { 
+            try {
+                return res.json();
+            } catch (e) {
+                return -1;
+            }
         })
         .then((data) => {
+            if (data == -1) return;
             // Send data through function to create the two sets of data
             var data1 = []
             var data2 = []

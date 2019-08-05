@@ -14,6 +14,7 @@ import {
   Text,
   Dimensions,
   AsyncStorage,
+  RefreshControl
 } from 'react-native'
 import { T1AgeKey, incomeKey, targetKey, spendKey, assetKey, BFstateKeys } from '../../Components/Constants/InputKeys'
 import { ageDescription, incomeDescription, assetsDescription, totalSpendingDescription, targetDescription } from '../../Components/Constants/InputDescriptions'
@@ -35,13 +36,14 @@ class Tool1ScreenMain extends Component {
     this.state = {
         didMount: false,
         allInputted: false,
-        warningText: '',
+        warningText: 'For more information about a field, tap the name or icon!',
 
         age: '',
         income: '',
         assets: '',
         spend: '',
         target: '',
+        warningText: 'For more information about a field, tap the name or icon!',
     }    
   }
 
@@ -65,12 +67,14 @@ _onPressLoadData = async()=> {
     if (UserKeys.hasOwnProperty(item)) {
       await AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
         if (value != null) {
+          console.log(value);
           this._setState(value, UserKeys[item]['stateKey'])
         }
       })
     }
   }
-  this._updateAsyncValues()
+  this._updateAsyncValues();
+  this.setState({refreshing:false});
 }
 
   _updateAsyncValues() {
@@ -95,7 +99,6 @@ _onPressLoadData = async()=> {
   }
 
    _onPressButton(){ 
-    this._updateStateValues()
     this._updateAsyncValues()
     if(!this._checkIfEmpty()) {
       if(this._checkInputLogic()) {
@@ -109,7 +112,7 @@ _onPressLoadData = async()=> {
           target: this.state.target
         }
         this.props.navigation.navigate('Tool1Graph', {'data': data})
-        this.setState({warningText: ''})
+        this.setState({warningText: 'For more information about a field, tap the name or icon!'})
       }
     } else {
       this.setState({warningText: 'Please Enter All Fields!'})
@@ -123,7 +126,7 @@ _onPressLoadData = async()=> {
   // Functions to regulate navigation
 
   _checkInputLogic() {
-    return (_stringToInt(this.state.assets) > _stringToInt(this.state.target))
+    return (_stringToInt(this.state.assets) >= _stringToInt(this.state.target))
   }
 
   _checkIfEmpty () {
@@ -134,12 +137,18 @@ _onPressLoadData = async()=> {
     }
   }
 
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this._onPressLoadData();
+  }
+
   render() {
     // Information to be passed to the Tools Help Screen
     const helpLines = [
       { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
       { key: 2, icon: 'format-list-numbers', iconType: 'material-community', text: 'Fill in all fields, then press Go!',},
       { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Tap an input name or icon for an explanation of the input!"},
+      { key: 4, icon: 'ios-refresh', iconType: 'ionicon', text: 'Swipe up to load your profile data!',},
     ]
     var helpView = <HelpView helpLines={helpLines}/>
     if (this._checkIfEmpty()) {
@@ -152,17 +161,18 @@ _onPressLoadData = async()=> {
     return(    
         <View style={styles.mainBackdrop}>
           <MainBackHeader title = "FIRE Basic" backButtonName = "Tools" navigation = {this.props.navigation} helpView={helpView}/>
-          <ScrollView style={styles.mainScroll}>    
-            <LoadDataButton text="Load Profile" onPressLoadData={this._onPressLoadData.bind(this)}/>           
+          <ScrollView  refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+              }style={styles.mainScroll}>    
             <InputBox name = 'Age' stateKey = 'age' input={this.state.age} iconName = 'person' mask='only-numbers' percent={false} precision={0} description={ageDescription} _setState={this._setState.bind(this)} storageKey={T1AgeKey} {...this.state}/>
             <InputBox name = 'Assets' stateKey = 'assets' input={this.state.assets} iconName ='home' mask='money' percent={false} precision={0} description={assetsDescription} _setState={this._setState.bind(this)} storageKey={assetKey} {...this.state}/>
             <InputBox name = 'Income' stateKey = 'income' input={this.state.income} iconName = 'attach-money'  mask='money' percent={false} precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={incomeKey} {...this.state}/>
             <InputBox name = 'Spending' stateKey = 'spend' input={this.state.spend} iconName = 'credit-card' mask='money' percent={false} precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={spendKey} {...this.state}/>
             <InputBox name = 'Target' stateKey = 'target' input={this.state.target} iconName = 'trophy' mask='money' percent={false} precision={0} iconType='font-awesome' description={targetDescription} _setState={this._setState.bind(this)} storageKey={targetKey} {...this.state}/>
-            <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
-            <View style={styles.warningTextContainer}>
-              <Text style={styles.warningText}>{this.state.warningText}</Text>
-            </View>
+            <Text style={styles.warningContainer}>{this.state.warningText}</Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={[styles.buttonStyle, {backgroundColor: buttonColor}]} onPress={() => this._onPressButton()}>
                 <Text style ={{color: mainFillColor, fontWeight: 'bold', fontSize: 20,}}> Go! </Text>
@@ -194,13 +204,21 @@ const styles = StyleSheet.create({
     width: width,
     paddingTop: 2,
   },
+  warningContainer: {
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 20,
+    textAlign: 'center',
+  },
   buttonContainer: {
     flex:1,
     backgroundColor: 'white',
     width: width,
     justifyContent: 'center',
     height: 60,
-    marginTop: 20,
     alignItems: 'center',
   },
   buttonStyle: {

@@ -6,7 +6,7 @@
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.5",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/flamemintfitted.png",
     "splash": {
@@ -33,7 +33,7 @@
     },
     "android": {
       "package": "com.holdenmaudlin.firehub",
-      "versionCode": 4,
+      "versionCode": 6,
       "permissions": []
     }
   }

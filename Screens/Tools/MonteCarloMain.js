@@ -14,6 +14,7 @@ import {
   Text,
   Dimensions,
   AsyncStorage,
+  RefreshControl,
 } from 'react-native'
 import { MCIncomeKey, MCAssetsKey, MCSpendKey, MCReturnsKey, MCSimsKey, MCLengthKey, MCstateKeys } from '../../Components/Constants/InputKeys'
 import { _createMonteCarloData } from '../../Components/Functions/MonteCarlo'
@@ -45,7 +46,8 @@ class MonteCarloMain extends Component {
             spend: '',
             sims: '',
             length: '',
-            returns: ''
+            returns: '',
+            warningText: 'For more information about a field, tap the name or icon!',
         }    
     }
 
@@ -77,12 +79,13 @@ class MonteCarloMain extends Component {
     _onPressLoadData = async()=> {
         for (var item in UserKeys) {
             if (UserKeys.hasOwnProperty(item)) {
-                AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
+                await AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
                     this._setState(value, UserKeys[item]['stateKey'])
                 })
             }
         }
-        this._updateAsyncValues()
+        this._updateAsyncValues();
+        this.setState({refreshing:false});
     }
 
     _onPressButton(){ 
@@ -115,12 +118,18 @@ class MonteCarloMain extends Component {
         }
     }
 
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        this._onPressLoadData();
+      }
+
     render() {
         // Information to be passed to the Tools Help Screen
         const helpLines = [
-        { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
-        { key: 2, icon: 'format-list-numbers', iconType: 'material-community', text: 'Fill in all fields, then press Go!',},
-        { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Tap an input name or icon for an explanation of the input!"},
+            { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
+            { key: 2, icon: 'format-list-numbers', iconType: 'material-community', text: 'Fill in all fields, then press Go!',},
+            { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Tap an input name or icon for an explanation of the input!"},
+            { key: 4, icon: 'ios-refresh', iconType: 'ionicon', text: 'Swipe up to load your profile data!',},
         ]
         var helpView = <HelpView helpLines={helpLines}/>
         if (this._checkIfEmpty()) {
@@ -133,8 +142,12 @@ class MonteCarloMain extends Component {
         return(    
             <View style={styles.mainBackdrop}>
                 <MainBackHeader title = "Monte Carlo" backButtonName = "Tools" navigation = {this.props.navigation} helpView={helpView}/>
-                <ScrollView style={styles.mainScroll}>                            
-                    <LoadDataButton text="Load Profile" onPressLoadData={this._onPressLoadData.bind(this)}/>
+                <ScrollView  refreshControl={
+                    <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh}
+                    />
+                    }style={styles.mainScroll}>                      
                     <InputBox name = 'Assets' stateKey = 'assets' input={this.state.assets} iconName ='home' mask='money' percent={false} precision={0} description={assetsDescription} _setState={this._setState.bind(this)} storageKey={MCAssetsKey} {...this.state}/>
                     <InputBox name = 'Income' stateKey = 'income' input={this.state.income} iconName = 'attach-money' mask='money' percent={false} precision={0} description={incomeDescription} _setState={this._setState.bind(this)} storageKey={MCIncomeKey} {...this.state}/>
                     <InputBox name = 'Spending' stateKey = 'spend' input={this.state.spend} iconName = 'credit-card' mask='money' percent={false} precision={0} description={totalSpendingDescription} _setState={this._setState.bind(this)} storageKey={MCSpendKey} {...this.state}/>
@@ -142,11 +155,8 @@ class MonteCarloMain extends Component {
                     <InputBox name = 'Returns' stateKey = 'returns' iconName = 'trending-up' percent={true} placeholder='Returns %' precision={2} description={returnsDescription} _setState={this._setState.bind(this)} storageKey={MCReturnsKey} {...this.state}/>
                     <InputBox name = 'Simulations' stateKey = 'sims' iconName = 'webhook' iconType='material-community' mask='only-numbers' percent={false} maxValue={10000} placeholder='Sims' precision={0} description={simsDescription} _setState={this._setState.bind(this)} storageKey={MCSimsKey} {...this.state}/>
                     <InputBox name = 'Length' stateKey = 'length' iconName = 'calendar-question' iconType='material-community' mask='only-numbers' percent={false} maxValue={50} precision={0} description={lengthDescription} _setState={this._setState.bind(this)} storageKey={MCLengthKey} {...this.state}/>
-                    <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
+                    <Text style={styles.warningContainer}>{this.state.warningText}</Text>
                     <View style={styles.buttonContainer}>
-                        <View style={styles.warningTextContainer}>
-                            <Text style={styles.warningText}>{this.state.warningText}</Text>
-                        </View>
                         <TouchableOpacity style={[styles.buttonStyle, {backgroundColor: buttonColor}]} onPress={() => this._onPressButton()}>
                             <Text style ={{color: mainFillColor, fontWeight: 'bold', fontSize: 20,}}> Go! </Text>
                         </TouchableOpacity>
@@ -175,6 +185,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: width,
         paddingTop: 2,
+    },
+    warningContainer: {
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingLeft: 20,
+        paddingRight: 20,
+        marginTop: 20,
+        textAlign: 'center',
     },
     buttonContainer: {
         flex:1,

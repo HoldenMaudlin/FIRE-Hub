@@ -58,7 +58,6 @@ class ToolsScreen extends Component {
             { key: 1, icon: 'menu', iconType: '', text: 'Tap on the Menu Button to navigate to another screen!',},
             { key: 2, icon: 'hand-pointing-left', iconType: 'material-community', text: 'Or slide from the left!',},
             { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Tap a tool box to go to that tool!",},
-            { key: 4, icon: 'gesture-double-tap', iconType: 'material-community', text: "Hold a tool box to see a brief description of the tool!",},
         ]
         var helpView = <HelpView helpLines={helpLines}/>
 
