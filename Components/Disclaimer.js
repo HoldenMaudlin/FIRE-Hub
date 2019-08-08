@@ -28,7 +28,7 @@ class Disclaimer extends Component {
                 <Text style={styles.header}>Privacy</Text>
                 <Text style={styles.body}>
                     <Text>All information is stored locally on your phone. The data you input will not be transmitted anywhere. For more information, please read the full </Text>
-                    <Text style={styles.link} onPress={() => Linking.openURL('http://www.holdenmaudlin.com/static/media/FireHubPrivacyPolicy.pdf')}>Privacy Policy.</Text>
+                    <Text style={styles.link} onPress={() => Linking.openURL('http://holdenmaudlin.com/firehub-privacy-policy')}>Privacy Policy.</Text>
                 </Text>
                 <Text style={[styles.body, {marginBottom: 10}]}>
                     <Text style={styles.body}>This app is also completely open source </Text>
