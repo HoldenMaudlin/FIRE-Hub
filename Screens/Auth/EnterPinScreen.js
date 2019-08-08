@@ -42,7 +42,6 @@ class EnterPinScreen extends Component {
   componentDidMount() {
     AsyncStorage.getItem('UserPin').then((pin) => {
       this.setState({pin: pin})
-      console.log(pin)
     }).done()
   }
 

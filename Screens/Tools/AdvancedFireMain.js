@@ -124,7 +124,6 @@ export default class AdvancedFireMain extends Component {
                     income: this.state.incomeGrowth,
                 }
               }
-              console.log(data);
             this.props.navigation.navigate('AdvancedFireGraph', {'data': data});
             this.setState({warningText: 'For more information about a field, tap the name or icon!'});
         } else {

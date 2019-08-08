@@ -49,7 +49,6 @@ class RedditBox extends Component {
     // Opens selected post in Reddit App (if available) or default broswer
     _openRedditPost(postURL){
         Linking.openURL(postURL).catch(error => {
-          console.log("Error: ", error)
         })
     }
 

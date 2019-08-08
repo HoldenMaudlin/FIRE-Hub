@@ -130,7 +130,6 @@ class MonteCarloGraph extends Component {
                 graphMax: Math.max.apply(Math, data.high),
                 dataLoaded: true,
             })
-            console.log(this.state.tableData2);
         })
         .done();
     }

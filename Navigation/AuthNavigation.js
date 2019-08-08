@@ -30,7 +30,6 @@ initialRoute = async() => {
     return await AsyncStorage.getItem('UserPin').then((pin) => {
         return pin !== ''
     }).catch((err) => {
-        console.log(err)
     })
 }
 
