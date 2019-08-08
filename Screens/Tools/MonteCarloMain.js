@@ -27,6 +27,7 @@ import HelpView from '../../Components/HelpView'
 import MainBackHeader from '../../Components/MainBackHeader';
 import LoadDataButton from '../../Components/LoadDataButton';
 import {UserKeys} from '../../Components/Profile'
+import loadAsyncData from '../../Components/Functions/LoadAsyncData';
 
 
 var { height, width } = Dimensions.get('window')
@@ -56,13 +57,7 @@ class MonteCarloMain extends Component {
     }
 
     componentDidMount() {
-        MCstateKeys.forEach((item) => {
-            AsyncStorage.getItem(item.asyncKey).then((value) => {
-                if (value !== null) {
-                this.setState({[item.stateKey]: value})
-                }
-            })
-        })
+        loadAsyncData(this, MCstateKeys);
         this.setState({didMount: true})
     }
 
@@ -77,13 +72,7 @@ class MonteCarloMain extends Component {
     }
 
     _onPressLoadData = async()=> {
-        for (var item in UserKeys) {
-            if (UserKeys.hasOwnProperty(item)) {
-                await AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
-                    this._setState(value, UserKeys[item]['stateKey'])
-                })
-            }
-        }
+        loadAsyncData(this, UserKeys);
         this._updateAsyncValues();
         this.setState({refreshing:false});
     }

@@ -10,7 +10,6 @@ import {
     AsyncStorage,
     View,
     ScrollView,
-    SafeAreaView,
     Text,
     StyleSheet,
     TouchableOpacity,
@@ -33,17 +32,15 @@ import {
     T3BondReturnKey,
     } from '../../Components/Constants/InputKeys'
 import { mainFillColor, mainColor, mainAccentColor } from '../../Styles/ColorConstants'
-import { LineChart, Grid, Shadow } from 'react-native-svg-charts'
 import InputBoxHeader from '../../Components/InputBoxHeader'
 import MainBackHeader from '../../Components/MainBackHeader'
 import { _createMonteCarloData } from '../../Components/Functions/MonteCarlo'
-import { TextInputMask } from 'react-native-masked-text'
 import InputBox from '../../Components/InputBox'
 import HelpView from '../../Components/HelpView'
 import { _stringToInt } from '../../Components/Functions/ParseNumber'
 import { ageDescription, assetsDescription, incomeDescription, incomeGrowthDescription, totalSpendingDescription, targetDescription, stockAllocDescription, bondAllocDescription, cashAllocDescription, stockReturnsDescription, bondReturnsDescription } from '../../Components/Constants/InputDescriptions';
-import { UserKeys, User } from '../../Components/Profile'
-import LoadDataButton from '../../Components/LoadDataButton'
+import { UserKeys } from '../../Components/Profile'
+import loadAsyncData from '../../Components/Functions/LoadAsyncData';
 
 var { height, width } = Dimensions.get('window')
 
@@ -75,14 +72,7 @@ export default class AdvancedFireMain extends Component {
     }
 
     componentDidMount() {
-        // Retrieves previously entered values
-        AFstateKeys.forEach((item) => {
-            AsyncStorage.getItem(item.asyncKey).then((value) => {
-                if (value !== null) {
-                    this.setState({[item.stateKey]: value})
-                }
-            })
-        })
+        loadAsyncData(this, AFstateKeys);
         this.setState({didMount: true})
     }
 
@@ -98,13 +88,7 @@ export default class AdvancedFireMain extends Component {
     }
 
     _onPressLoadData = async()=> {
-        for (var item in UserKeys) {
-            if (UserKeys.hasOwnProperty(item)) {
-                await AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
-                    this._setState(value, UserKeys[item]['stateKey']);
-                })
-            }
-        }
+        loadAsyncData(this, UserKeys);
         this._updateAsyncValues();
         this.setState({refreshing:false});
     }

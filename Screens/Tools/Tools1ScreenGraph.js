@@ -62,6 +62,7 @@ class Tool1ScreenGraph extends Component {
           lineXindex: 0,
 
           hideData: true,
+          graphIsPressed: false,
       }    
     }
     
@@ -128,16 +129,6 @@ class Tool1ScreenGraph extends Component {
         .done();
     }
 
-    // Handling of pressing the graph
-    handlePress = (evt, data, x) => {
-        var val = Math.floor(data.length * evt.nativeEvent.locationX/(x(data.length - 1)));
-        if (val > data.length - 1) val = data.length - 1;
-        if (val < 0) val = 0;
-        this.setState({lineX: x(val), lineXindex: val});
-        return true;
-    }
-
-
     Decorator = ({ x, y, data }) => {
         return data.map((value, index) => (
             <Circle
@@ -151,6 +142,21 @@ class Tool1ScreenGraph extends Component {
         ))
     }
 
+    // Invisible rectangle to capture user touch and set state of Line
+    handleResponderRelease = (evt) => {
+        this.setState({graphIsPressed: false});
+    }
+
+    // handles touching of the graph
+    handleGraphPress = (evt, data, x) => {
+        this.setState({graphIsPressed: true});
+        var val = Math.floor(data.length * evt.nativeEvent.locationX/(x(data.length - 1)))
+        if (val > data.length - 1) val = data.length - 1;
+        if (val < 0) val = 0;
+        this.setState({lineX: x(val), lineXindex: val})
+        return true
+    }
+
     LineCreator = ({x, width, data}) => {
         return(
             <Rect
@@ -159,7 +165,9 @@ class Tool1ScreenGraph extends Component {
                 width = {width}
                 height = '400'
                 fill = 'rgba(0,0,0,0)'
-                onStartShouldSetResponder={(evt) => this.handlePress(evt, data, x)}
+                onStartShouldSetResponder={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderMove={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderRelease={(evt) => this.handleResponderRelease(evt)}
             />
         )
     }
@@ -195,7 +203,9 @@ class Tool1ScreenGraph extends Component {
             return (
                 <View style={{flex:1, backgroundColor: mainFillColor}}>
                     <MainBackHeader  title = 'Advanced' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={this.helpView}/>
-                    <ScrollView>
+                    <ScrollView
+                        scrollEnabled={!this.state.graphIsPressed}
+                    >
                         <View style={styles.graphContainer}>
                             <YAxis
                                 data={this.state.data2}

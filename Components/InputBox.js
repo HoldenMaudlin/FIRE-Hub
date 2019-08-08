@@ -108,6 +108,7 @@ class InputBox extends Component {
                 value = {value}
                 placeholder = {this.props.placeholder ? this.props.placeholder : this.props.name}
                 placeholderTextColor = {mainAccentColor}
+                returnKeyType='done'
                 keyboardType='numeric'
                 style={{alignItems: 'stretch', fontSize: 16, color: 'black', textAlign: 'right', marginRight: 5, marginTop: 17,}}
             />
@@ -119,6 +120,7 @@ class InputBox extends Component {
                 value = {value}
                 style={{alignItems: 'stretch', fontSize: 16, color: 'black', textAlign: 'right', marginRight: 5, marginTop: 17,}}
                 keyboardType='numeric'
+                returnKeyType='done'
                 type={this.props.mask}
                 options={{
                     precision: this.props.precision,

@@ -25,6 +25,7 @@ import MainBackHeader from '../../Components/MainBackHeader';
 import { _stringToInt } from '../../Components/Functions/ParseNumber'
 import {UserKeys} from '../../Components/Profile'
 import LoadDataButton from '../../Components/LoadDataButton';
+import loadAsyncData from '../../Components/Functions/LoadAsyncData';
 
 var { height, width } = Dimensions.get('window')
 
@@ -52,27 +53,12 @@ class Tool1ScreenMain extends Component {
   }
 
   componentDidMount() {
-    BFstateKeys.forEach((item) => {
-      AsyncStorage.getItem(item.asyncKey).then((value) => {
-        if (value !== null) {
-          this.setState({[item.stateKey]: value})
-        }
-      })
-    })
+    loadAsyncData(this, BFstateKeys);
     this.setState({didMount: true})
   }
 
 _onPressLoadData = async()=> {
-  for (var item in UserKeys) {
-    if (UserKeys.hasOwnProperty(item)) {
-      await AsyncStorage.getItem(UserKeys[item]['asyncKey']).then((value) => {
-        if (value != null) {
-          console.log(value);
-          this._setState(value, UserKeys[item]['stateKey'])
-        }
-      })
-    }
-  }
+  loadAsyncData(this, UserKeys);
   this._updateAsyncValues();
   this.setState({refreshing:false});
 }

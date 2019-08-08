@@ -70,6 +70,7 @@ class Tool2ScreenGraph extends React.PureComponent {
             lineXindex: 0,
             data: [],
             hideData: true,
+            graphIsPressed: false,
         }
     }
 
@@ -133,14 +134,19 @@ class Tool2ScreenGraph extends React.PureComponent {
         .done();
     }
 
-    // Handling of Touch Responsiveness for the Graph
-    // Currently does not support dragging, will add feature in next version
-    handlePress = (evt, data, x) => {
-        var val = Math.floor(data.length * evt.nativeEvent.locationX/(x(data.length - 1)));
+    // Invisible rectangle to capture user touch and set state of Line
+    handleResponderRelease = (evt) => {
+        this.setState({graphIsPressed: false});
+    }
+
+    // handles touching of the graph
+    handleGraphPress = (evt, data, x) => {
+        this.setState({graphIsPressed: true});
+        var val = Math.floor(data.length * evt.nativeEvent.locationX/(x(data.length - 1)))
         if (val > data.length - 1) val = data.length - 1;
         if (val < 0) val = 0;
-        this.setState({lineX: x(val), lineXindex: val});
-        return true;
+        this.setState({lineX: x(val), lineXindex: val})
+        return true
     }
 
     LineCreator = ({x, width, data}) => {
@@ -151,10 +157,9 @@ class Tool2ScreenGraph extends React.PureComponent {
                 width = {width}
                 height = '400'
                 fill = 'rgba(0,0,0,0)'
-                onStartShouldSetResponder={(evt) => this.handlePress(evt, data, x)}
-                //onMoveShouldSetResponder = {(evt) => this.onMoveShouldSetResponder(evt)}
-                //onResponderMove={(evt) => this.handleResponderMove(evt)}
-                //handleResponderGrant={(evt) => this.handleResponderGrant(evt)}
+                onStartShouldSetResponder={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderMove={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderRelease={(evt) => this.handleResponderRelease(evt)}
             />
         )
     }
@@ -190,7 +195,9 @@ class Tool2ScreenGraph extends React.PureComponent {
             return (
                 <View style = {{flex:1, backgroundColor: mainFillColor,}} >
                     <MainBackHeader navigation = {this.props.navigation} title = 'Break Even' backButtonName = 'Inputs' helpView={this.helpView}/>
-                    <ScrollView>
+                    <ScrollView
+                        scrollEnabled={!this.state.graphIsPressed}
+                    >
                         <View style={styles.graphContainer}>
                             <YAxis
                                 data={this.state.data2}

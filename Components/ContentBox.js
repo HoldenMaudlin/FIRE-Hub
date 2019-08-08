@@ -38,14 +38,11 @@ var {height, width} = Dimensions.get('window')
 class ContentBox extends Component {
     constructor(props) {
         super(props)
-    
     }
 
     // Opens selected piece of content
     _onPressContent(URL){
-        Linking.openURL(URL).catch(error =>
-            console.log("Error opening content link: ", error)
-        )
+        Linking.openURL(URL).catch(e)
     }
 
     // Trims Author and Titles to prevent overflow

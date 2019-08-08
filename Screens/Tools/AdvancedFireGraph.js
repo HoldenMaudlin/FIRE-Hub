@@ -39,7 +39,7 @@ import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorCon
 
 // Backend imports
 import { apiToken, baseEndpoint } from '../../secrets.js';
-const advanced = baseEndpoint + 'formulas/advanced';
+const advancedEndpoint = baseEndpoint + 'formulas/advanced';
 
 // DESC: 
 // Retrieves data from Async Storage, Passes it through a function, and displays results to user
@@ -72,6 +72,7 @@ class AdvancedFireGraph extends Component {
 
         // Data switch regulator
         hideData: true,
+        graphIsPressed: false,
     }
 }
     
@@ -137,21 +138,6 @@ class AdvancedFireGraph extends Component {
         .done();
     }
 
-    // handles touching of the graph
-    handlePress = (evt, data, x) => {
-        var val = []
-        data.map((value, index) => {
-            val.push(Math.abs(evt.nativeEvent.locationX - x(index)))
-        })
-        var min = Math.min.apply(Math, val)
-        data.map((value, index) => {
-            if (min === Math.abs(evt.nativeEvent.locationX - x(index))) {
-                this.setState({lineX: x(index), lineXindex: index})
-            }
-        })
-        return true
-    }
-
     // Information to be passed to the Tools Help Screen
     helpLines = [
         { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
@@ -176,19 +162,37 @@ class AdvancedFireGraph extends Component {
         ))
     }
 
-    // Invisible rectangle to capture user touch and set state of Line
+    handleResponderRelease = (evt) => {
+        this.setState({graphIsPressed: false});
+    }
+
+    // handles touching of the graph
+    handleGraphPress = (evt, data, x) => {
+        this.setState({graphIsPressed: true});
+        var val = []
+        data.map((value, index) => {
+            val.push(Math.abs(evt.nativeEvent.locationX - x(index)))
+        })
+        var min = Math.min.apply(Math, val)
+        data.map((value, index) => {
+            if (min === Math.abs(evt.nativeEvent.locationX - x(index))) {
+                this.setState({lineX: x(index), lineXindex: index})
+            }
+        })
+        return true
+    }
+
     LineCreator = ({x, width, data}) => {
         return(
-            <Rect
+            <Rect 
                 x = '0'
                 y = '0'
                 width = {width}
                 height = '400'
                 fill = 'rgba(0,0,0,0)'
-                onStartShouldSetResponder={(evt) => this.handlePress(evt, data, x)}
-                //onMoveShouldSetResponder = {(evt) => this.onMoveShouldSetResponder(evt)}
-                //onResponderMove={(evt) => this.handleResponderMove(evt)}
-                //handleResponderGrant={(evt) => this.handleResponderGrant(evt)}
+                onStartShouldSetResponder={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderMove={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderRelease={(evt) => this.handleResponderRelease(evt)}
             />
         )
     }
@@ -215,7 +219,9 @@ class AdvancedFireGraph extends Component {
             return (
                 <View style={{flex:1, backgroundColor: mainFillColor}}>
                     <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={this.helpView}/>
-                    <ScrollView>
+                    <ScrollView
+                        scrollEnabled={!this.state.graphIsPressed}
+                    >
                         <View style={styles.graphContainer}>
                             <YAxis
                                 data={this.state.data2}

@@ -26,6 +26,7 @@ import { amountDescription, curInvRetDescription, curInvFeesDescription, potInvR
 
 // Style imports
 import { mainFillColor, mainColor, mainAccentColor } from '../../Styles/ColorConstants'
+import loadAsyncData from "../../Components/Functions/LoadAsyncData";
 
 var { height, width } = Dimensions.get('window')
 
@@ -56,13 +57,7 @@ class Tool2ScreenMain extends Component {
   
   // Retrieve data from storage
   componentDidMount() {
-    BEstateKeys.forEach((item) => {
-      AsyncStorage.getItem(item.asyncKey).then((value) => {
-        if (value !== null) {
-          this.setState({[item.stateKey]: value})
-        }
-      })
-    })
+    loadAsyncData(this, BEstateKeys);
     this.setState({didMount: true})
   }
 

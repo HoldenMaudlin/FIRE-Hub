@@ -34,8 +34,6 @@ class Disclaimer extends Component {
                     <Text style={styles.body}>This app is also completely open source </Text>
                     <Text style={styles.link} onPress={() => Linking.openURL('https://github.com/HoldenMaudlin/FIRE-Hub')}>open source.</Text>
                 </Text>
-                <Text style={styles.header}>Security</Text>
-                <Text style={styles.body}>As this app does not transmit data, the main security concern is someone acessing this app without your consent. Because of this, a PIN Code feature, Touch ID, and Face ID support is coming soon!</Text>
             </View>
         )
     }

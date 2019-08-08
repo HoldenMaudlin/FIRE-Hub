@@ -70,6 +70,7 @@ class MonteCarloGraph extends Component {
         lineXindex: 0,
         graphMin: 0,
         graphMax: 0,
+        graphIsPressed: false,
 
         hideData: true,
     }
@@ -134,8 +135,20 @@ class MonteCarloGraph extends Component {
         .done();
     }
 
-    // Math to interpolate user press and find closest index
-    handlePress = (evt, data, x) => {
+    helpLines = [
+        { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
+        { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
+        { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
+    ]
+
+    // Invisible rectangle to capture user touch and set state of Line
+    handleResponderRelease = (evt) => {
+        this.setState({graphIsPressed: false});
+    }
+
+    // handles touching of the graph
+    handleGraphPress = (evt, data, x) => {
+        this.setState({graphIsPressed: true});
         var val = Math.floor(data.length * evt.nativeEvent.locationX/(x(data.length - 1)))
         if (val > data.length - 1) val = data.length - 1;
         if (val < 0) val = 0;
@@ -143,12 +156,6 @@ class MonteCarloGraph extends Component {
         return true
     }
 
-    helpLines = [
-        { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
-        { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
-        { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
-    ]
-    // Invisible rectangle to capture user touch and set state of Line
     LineCreator = ({x, width, data}) => {
         return(
             <Rect
@@ -157,10 +164,9 @@ class MonteCarloGraph extends Component {
                 width = {width}
                 height = '400'
                 fill = 'rgba(0,0,0,0)'
-                onStartShouldSetResponder={(evt) => this.handlePress(evt, data, x)}
-                //onMoveShouldSetResponder = {(evt) => this.onMoveShouldSetResponder(evt)}
-                //onResponderMove={(evt) => this.handleResponderMove(evt)}
-                //handleResponderGrant={(evt) => this.handleResponderGrant(evt)}
+                onStartShouldSetResponder={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderMove={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderRelease={(evt) => this.handleResponderRelease(evt)}
             />
         )
     }
@@ -193,7 +199,9 @@ class MonteCarloGraph extends Component {
             return (
                 <View style={styles.container}>
                     <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={this.helpView}/>
-                    <ScrollView>
+                    <ScrollView
+                        scrollEnabled={!this.state.graphIsPressed}
+                    >
                         <View style={styles.graphContainer}>
                             <YAxis
                                 data={this.state.graphData3}
