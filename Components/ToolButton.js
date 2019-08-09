@@ -27,7 +27,7 @@ import {
 import { Icon } from 'react-native-elements'
 
 // Style imports
-import { mainAccentColor, mainFillColor, mainHeaderColor } from '../Styles/ColorConstants';
+import { mainAccentColor, mainFillColor, mainColor } from '../Styles/ColorConstants';
 
 class ToolButton extends Component {
     constructor(props) {
@@ -43,10 +43,11 @@ class ToolButton extends Component {
             <TouchableOpacity onPress={() => this._pressTool(this.props.nextScreen)} style={styles.button}>
                 <View style={styles.nameContainer}>
                     <View style={styles.nameLeft}>
+                        <Icon color={mainFillColor} size={35} name={this.props.icon} type={this.props.iconType}/>
                         <Text style={styles.titleText}>{this.props.title}</Text>
                     </View>
                     <View style={styles.nameRight}>
-                        <Icon color={mainHeaderColor} size={22} name='arrow-right' type='simple-line-icon' />
+                        <Icon color={mainFillColor} size={22} name='arrow-right' type='simple-line-icon' />
                     </View>
                 </View>
                 <View style={styles.descContainer}>
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: .25,
-        shadowRadius: 2,
+        shadowRadius: 5,
         borderRadius: 5,
         elevation: 2,
     },
@@ -76,9 +77,8 @@ const styles = StyleSheet.create({
     nameContainer: {
         flexDirection: 'row',
         height: 40,
-        backgroundColor: mainFillColor,
-        borderBottomWidth: .4,
-        borderBottomColor: mainAccentColor,
+        paddingLeft: 5,
+        backgroundColor: mainColor,
         alignItems: 'center',
         borderTopRightRadius: 5,
         borderTopLeftRadius: 5,
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 30,
         marginLeft: 10,
-        color: mainHeaderColor,
+        color: mainFillColor,
     },
     nameLeft: {
         flex: 4, 

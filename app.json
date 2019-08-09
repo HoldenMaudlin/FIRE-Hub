@@ -22,7 +22,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.holdenmaudlin.firehub",
-      "buildNumber": "1",
+      "buildNumber": "2",
       "supportsTablet": false,
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["reddit"],
@@ -33,7 +33,7 @@
     },
     "android": {
       "package": "com.holdenmaudlin.firehub",
-      "versionCode": 6,
+      "versionCode": 7,
       "permissions": []
     }
   }
