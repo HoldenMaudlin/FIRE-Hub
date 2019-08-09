@@ -16,4 +16,5 @@ package-lock.json
 Builds/*
 Policies/*
 .idea/*
+secrets.js
 

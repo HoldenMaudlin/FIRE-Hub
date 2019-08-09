@@ -34,6 +34,10 @@ import { BFstateKeys } from '../../Components/Constants/InputKeys'
 import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorConstants'
 import MainBackHeader from '../../Components/MainBackHeader'
 import { _createFireGraph } from '../../Components/Functions/FireChartFunction'
+import { encode } from 'base-64';
+
+import { apiToken, baseEndpoint } from '../../secrets.js';
+const basicEndpoint = baseEndpoint + 'formulas/basic'
 
 // DESC: 
 // Retrieves inputs from stoage, passes them through a funciton, and displays data back to user
@@ -58,6 +62,7 @@ class Tool1ScreenGraph extends Component {
           lineXindex: 0,
 
           hideData: true,
+          graphIsPressed: false,
       }    
     }
     
@@ -66,114 +71,144 @@ class Tool1ScreenGraph extends Component {
         header: null
     }       
 
-    // Retrieve data from storage on mount
-    componentDidMount() {        
-        BFstateKeys.forEach((item) => {
-            AsyncStorage.getItem(item.asyncKey).then((value) => {
-                if (value !== null) {
-                    this.setState({[item.stateKey]: value})
-                }
-            })
-        })
-        this.setState({didMount: true})
-    }
-
-    // Handling of pressing the graph
-    handlePress = (evt, data, x) => {
-        var val = []
-        data.map((value, index) => {
-            val.push(Math.abs(evt.nativeEvent.locationX - x(index)))
-        })
-        var min = Math.min.apply(Math, val)
-        data.map((value, index) => {
-            if (min === Math.abs(evt.nativeEvent.locationX - x(index))) {
-                this.setState({lineX: x(index), lineXindex: index})
+    componentWillMount() {
+        this.setState({didMount: false});
+        const data = {'basic': this.props.navigation.getParam('data', {})};
+        const requestObject = {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic '+ apiToken, 
+            },
+            body: JSON.stringify(data)
+        }
+        fetch(basicEndpoint, requestObject)
+        .then((res) => { 
+            try {
+                return res.json();
+            } catch (e) {
+                return -1;
             }
         })
+        .then((d) => {
+            if (d == -1) return;
+            const data = d.data;
+            // Variables to be passed to the Table Display
+            var dataTableYears = []
+            var dataTableGrowth = []
+            var dataTablePrin = []
+            var dataTableSav = []
+            var data1 = [];
+            var data2 = [];
+            
+            for (var i = 0; i < data.length; i++) {
+                data1.push(data[i].principal)
+                data2.push(data[i].total)
+                dataTablePrin.push(MaskService.toMask('money', data[i].principal, {unit: '$', separator: '.', delimiter: ',',  precision: 0,}));
+                dataTableSav.push(MaskService.toMask('money', data[i].total, {unit: '$', separator: '.', delimiter: ',',  precision: 0,}));
+                dataTableGrowth.push(MaskService.toMask('money', data[i].total - data[i].principal, {unit: '$', separator: '.', delimiter: ',',  precision: 0,}));
+                dataTableYears.push(parseInt(data[i].age));
+            }
+            const graphMin = Math.min.apply(Math, data1);
+            const graphMax = Math.max.apply(Math, data2);
+            this.setState({
+                data1: data1,
+                data2: data2,
+                dataTablePrin: dataTablePrin,
+                dataTableSav: dataTableSav,
+                dataTableGrowth: dataTableGrowth,
+                dataTableGrowth: dataTableGrowth,
+                dataTableYears: dataTableYears,
+                graphMin: graphMin,
+                graphMax: graphMax,
+                didMount: true,
+                age: data[0].age
+            })
+        })
+        .done();
+    }
+
+    Decorator = ({ x, y, data }) => {
+        return data.map((value, index) => (
+            <Circle
+                key={ index }
+                cx={ x(index) }
+                cy={ y(value) }
+                r={ data.length > 35 ? 0 : 3 }
+                stroke={ 'rgb(134, 65, 244)' }
+                fill={ 'white' }
+            />
+        ))
+    }
+
+    // Invisible rectangle to capture user touch and set state of Line
+    handleResponderRelease = (evt) => {
+        this.setState({graphIsPressed: false});
+    }
+
+    // handles touching of the graph
+    handleGraphPress = (evt, data, x) => {
+        this.setState({graphIsPressed: true});
+        var val = Math.floor(data.length * evt.nativeEvent.locationX/(x(data.length - 1)))
+        if (val > data.length - 1) val = data.length - 1;
+        if (val < 0) val = 0;
+        this.setState({lineX: x(val), lineXindex: val})
         return true
     }
 
-    render() {   
-        // Information to be passed to the Tools Help Screen
-        const helpLines = [
-            { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
-            { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
-            { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
-        ]
-        var helpView = <HelpView helpLines={helpLines}/>
-    
-        // Configure the data for the graph
-        var data = _createFireGraph(this.state.age, this.state.assets, this.state.income, this.state.spend, this.state.target)
-        var data1 = []
-        var data2 = []
+    LineCreator = ({x, width, data}) => {
+        return(
+            <Rect
+                x = '0'
+                y = '0'
+                width = {width}
+                height = '400'
+                fill = 'rgba(0,0,0,0)'
+                onStartShouldSetResponder={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderMove={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderRelease={(evt) => this.handleResponderRelease(evt)}
+            />
+        )
+    }
 
-        // Variables to be passed to the Table Display
-        var dataTableYears = []
-        var dataTableGrowth = []
-        var dataTablePrin = []
-        var dataTableSav = []
-        
-        for (var i = 0; i < data.length; i++) {
-            data1.push(data[i].principal)
-            data2.push(data[i].total)
-            dataTablePrin.push(MaskService.toMask('money', data[i].principal, {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-            dataTableSav.push(MaskService.toMask('money', data[i].total, {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-            dataTableGrowth.push(MaskService.toMask('money', data[i].total - data[i].principal, {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-            dataTableYears.push(parseInt(this.state.age) + i + 1)
-        }
-        const graphMin = Math.min.apply(Math, data1)
-        const graphMax = Math.max.apply(Math, data2)
+    // Information to be passed to the Tools Help Screen
+    helpLines = [
+        { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
+        { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
+        { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
+    ]
+    helpView = <HelpView helpLines={this.helpLines}/>
+
+    render() {   
 
         // Masks for active selected node
-        var activePrin = ''
-        var activeSav = ''
-        var activeGrowth = ''
-        if (data1[this.state.lineXindex] !== undefined) { activePrin = MaskService.toMask('money', data1[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
-        if (data2[this.state.lineXindex] !== undefined) { activeSav = MaskService.toMask('money', data2[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
-        if (data2[this.state.lineXindex] !== undefined) { activeGrowth = MaskService.toMask('money', data2[this.state.lineXindex] - data1[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
-
-        const Decorator = ({ x, y, data }) => {
-            return data.map((value, index) => (
-                <Circle
-                    key={ index }
-                    cx={ x(index) }
-                    cy={ y(value) }
-                    r={ data.length > 35 ? 0 : 3 }
-                    stroke={ 'rgb(134, 65, 244)' }
-                    fill={ 'white' }
-                />
-            ))
+        if (this.state.didMount) {
+            var activePrin = ''
+            var activeSav = ''
+            var activeGrowth = ''
+            if (this.state.data1[this.state.lineXindex] !== undefined) { activePrin = MaskService.toMask('money', this.state.data1[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
+            if (this.state.data2[this.state.lineXindex] !== undefined) { activeSav = MaskService.toMask('money', this.state.data2[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
+            if (this.state.data2[this.state.lineXindex] !== undefined) { activeGrowth = MaskService.toMask('money', this.state.data2[this.state.lineXindex] - this.state.data1[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
         }
-
-        var LineCreator = ({x, width, data}) => {
-            return(
-                <Rect
-                    x = '0'
-                    y = '0'
-                    width = {width}
-                    height = '400'
-                    fill = 'rgba(0,0,0,0)'
-                    onStartShouldSetResponder={(evt) => this.handlePress(evt, data, x)}
-                />
-            )
-        }
-
         if (!this.state.didMount) {
             return (
-            <View>
-                <Text>
-                    Loading
-                </Text>
+            <View style={styles.container}>
+                <MainBackHeader navigation = {this.props.navigation} title = 'Advanced' backButtonName = 'Inputs' helpView={this.helpView}/>
+                <View style={styles.container}>
+                </View>
             </View>
             )
         } else {
             return (
                 <View style={{flex:1, backgroundColor: mainFillColor}}>
-                    <MainBackHeader  title = 'FIRE Basic' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={helpView}/>
-                    <ScrollView>
+                    <MainBackHeader  title = 'Advanced' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={this.helpView}/>
+                    <ScrollView
+                        scrollEnabled={!this.state.graphIsPressed}
+                    >
                         <View style={styles.graphContainer}>
                             <YAxis
-                                data={data2}
+                                data={this.state.data2}
                                 contentInset={{ top: 20, bottom: 20 }}
                                 svg={{
                                     fill: 'grey',
@@ -185,11 +220,11 @@ class Tool1ScreenGraph extends Component {
                             <View style={{flex: 1}}>
                                 <LineChart
                                     style={{ flex: 1 }}
-                                    data={ data1 }
+                                    data={ this.state.data1 }
                                     svg={{ stroke: 'rgb(0, 65, 244)', strokeWidth: 2, }}
                                     contentInset={{ top: 20, bottom: 20, left: 5, right: 5 }}
-                                    gridMin={graphMin}
-                                    gridMax={graphMax}
+                                    gridMin={this.state.graphMin}
+                                    gridMax={this.state.graphMax}
                                     >
                                     <Grid svg={{stroke: mainAccentColor}}/>
                                     <Line
@@ -200,26 +235,26 @@ class Tool1ScreenGraph extends Component {
                                         stroke='red'
                                         strokeWidth='2'
                                     />
-                                    <Decorator/>
+                                    <this.Decorator/>
                                 </LineChart>
                                 <LineChart
                                     style={ StyleSheet.absoluteFill }
-                                    data={ data2 }
+                                    data={ this.state.data2 }
                                     svg={{ stroke: 'rgb(200, 0, 0)', strokeWidth: 2, }}
                                     contentInset={{ top: 20, bottom: 20, left: 5, right: 5 }}
-                                    gridMin={graphMin}
-                                    gridMax={graphMax}
+                                    gridMin={this.state.graphMin}
+                                    gridMax={this.state.graphMax}
                                     >
-                                    <Decorator/>
-                                    <LineCreator/>
+                                    <this.Decorator/>
+                                    <this.LineCreator/>
                                 </LineChart>
                             </View>
                         </View>
                         <View>
-                            <Text style={styles.goalText}>You are on track to reach your retirement goal in {data1.length} years! </Text>
+                            <Text style={styles.goalText}>You are on track to reach your retirement goal in {this.state.data1.length} years! </Text>
                             <Table borderStyle={{borderWidth: 0.01, }}>
                                 <Row textStyle={styles.headText} style={styles.headStyle} flexArr={[1, 2, 2, 2]} data={['Age', 'Savings', 'Principal', 'Growth']}/>
-                                <Row textStyle={styles.columnText} flexArr={[1, 2, 2, 2]} data={[this.state.lineXindex + 1 + parseInt(this.state.age), activeSav, activePrin, activeGrowth]}/>
+                                <Row textStyle={styles.columnText} flexArr={[1, 2, 2, 2]} data={[this.state.lineXindex + parseInt(this.state.age), activeSav, activePrin, activeGrowth]}/>
                             </Table>      
                             <View style={styles.buttonContainer}>
                                 <TouchableOpacity style={styles.button} onPress={() => this.setState({hideData: !this.state.hideData})}>
@@ -228,7 +263,7 @@ class Tool1ScreenGraph extends Component {
                             </View>
                             <Collapsible collapsed={this.state.hideData}>
                                 <View>
-                                    <DataTable tableHead={['Age', 'Savings', 'Principal', 'Growth']} flexArr={[1, 2, 2, 2]} tableData={[dataTableYears, dataTableSav, dataTablePrin, dataTableGrowth]}/>
+                                    <DataTable tableHead={['Age', 'Savings', 'Principal', 'Growth']} flexArr={[1, 2, 2, 2]} tableData={[this.state.dataTableYears, this.state.dataTableSav, this.state.dataTablePrin, this.state.dataTableGrowth]}/>
                                 </View>
                             </Collapsible>
                         </View>
@@ -242,6 +277,10 @@ class Tool1ScreenGraph extends Component {
 export default Tool1ScreenGraph
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: mainFillColor,
+    },
     graphContainer: { 
         backgroundColor: mainFillColor,
         height: 400, 

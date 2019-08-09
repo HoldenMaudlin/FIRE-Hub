@@ -16,7 +16,20 @@ import {
   ActivityIndicator,
   AsyncStorage,
 } from "react-native";
-import { Font } from 'expo'
+import { encode } from 'base-64';
+
+const newUserEndpoint = 'http://firehub-backend-dev.5jds93y2cg.us-west-2.elasticbeanstalk.com/signup/newuser';
+const requestObject = {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    'Authorization': 'Basic '+encode('13po78903yjksjfkhhgt8730jklq'), 
+  },
+  body: JSON.stringify({
+    'client_id': 'irrelevant',
+  })
+}
 
 class AuthLoadingScreen extends Component {
   
@@ -30,7 +43,16 @@ class AuthLoadingScreen extends Component {
 
   // Function to route app to correct path
   _loadApp = async() => {
-    const firstLoad = await AsyncStorage.getItem('hasAcceptedTerms')
+    const firstLoad = await AsyncStorage.getItem('hasAcceptedTerms');
+    const clientId = await AsyncStorage.getItem('clientId');
+    // Assign unqiue client ID for new user
+    if (!clientId) {
+      fetch(newUserEndpoint, requestObject)
+        .then((response) => {
+          AsyncStorage.setItem('clientId', response._bodyText);
+        })
+        .done();
+    }
     this.props.navigation.navigate(firstLoad !== 'true' ? 'Auth' : 'App')
   }
 

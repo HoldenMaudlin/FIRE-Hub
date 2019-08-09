@@ -11,10 +11,12 @@
   "dependencies": {
     "@expo/vector-icons": "8.1.0",
     "@haskkor/react-native-pincode": "^1.11.0",
+    "base-64": "^0.1.0",
     "exp": "^57.2.1",
     "expo": "^31.0.2",
+    "express": "^4.17.1",
     "js-xlsx": "^0.8.22",
-    "native-base": "^2.10.0",
+    "native-base": "^2.13.4",
     "normalizr": "^3.3.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
@@ -43,6 +45,7 @@
     "rn-double-click": "^1.0.3"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-preset-expo": "^5.0.0",
+    "schedule": "^0.4.0"
   }
 }

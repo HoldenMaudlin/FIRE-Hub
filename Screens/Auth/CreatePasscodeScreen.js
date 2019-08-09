@@ -43,7 +43,6 @@ class CreatePasscodeScreen extends Component {
       await AsyncStorage.setItem('UserPin', pin)
       this.props.navigation.navigate('App')
     } catch (err) {
-      console.log(err)
     }
   }
 

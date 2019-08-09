@@ -20,7 +20,7 @@ import { Icon }  from 'react-native-elements'
 import { Header, Left, Button, Body, Right, Title } from 'native-base'
 
 // Style imports
-import { mainColor, mainHeaderText } from '../Styles/ColorConstants';
+import { mainHeaderColor, mainHeaderText } from '../Styles/ColorConstants';
 
 class MainDrawerHeader extends Component {
     constructor(props) {
@@ -38,7 +38,7 @@ class MainDrawerHeader extends Component {
     render() {
         return (
             <View style={{paddingTop: Platform.OS == 'android' ? 24 : 0}}>
-                <Header iosBarStyle='light-content' style={{ backgroundColor: mainColor, borderBottomWidth: 0 }}>
+                <Header iosBarStyle='light-content' style={{ backgroundColor: mainHeaderColor, borderBottomWidth: 0 }}>
                     <Left style={{flex: 1,}}>
                         <Button onPress = {() => this.props.navigation.openDrawer()} transparent >
                             <Icon color = {mainHeaderText} size = {30} name = 'menu'/>                       

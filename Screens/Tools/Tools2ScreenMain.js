@@ -26,6 +26,7 @@ import { amountDescription, curInvRetDescription, curInvFeesDescription, potInvR
 
 // Style imports
 import { mainFillColor, mainColor, mainAccentColor } from '../../Styles/ColorConstants'
+import loadAsyncData from "../../Components/Functions/LoadAsyncData";
 
 var { height, width } = Dimensions.get('window')
 
@@ -45,6 +46,7 @@ class Tool2ScreenMain extends Component {
         returns2: '',
         fees2: '',
         taxes: '',
+        warningText: 'For more information about a field, tap the name or icon!',
       }
   }
 
@@ -55,13 +57,7 @@ class Tool2ScreenMain extends Component {
   
   // Retrieve data from storage
   componentDidMount() {
-    BEstateKeys.forEach((item) => {
-      AsyncStorage.getItem(item.asyncKey).then((value) => {
-        if (value !== null) {
-          this.setState({[item.stateKey]: value})
-        }
-      })
-    })
+    loadAsyncData(this, BEstateKeys);
     this.setState({didMount: true})
   }
 
@@ -76,30 +72,29 @@ class Tool2ScreenMain extends Component {
    this._updateAsyncValues()
   }
 
-  _updateStateValues() {
-    BEstateKeys.forEach((item) => {
-      AsyncStorage.getItem(item.asyncKey).then((value) => {
-        value = parseFloat(value, 10)
-        if (!isNaN(value)) {
-          this.setState({[item.stateKey]: value})
-        }
-      })
-    })
-  }
-
    // Regulate navigation logic on user press butotn
    _onPressButton(){ 
-    this._updateAsyncValues()
-    this._updateStateValues()
     if(!this._checkIfEmpty()) {
       if (this._checkInputLogic()) {
-        this.props.navigation.navigate('Tool2Graph')
-        this.setState({warningText: ''})
+        const data = {
+          amount: this.state.amount,
+          cur: {
+            fees: this.state.fees1,
+            ret: this.state.returns1
+          },
+          pot: {
+            fees: this.state.fees2,
+            ret: this.state.returns2
+          },
+          taxes: this.state.taxes
+        }
+        this.props.navigation.navigate('Tool2Graph', {'data': data});
+        this.setState({warningText: 'For more information about a field, tap the name or icon!'});
       } else {
-        this.setState({warningText: 'Based on the given inputs, the potential investment will never exceed the current investment.'})
+        this.setState({warningText: 'Based on the given inputs, the potential investment will never exceed the current investment.'});
       }
     } else {
-      this.setState({warningText: 'Please Enter All Fields!'})
+      this.setState({warningText: 'Please Enter All Fields!'});
     }
   } 
 
@@ -151,11 +146,8 @@ class Tool2ScreenMain extends Component {
           <InputBox name = 'Fees' placeholder='Fees %' percent={true} precision={2} stateKey = 'fees2' iconName = 'trending-down' _setState={this._setState.bind(this)} storageKey = {T2Inv2FeeKey} description ={potInvFeesDescription} {...this.state}/>
           <InputBoxHeader text='Involuntary Contributions'/>
           <InputBox name = 'Expected Taxes' placeholder='Taxes %' percent={true} precision={2} stateKey = 'taxes' iconName = 'mood-bad' _setState={this._setState.bind(this)} storageKey = {T2TaxKey} description ={expectedTaxesDescription} {...this.state}/>
-          <Text style={{padding: 30, textAlign: 'center', color: mainAccentColor, fontSize: 14}}>For more information about a field, tap the name or icon!</Text>
+          <Text style={styles.warningContainer}>{this.state.warningText}</Text>
           <View style={styles.buttonContainer}>
-            <View style={styles.warningTextContainer}>
-              <Text style={styles.warningText}>{this.state.warningText}</Text>
-            </View>
             <TouchableOpacity style={[styles.buttonStyle, {backgroundColor: buttonColor}]} onPress={() => this._onPressButton()}>
               <Text style ={{color: mainFillColor, fontWeight: 'bold', fontSize: 20,}}> Go! </Text>
             </TouchableOpacity>
@@ -183,6 +175,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: width,
     paddingTop: 2,
+  },
+  warningContainer: {
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginTop: 20,
+    textAlign: 'center',
   },
   buttonContainer: {
     flex:1,
@@ -256,7 +257,6 @@ const styles = StyleSheet.create({
     textAlign: 'center', 
     color: mainColor, 
     fontSize: 14, 
-    fontWeight: 'bold'
   },
   warningTextContainer: {
     height: 60,

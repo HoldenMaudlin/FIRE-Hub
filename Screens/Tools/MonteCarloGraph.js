@@ -35,7 +35,10 @@ import { mainColor, mainAccentColor, mainFillColor } from '../../Styles/ColorCon
 import MainBackHeader from '../../Components/MainBackHeader'
 import { _createMonteCarloData } from '../../Components/Functions/MonteCarlo'
 import { MaskService } from 'react-native-masked-text'
+import { encode } from 'base-64';
 
+import { apiToken, baseEndpoint } from '../../secrets.js';
+const mcEndpoint = baseEndpoint + 'formulas/montecarlo';
 
 class MonteCarloGraph extends Component {
 
@@ -67,6 +70,7 @@ class MonteCarloGraph extends Component {
         lineXindex: 0,
         graphMin: 0,
         graphMax: 0,
+        graphIsPressed: false,
 
         hideData: true,
     }
@@ -74,50 +78,76 @@ class MonteCarloGraph extends Component {
     
     static navigationOptions = {
         header: null
-    }       
+    }
 
-    // Loads the data on mount
-    componentDidMount() {
-        this.getAsyncData().then((values) => {
-            // run simulation
-            var data = _createMonteCarloData(values[0]['assets'], values[0]['income'], values[0]['spend'], values[0]['returns'], values[0]['sims'], values[0]['length'])
-            this.setState({sims: values[4], length: values[5]})
-            this.setState({data: data, graphData1: data[0], graphData2: data[1], graphData3: data[2]})
+    componentWillMount() {
+        const data = {'mc': this.props.navigation.getParam('data', {})};
+        this.setState({
+            didMount: false,
+            sims: data.mc.sims,
+            length: data.mc.length,
+        });
+        const requestObject = {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic '+ apiToken, 
+            },
+            body: JSON.stringify(data)
+        }
+        fetch(mcEndpoint, requestObject)
+        .then((res) => { 
+            try {
+                return res.json();
+            } catch (e) {
+                return -1;
+            }
+        })
+        .then((data) => {
+            if (data == -1) return;
             var tableData1 = []
             var tableData2 = []
             var tableData3 = []
             var dataTableYears = []
            
             // Populate table data
-            for (var i = 11; i < this.state.graphData1.length + 11; i += 12) {
-                tableData1.push(MaskService.toMask('money', this.state.graphData1[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                tableData2.push(MaskService.toMask('money', this.state.graphData2[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                tableData3.push(MaskService.toMask('money', this.state.graphData3[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}))
-                dataTableYears.push((i - 11)/12 + 1)  
+            for (var i = 11; i < data.low.length + 11; i += 12) {
+                tableData1.push(MaskService.toMask('money', data.low[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}));
+                tableData2.push(MaskService.toMask('money', data.mid[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}));
+                tableData3.push(MaskService.toMask('money', data.high[i], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}));
+                dataTableYears.push((i - 11)/12 + 1);
             }
-            // Set all relevant state
-            this.setState({tableData1: tableData1, tableData2: tableData2, tableData3: tableData3, dataTableYears: dataTableYears})
-            this.setState({graphMin: Math.min.apply(Math, this.state.graphData1)})
-            this.setState({graphMax: Math.max.apply(Math, this.state.graphData3)})
-            this.setState({dataLoaded: true})
-        })
-    }
-
-    // Function to away retrieval of all async data by returning promise
-    getAsyncData= async() => {
-        var promises = {}
-        for (var i = 0; i < MCstateKeys.length; i++) {
-            await AsyncStorage.getItem(MCstateKeys[i].asyncKey).then((val) => {
-                promises[MCstateKeys[i].stateKey] = val
+            this.setState({
+                graphData1: data.low,
+                graphData2: data.mid,
+                graphData3: data.high,
+                tableData1: tableData1,
+                tableData2: tableData2,
+                tableData3: tableData3,
+                dataTableYears: dataTableYears,
+                graphMin: Math.min.apply(Math, data.low),
+                graphMax: Math.max.apply(Math, data.high),
+                dataLoaded: true,
             })
-        }
-        var tem = []
-        tem.push(promises)
-        return Promise.all(tem)
+        })
+        .done();
     }
 
-    // Math to interpolate user press and find closest index
-    handlePress = (evt, data, x) => {
+    helpLines = [
+        { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
+        { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
+        { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
+    ]
+
+    // Invisible rectangle to capture user touch and set state of Line
+    handleResponderRelease = (evt) => {
+        this.setState({graphIsPressed: false});
+    }
+
+    // handles touching of the graph
+    handleGraphPress = (evt, data, x) => {
+        this.setState({graphIsPressed: true});
         var val = Math.floor(data.length * evt.nativeEvent.locationX/(x(data.length - 1)))
         if (val > data.length - 1) val = data.length - 1;
         if (val < 0) val = 0;
@@ -125,14 +155,26 @@ class MonteCarloGraph extends Component {
         return true
     }
 
+    LineCreator = ({x, width, data}) => {
+        return(
+            <Rect
+                x = '0'
+                y = '0'
+                width = {width}
+                height = '400'
+                fill = 'rgba(0,0,0,0)'
+                onStartShouldSetResponder={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderMove={(evt) => this.handleGraphPress(evt, data, x)}
+                onResponderRelease={(evt) => this.handleResponderRelease(evt)}
+            />
+        )
+    }
+
+    helpView = <HelpView helpLines={this.helpLines}/>
+
     render() { 
         // Information to be passed to the Monte Carlo Help Screen
-        const helpLines = [
-            { key: 1, icon: 'ios-arrow-back', iconType: 'ionicon', text: 'Tap on the Back Button to navigate to the tools screen!',},
-            { key: 2, icon: 'attach-money', iconType: '', text: "The graph displays the amount (in thousands) on the Y-Axis!"},
-            { key: 3, icon: 'gesture-tap', iconType: 'material-community', text: "Press the graph to view the data for a specific year!"},
-        ]
-        var helpView = <HelpView helpLines={helpLines}/>
+
         if(this.state.dataLoaded === true) {
             // Masks for active selected node
             var active1 = ''
@@ -143,38 +185,22 @@ class MonteCarloGraph extends Component {
             if (this.state.graphData3[this.state.lineXindex] !== undefined) { active3 = MaskService.toMask('money', this.state.graphData3[this.state.lineXindex], {unit: '$', separator: '.', delimiter: ',',  precision: 0,}) }
         }
 
-        // Invisible rectangle to capture user touch and set state of Line
-        var LineCreator = ({x, width, data}) => {
-            return(
-                <Rect
-                    x = '0'
-                    y = '0'
-                    width = {width}
-                    height = '400'
-                    fill = 'rgba(0,0,0,0)'
-                    onStartShouldSetResponder={(evt) => this.handlePress(evt, data, x)}
-                    //onMoveShouldSetResponder = {(evt) => this.onMoveShouldSetResponder(evt)}
-                    //onResponderMove={(evt) => this.handleResponderMove(evt)}
-                    //handleResponderGrant={(evt) => this.handleResponderGrant(evt)}
-                />
-            )
-        }
-
         if (this.state.dataLoaded !== true) {
             return (
             <View style={styles.container}>
-                <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={helpView}/>
+                <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={this.helpView}/>
                 <View style={styles.activityContainer}>
                     <ActivityIndicator/>
-                    <Text style={{color: mainAccentColor, marginTop: 10,}}>For large inputs, allow up to 10 seconds!</Text>
                 </View>
             </View>
             )
         } else {
             return (
                 <View style={styles.container}>
-                    <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={helpView}/>
-                    <ScrollView>
+                    <MainBackHeader  title = 'FIRE Graph' backButtonName = 'Inputs' navigation={this.props.navigation} helpView={this.helpView}/>
+                    <ScrollView
+                        scrollEnabled={!this.state.graphIsPressed}
+                    >
                         <View style={styles.graphContainer}>
                             <YAxis
                                 data={this.state.graphData3}
@@ -222,7 +248,7 @@ class MonteCarloGraph extends Component {
                                     gridMin={this.state.graphMin}
                                     gridMax={this.state.graphMax}
                                     >
-                                    <LineCreator/>
+                                    <this.LineCreator/>
                                 </LineChart>
                             </View>
                         </View>
